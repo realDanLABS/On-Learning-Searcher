@@ -1,0 +1,45 @@
+name: "Feature Request"
+description: "새 기능을 제안합니다"
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: background
+    attributes:
+      label: 배경/문제
+      description: 현재 어떤 문제가 있는지 작성해 주세요.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 제안 내용
+      description: 원하는 기능을 구체적으로 작성해 주세요.
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 완료 조건 (Acceptance Criteria)
+      placeholder: |
+        - [ ] 조건 1
+        - [ ] 조건 2
+    validations:
+      required: true
+
+  - type: dropdown
+    id: domain
+    attributes:
+      label: 기능 도메인
+      options:
+        - diagnosis
+        - recommendation
+        - course-linking
+        - history
+        - chatbot
+        - responsive
+        - foundation
+    validations:
+      required: true

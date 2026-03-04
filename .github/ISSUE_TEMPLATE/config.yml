@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: "질문/운영 문의"
+    url: "https://example.com"
+    about: "운영팀 문의 채널로 연결"

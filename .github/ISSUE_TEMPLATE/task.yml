@@ -1,0 +1,37 @@
+name: "Task"
+description: "개발 작업 단위를 생성합니다"
+title: "[Task] "
+labels: ["task"]
+body:
+  - type: input
+    id: goal
+    attributes:
+      label: 작업 목표
+      placeholder: "예: 진단 질문 Stepper UI 구현"
+    validations:
+      required: true
+
+  - type: textarea
+    id: todo
+    attributes:
+      label: 작업 항목
+      placeholder: |
+        - [ ] 항목 1
+        - [ ] 항목 2
+    validations:
+      required: true
+
+  - type: dropdown
+    id: worktree
+    attributes:
+      label: 작업 브랜치
+      options:
+        - codex/foundation
+        - codex/diagnosis
+        - codex/recommendation
+        - codex/course-linking
+        - codex/history
+        - codex/chatbot
+        - codex/responsive
+    validations:
+      required: true
