@@ -122,6 +122,10 @@ export function HomePage() {
     stage,
   })
   const canStartNext = blockers.length === 0 && nextAction.enabled
+  const canGoDiagnosis = authenticated && profileReady
+  const canGoRecommendation = stage !== 'start'
+  const canGoEnrollment = stage === 'course_selected' || stage === 'enrollment_done'
+  const canGoHistory = stage !== 'start'
   const historyRoute = featureRoutes.find((route) => route.path === '/history')
   const courseLinkingRoute = featureRoutes.find((route) => route.path === '/course-linking')
   const canOpenHistory =
@@ -236,23 +240,14 @@ export function HomePage() {
         </p>
         <div className="journey-actions">
           <button className="primary-btn" onClick={runPrimaryAction} type="button">
-            {primaryAction.label}
-          </button>
-          <button className="primary-btn" onClick={startLogin} type="button">
-            {authenticated ? '로그인 완료' : '로그인'}
-          </button>
-          <button className="primary-btn" onClick={submitOnboarding} type="button">
-            {profileReady ? '프로필 수정 완료' : '프로필 저장'}
+            {canStartNext ? `바로 시작: ${primaryAction.label}` : primaryAction.label}
           </button>
           <button
-            className="primary-btn"
-            disabled={!canStartNext}
+            className="secondary-btn"
+            disabled={!nextAction.enabled}
             onClick={() => navigate(nextAction.to)}
             type="button"
           >
-            {nextAction.label}
-          </button>
-          <button className="secondary-btn" onClick={() => navigate(nextAction.to)} type="button">
             현재 단계 이어서 진행
           </button>
           <button className="secondary-btn" onClick={resetJourney} type="button">
@@ -311,6 +306,71 @@ export function HomePage() {
             Admin
           </button>
         </div>
+      </section>
+
+      <section className="feature-grid">
+        <article className="feature-card">
+          <h3>1단계: 로그인/프로필</h3>
+          <p>{authenticated ? '로그인 완료' : '로그인이 필요합니다.'}</p>
+          <p>{profileReady ? '프로필 저장 완료' : '프로필 저장이 필요합니다.'}</p>
+          <div className="journey-actions">
+            <button className="secondary-btn" onClick={startLogin} type="button">
+              {authenticated ? '로그인 상태 확인' : '로그인'}
+            </button>
+            <button className="secondary-btn" onClick={submitOnboarding} type="button">
+              {profileReady ? '프로필 수정' : '프로필 저장'}
+            </button>
+          </div>
+        </article>
+
+        <article className="feature-card">
+          <h3>2단계: 역량 진단</h3>
+          <p>설문 완료 후 개인 역량 갭을 계산합니다.</p>
+          <button
+            className="primary-btn"
+            disabled={!canGoDiagnosis}
+            onClick={() => navigate('/diagnosis')}
+            type="button"
+          >
+            진단 시작
+          </button>
+        </article>
+
+        <article className="feature-card">
+          <h3>3단계: 맞춤 추천</h3>
+          <p>진단 결과 기반 추천과정과 추천 이유를 확인합니다.</p>
+          <button
+            className="primary-btn"
+            disabled={!canGoRecommendation}
+            onClick={() => navigate('/recommendation')}
+            type="button"
+          >
+            추천 확인
+          </button>
+        </article>
+
+        <article className="feature-card">
+          <h3>4단계: 신청/이력</h3>
+          <p>추천 과정을 신청하고 결과를 이력에서 추적합니다.</p>
+          <div className="journey-actions">
+            <button
+              className="primary-btn"
+              disabled={!canGoEnrollment}
+              onClick={() => navigate('/course-linking')}
+              type="button"
+            >
+              신청 진행
+            </button>
+            <button
+              className="secondary-btn"
+              disabled={!canGoHistory}
+              onClick={() => navigate('/history')}
+              type="button"
+            >
+              이력 보기
+            </button>
+          </div>
+        </article>
       </section>
 
       <section className="feature-grid">
