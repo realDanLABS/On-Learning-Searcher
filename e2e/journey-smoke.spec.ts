@@ -326,3 +326,12 @@ test('chatbot guided CTA routes to recommendation after diagnosis completion', a
   await page.getByRole('link', { name: '추천 흐름으로 이동' }).last().click()
   await expect(page).toHaveURL(/\/recommendation/)
 })
+
+test('recommendation page without diagnosis redirects to locked guidance', async ({ page }) => {
+  await prepareLoggedInProfile(page)
+  await page.goto('/recommendation')
+
+  await expect(page).toHaveURL(/\/\?gate=stage-locked&next=%2Fdiagnosis/)
+  await page.getByRole('button', { name: '권장 페이지로 이동' }).click()
+  await expect(page).toHaveURL(/\/diagnosis/)
+})

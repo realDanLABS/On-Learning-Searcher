@@ -111,50 +111,54 @@ export function RecommendationPage() {
 
       {diagnosis && <SkillGapPanel diagnosis={diagnosis} title="추천 전 스킬 갭 확인" />}
 
-      <section className="feature-grid">
-        {courses.length > 0 ? (
-          courses.map((course) => (
-            <article className="feature-card" key={course.courseId}>
-              <h3>{course.courseTitle}</h3>
-              <p>
-                난이도 {course.level} | {course.durationHours}시간
-              </p>
-              {typeof course.fitScore === 'number' && <p>적합도 {course.fitScore}%</p>}
-              <div className="tag-row">
-                {course.reasonTags.map((tag) => (
-                  <span className="reason-tag" key={tag}>
-                    {tag}
-                  </span>
-                ))}
-              </div>
-              <button className="primary-btn" onClick={() => void moveToEnrollment(course)} type="button">
-                신청하기
-              </button>
-            </article>
-          ))
-        ) : (
-          <article className="feature-card">
-            <h3>필터 조건에 맞는 과정이 없습니다</h3>
-            <p>필터를 초기화하거나 진단을 다시 수행해 추천 범위를 넓혀주세요.</p>
-            <button className="secondary-btn" onClick={() => setLevelFilter('all')} type="button">
-              필터 초기화
-            </button>
-          </article>
-        )}
-      </section>
+      {diagnosis && (
+        <>
+          <section className="feature-grid">
+            {courses.length > 0 ? (
+              courses.map((course) => (
+                <article className="feature-card" key={course.courseId}>
+                  <h3>{course.courseTitle}</h3>
+                  <p>
+                    난이도 {course.level} | {course.durationHours}시간
+                  </p>
+                  {typeof course.fitScore === 'number' && <p>적합도 {course.fitScore}%</p>}
+                  <div className="tag-row">
+                    {course.reasonTags.map((tag) => (
+                      <span className="reason-tag" key={tag}>
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <button className="primary-btn" onClick={() => void moveToEnrollment(course)} type="button">
+                    신청하기
+                  </button>
+                </article>
+              ))
+            ) : (
+              <article className="feature-card">
+                <h3>필터 조건에 맞는 과정이 없습니다</h3>
+                <p>필터를 초기화하거나 진단을 다시 수행해 추천 범위를 넓혀주세요.</p>
+                <button className="secondary-btn" onClick={() => setLevelFilter('all')} type="button">
+                  필터 초기화
+                </button>
+              </article>
+            )}
+          </section>
 
-      <section className="hero-card">
-        <h2>다음 단계 안내</h2>
-        <p>과정 선택 후 신청 연동에서 등록을 완료하면 이력 대시보드와 챗봇 상담으로 이어집니다.</p>
-        <div className="journey-actions">
-          <Link className="secondary-btn link-btn" to="/course-linking?from=recommendation">
-            신청 연동 바로가기
-          </Link>
-          <Link className="secondary-btn link-btn" to="/chatbot">
-            AI 상담 먼저 보기
-          </Link>
-        </div>
-      </section>
+          <section className="hero-card">
+            <h2>다음 단계 안내</h2>
+            <p>과정 선택 후 신청 연동에서 등록을 완료하면 이력 대시보드와 챗봇 상담으로 이어집니다.</p>
+            <div className="journey-actions">
+              <Link className="secondary-btn link-btn" to="/course-linking?from=recommendation">
+                신청 연동 바로가기
+              </Link>
+              <Link className="secondary-btn link-btn" to="/chatbot">
+                AI 상담 먼저 보기
+              </Link>
+            </div>
+          </section>
+        </>
+      )}
 
       {diagnosis && (
         <section className="hero-card">
