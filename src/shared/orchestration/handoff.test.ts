@@ -8,6 +8,11 @@ describe('handoff message', () => {
     expect(result?.kind).toBe('info')
   })
 
+  it('returns home to diagnosis notice', () => {
+    const result = getHandoffMessage('?from=home', 'diagnosis')
+    expect(result?.kind).toBe('info')
+  })
+
   it('returns recommendation to diagnosis notice', () => {
     const result = getHandoffMessage('?from=recommendation', 'diagnosis')
     expect(result?.kind).toBe('info')
@@ -23,6 +28,11 @@ describe('handoff message', () => {
     expect(result?.kind).toBe('success')
   })
 
+  it('returns home to recommendation notice', () => {
+    const result = getHandoffMessage('?from=home', 'recommendation')
+    expect(result?.kind).toBe('info')
+  })
+
   it('returns history to recommendation notice', () => {
     const result = getHandoffMessage('?from=history', 'recommendation')
     expect(result?.kind).toBe('info')
@@ -33,8 +43,28 @@ describe('handoff message', () => {
     expect(result?.kind).toBe('info')
   })
 
+  it('returns chatbot to recommendation notice', () => {
+    const result = getHandoffMessage('?from=chatbot', 'recommendation')
+    expect(result?.kind).toBe('info')
+  })
+
   it('returns recommendation to course-linking notice', () => {
     const result = getHandoffMessage('?from=recommendation', 'course-linking')
+    expect(result?.kind).toBe('info')
+  })
+
+  it('returns home to course-linking notice', () => {
+    const result = getHandoffMessage('?from=home', 'course-linking')
+    expect(result?.kind).toBe('info')
+  })
+
+  it('returns history to course-linking notice', () => {
+    const result = getHandoffMessage('?from=history', 'course-linking')
+    expect(result?.kind).toBe('info')
+  })
+
+  it('returns chatbot to course-linking notice', () => {
+    const result = getHandoffMessage('?from=chatbot', 'course-linking')
     expect(result?.kind).toBe('info')
   })
 
@@ -70,6 +100,11 @@ describe('handoff message', () => {
 
   it('returns diagnosis to chatbot notice', () => {
     const result = getHandoffMessage('?from=diagnosis', 'chatbot')
+    expect(result?.kind).toBe('info')
+  })
+
+  it('returns home to chatbot notice', () => {
+    const result = getHandoffMessage('?from=home', 'chatbot')
     expect(result?.kind).toBe('info')
   })
 

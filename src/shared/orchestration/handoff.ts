@@ -16,6 +16,13 @@ export function getHandoffMessage(
     }
   }
 
+  if (page === 'diagnosis' && from === 'home') {
+    return {
+      kind: 'info',
+      text: '홈에서 진단으로 이동했습니다. 현재 역량을 점검해 맞춤 추천의 정확도를 높여보세요.',
+    }
+  }
+
   if (page === 'diagnosis' && from === 'recommendation') {
     return {
       kind: 'info',
@@ -37,6 +44,13 @@ export function getHandoffMessage(
     }
   }
 
+  if (page === 'recommendation' && from === 'home') {
+    return {
+      kind: 'info',
+      text: '홈에서 추천으로 이동했습니다. 최신 진단 결과 기반으로 추천 과정을 확인해 보세요.',
+    }
+  }
+
   if (page === 'recommendation' && from === 'history') {
     return {
       kind: 'info',
@@ -51,10 +65,38 @@ export function getHandoffMessage(
     }
   }
 
+  if (page === 'recommendation' && from === 'chatbot') {
+    return {
+      kind: 'info',
+      text: '챗봇 상담에서 추천으로 이동했습니다. 상담 내용을 참고해 우선 수강 과정을 선택해 보세요.',
+    }
+  }
+
   if (page === 'course-linking' && from === 'recommendation') {
     return {
       kind: 'info',
       text: '과정 선택이 완료되었습니다. 이캠퍼스 신청 후 복귀하면 자동으로 이력에 반영됩니다.',
+    }
+  }
+
+  if (page === 'course-linking' && from === 'home') {
+    return {
+      kind: 'info',
+      text: '홈에서 신청 연동으로 이동했습니다. 추천 과정 선택 후 신청을 완료해 주세요.',
+    }
+  }
+
+  if (page === 'course-linking' && from === 'history') {
+    return {
+      kind: 'info',
+      text: '이력 페이지에서 신청 연동으로 이동했습니다. 다음 학습 과정을 이어서 신청할 수 있습니다.',
+    }
+  }
+
+  if (page === 'course-linking' && from === 'chatbot') {
+    return {
+      kind: 'info',
+      text: '챗봇 상담에서 신청 연동으로 이동했습니다. 제안된 과정을 바로 신청해 보세요.',
     }
   }
 
@@ -104,6 +146,13 @@ export function getHandoffMessage(
     return {
       kind: 'info',
       text: '진단 단계에서 상담으로 이동했습니다. 진단 결과를 바탕으로 학습 전략을 질문해 보세요.',
+    }
+  }
+
+  if (page === 'chatbot' && from === 'home') {
+    return {
+      kind: 'info',
+      text: '홈에서 상담으로 이동했습니다. 현재 단계에 맞는 학습 질문을 선택해 보세요.',
     }
   }
 
