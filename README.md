@@ -2,8 +2,14 @@
 
 현대위아 온러닝서처(Online + Learning + Search) 프로젝트 저장소입니다.
 
+## 시작하기
+```bash
+npm install
+npm run dev
+```
+
 ## 시작 전 핵심
-- 이 저장소는 기능별로 `git worktree`를 사용합니다.
+- 기능별 `git worktree`를 사용합니다.
 - 한 기능은 한 브랜치(한 worktree)에서만 작업합니다.
 
 ## 현재 Worktree 구성
@@ -21,28 +27,19 @@
 ```text
 src/
   app/
+  router/
+  styles/
+  shared/
+    layouts/
+    state/
   features/
     diagnosis/
     recommendation/
     course-linking/
     history/
     chatbot/
-  shared/
-    components/
-    layouts/
-    hooks/
-    utils/
-    types/
-    api/
-  assets/
-    images/
-    icons/
-  styles/
-  router/
-  mocks/
+    responsive/
 ```
-
-`src` 상세 설명은 [src/README.md](src/README.md)에 정리되어 있습니다.
 
 ## 협업 템플릿
 - PR 템플릿: `.github/pull_request_template.md`
@@ -53,5 +50,7 @@ src/
 
 ## Orchestration Docs
 - Master plan: [ORCHESTRATION/MASTER_ORCHESTRATION_PLAN.md](ORCHESTRATION/MASTER_ORCHESTRATION_PLAN.md)
-- Page dispatch: [ORCHESTRATION/PAGE_ROLE_DISPATCH.md](ORCHESTRATION/PAGE_ROLE_DISPATCH.md)
+- Release plan: [ORCHESTRATION/RELEASE_MASTER_PLAN.md](ORCHESTRATION/RELEASE_MASTER_PLAN.md)
+- Dispatch: [ORCHESTRATION/DISPATCH_MESSAGES.md](ORCHESTRATION/DISPATCH_MESSAGES.md)
 - Integration contract: [ORCHESTRATION/INTEGRATION_CONTRACT.md](ORCHESTRATION/INTEGRATION_CONTRACT.md)
+- Execution board: [ORCHESTRATION/EXECUTION_BOARD.md](ORCHESTRATION/EXECUTION_BOARD.md)
