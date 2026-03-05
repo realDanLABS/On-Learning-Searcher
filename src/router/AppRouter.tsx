@@ -74,7 +74,14 @@ export function AppRouter() {
             </StageGuard>
           }
         />
-        <Route path="/responsive" element={<ResponsivePage />} />
+        <Route
+          path="/responsive"
+          element={
+            <StageGuard allowedRoles={['admin']} minStage="start" requireProfile={false}>
+              <ResponsivePage />
+            </StageGuard>
+          }
+        />
         <Route path="*" element={<Navigate replace to="/" />} />
       </Routes>
     </BrowserRouter>

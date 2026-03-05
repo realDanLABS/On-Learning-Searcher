@@ -8,12 +8,14 @@ import {
 import { getJourneyStage, type JourneyStage } from '../shared/state/learningFlow'
 import { isAuthenticated } from '../shared/state/auth'
 import { hasUserProfile } from '../shared/state/profile'
+import { getUserRole, type UserRole } from '../shared/state/session'
 
 type StageGuardProps = {
   minStage: JourneyStage
   children: ReactElement
   requireProfile?: boolean
   requireAuth?: boolean
+  allowedRoles?: UserRole[]
 }
 
 export function StageGuard({
@@ -21,8 +23,13 @@ export function StageGuard({
   children,
   requireProfile = true,
   requireAuth = true,
+  allowedRoles,
 }: StageGuardProps) {
   if (requireAuth && !isAuthenticated()) {
+    return <Navigate replace to="/" />
+  }
+
+  if (allowedRoles && !allowedRoles.includes(getUserRole())) {
     return <Navigate replace to="/" />
   }
 

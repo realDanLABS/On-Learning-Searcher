@@ -1,4 +1,5 @@
 import type { JourneyStage } from '../shared/state/learningFlow'
+import type { UserRole } from '../shared/state/session'
 
 export type FeatureRoute = {
   path: string
@@ -7,6 +8,7 @@ export type FeatureRoute = {
   minStage: JourneyStage
   requireProfile?: boolean
   requireAuth?: boolean
+  allowedRoles?: UserRole[]
 }
 
 export const featureRoutes: FeatureRoute[] = [
@@ -56,6 +58,7 @@ export const featureRoutes: FeatureRoute[] = [
     description: '데스크톱/모바일 UI 적응성 검증 영역',
     minStage: 'start',
     requireProfile: false,
-    requireAuth: false,
+    requireAuth: true,
+    allowedRoles: ['admin'],
   },
 ]

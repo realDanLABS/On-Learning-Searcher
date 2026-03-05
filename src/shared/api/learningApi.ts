@@ -1,6 +1,7 @@
 import { runtimeConfig } from '../config/runtime'
 import { emitSessionExpiredNotice } from '../auth/sessionSignals'
 import { ApiError } from './apiError'
+import { appendAuditLog } from '../observability/audit'
 import {
   appendEnrollment,
   type CategoryScores,
@@ -77,10 +78,12 @@ export async function submitDiagnosis(payload: DiagnosisPayload): Promise<void> 
       method: 'POST',
       body: JSON.stringify(payload),
     })
+    appendAuditLog('diagnosis_submitted', `원격 진단 제출: ${payload.userId}`)
     return
   }
   return withApiGuard(() => {
     saveDiagnosisPayload(payload)
+    appendAuditLog('diagnosis_submitted', `진단 제출: ${payload.userId}`)
   })
 }
 
@@ -122,10 +125,12 @@ export async function selectRecommendedCourse(course: RecommendedCourse): Promis
       method: 'POST',
       body: JSON.stringify(course),
     })
+    appendAuditLog('course_selected', `원격 과정 선택: ${course.courseId}`)
     return
   }
   return withApiGuard(() => {
     saveSelectedCourse(course)
+    appendAuditLog('course_selected', `과정 선택: ${course.courseId}`)
   })
 }
 
@@ -142,10 +147,12 @@ export async function submitEnrollment(record: EnrollmentRecord): Promise<void> 
       method: 'POST',
       body: JSON.stringify(record),
     })
+    appendAuditLog('enrollment_submitted', `원격 신청 처리: ${record.courseId}`)
     return
   }
   return withApiGuard(() => {
     appendEnrollment(record)
+    appendAuditLog('enrollment_submitted', `신청 처리: ${record.courseId}`)
   })
 }
 

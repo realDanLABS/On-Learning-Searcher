@@ -1,0 +1,46 @@
+export type AuditAction =
+  | 'login'
+  | 'logout'
+  | 'profile_saved'
+  | 'role_changed'
+  | 'diagnosis_submitted'
+  | 'course_selected'
+  | 'enrollment_submitted'
+  | 'session_expired'
+  | 'journey_reset'
+
+export type AuditRecord = {
+  id: string
+  action: AuditAction
+  at: string
+  detail: string
+}
+
+const KEY_AUDIT_LOGS = 'on_learning_audit_logs_v1'
+
+export function appendAuditLog(action: AuditAction, detail: string) {
+  const current = getAuditLogs()
+  const now = new Date().toISOString()
+  const next: AuditRecord = {
+    id: `${action}-${now}-${Math.random().toString(36).slice(2, 8)}`,
+    action,
+    at: now,
+    detail,
+  }
+  localStorage.setItem(KEY_AUDIT_LOGS, JSON.stringify([next, ...current].slice(0, 200)))
+}
+
+export function getAuditLogs(): AuditRecord[] {
+  const raw = localStorage.getItem(KEY_AUDIT_LOGS)
+  if (!raw) return []
+  try {
+    return JSON.parse(raw) as AuditRecord[]
+  } catch {
+    return []
+  }
+}
+
+export function clearAuditLogs() {
+  localStorage.removeItem(KEY_AUDIT_LOGS)
+}
+

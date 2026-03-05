@@ -13,6 +13,7 @@ import { consumeSessionExpiredNotice } from '../shared/auth/sessionSignals'
 import { runtimeConfig } from '../shared/config/runtime'
 import { AppShell } from '../shared/layouts/AppShell'
 import { getFunnelSnapshot, type FunnelSnapshot } from '../shared/observability/funnel'
+import { appendAuditLog } from '../shared/observability/audit'
 import { getNextJourneyAction } from '../shared/orchestration/journey'
 import { isAuthenticated, setAuthenticated } from '../shared/state/auth'
 import {
@@ -83,6 +84,7 @@ export function HomePage() {
   const nextAction = getNextJourneyAction(stage)
 
   const resetJourney = () => {
+    appendAuditLog('journey_reset', '사용자 수동 초기화')
     clearJourneyData()
     clearUserProfile()
     window.location.reload()
@@ -91,6 +93,7 @@ export function HomePage() {
   const changeRole = (nextRole: UserRole) => {
     setUserRole(nextRole)
     setRole(nextRole)
+    appendAuditLog('role_changed', `역할 변경: ${nextRole}`)
   }
 
   const toggleApiErrorMode = () => {
@@ -114,12 +117,14 @@ export function HomePage() {
       name: name.trim(),
       organization: organization.trim(),
     })
+    appendAuditLog('profile_saved', `프로필 저장: ${employeeId.trim()}`)
     setProfileReady(true)
     setOnboardingError(null)
   }
 
   const startLogin = () => {
     if (runtimeConfig.apiMode === 'remote' && runtimeConfig.ssoLoginUrl) {
+      appendAuditLog('login', '원격 SSO 로그인 이동')
       try {
         const callback = runtimeConfig.ssoCallbackUrl.startsWith('http')
           ? runtimeConfig.ssoCallbackUrl
@@ -136,6 +141,7 @@ export function HomePage() {
     }
     setAuthenticated(true)
     setAuthenticatedState(true)
+    appendAuditLog('login', 'mock 로그인 완료')
   }
 
   return (

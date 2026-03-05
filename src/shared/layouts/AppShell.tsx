@@ -7,8 +7,9 @@ import { JourneyProgressPanel } from '../components/JourneyProgressPanel'
 import { isStageAllowed } from '../orchestration/journey'
 import { clearJourneyData, getJourneyStage } from '../state/learningFlow'
 import { clearUserProfile, getUserProfile } from '../state/profile'
-import { clearUserRole } from '../state/session'
+import { clearUserRole, getUserRole } from '../state/session'
 import { clearAuthentication, isAuthenticated } from '../state/auth'
+import { appendAuditLog } from '../observability/audit'
 
 type AppShellProps = {
   title: string
@@ -19,8 +20,10 @@ type AppShellProps = {
 export function AppShell({ title, description, children }: AppShellProps) {
   const profile = getUserProfile()
   const authenticated = isAuthenticated()
+  const role = getUserRole()
   const stage = getJourneyStage()
   const onLogout = () => {
+    appendAuditLog('logout', `로그아웃: role=${role}`)
     clearAuthentication()
     clearJourneyData()
     clearUserProfile()
@@ -63,7 +66,8 @@ export function AppShell({ title, description, children }: AppShellProps) {
         {featureRoutes.map((route) => {
           const authAllowed = route.requireAuth === false || authenticated
           const profileAllowed = route.requireProfile === false || Boolean(profile)
-          const allowed = authAllowed && profileAllowed && isStageAllowed(stage, route.minStage)
+          const roleAllowed = !route.allowedRoles || route.allowedRoles.includes(role)
+          const allowed = authAllowed && profileAllowed && roleAllowed && isStageAllowed(stage, route.minStage)
 
           if (!allowed) {
             return (

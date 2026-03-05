@@ -8,6 +8,7 @@ import {
 } from '../../../shared/api/learningApi'
 import { getErrorMessage } from '../../../shared/api/errorMessage'
 import { AppShell } from '../../../shared/layouts/AppShell'
+import { getAuditLogs, type AuditRecord } from '../../../shared/observability/audit'
 import { getUserRole } from '../../../shared/state/session'
 import {
   clearJourneyData,
@@ -20,6 +21,7 @@ export function HistoryPage() {
   const [diagnosis, setDiagnosis] = useState<DiagnosisPayload | null>(null)
   const [enrollments, setEnrollments] = useState<EnrollmentRecord[]>([])
   const [events, setEvents] = useState<JourneyEvent[]>([])
+  const [auditLogs, setAuditLogs] = useState<AuditRecord[]>([])
   const [loading, setLoading] = useState(true)
   const [loadError, setLoadError] = useState<string | null>(null)
   const role = getUserRole()
@@ -32,6 +34,7 @@ export function HistoryPage() {
       setDiagnosis(await fetchDiagnosis())
       setEnrollments(await fetchEnrollmentHistory())
       setEvents(await fetchJourneyEvents())
+      setAuditLogs(getAuditLogs().slice(0, 12))
     } catch (error) {
       setLoadError(getErrorMessage(error, '이력 데이터를 불러오지 못했습니다. 다시 시도해 주세요.'))
     } finally {
@@ -158,6 +161,24 @@ export function HistoryPage() {
             새로운 진단 여정 시작
           </button>
         </div>
+      </section>
+
+      <section className="hero-card">
+        <h2>감사 로그 (최근 12건)</h2>
+        {auditLogs.length === 0 ? (
+          <p>기록된 감사 로그가 없습니다.</p>
+        ) : (
+          <ul className="timeline-list">
+            {auditLogs.map((item) => (
+              <li key={item.id}>
+                <strong>{item.action}</strong>
+                <span>
+                  {new Date(item.at).toLocaleString('ko-KR')} · {item.detail}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
     </AppShell>
   )
