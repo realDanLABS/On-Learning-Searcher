@@ -53,6 +53,7 @@ const KEY_DIAGNOSIS = 'on_learning_diagnosis_payload_v1'
 const KEY_SELECTED_COURSE = 'on_learning_selected_course_v1'
 const KEY_ENROLLMENT = 'on_learning_enrollment_records_v1'
 const KEY_JOURNEY_EVENTS = 'on_learning_journey_events_v1'
+const KEY_REMOTE_STAGE_SNAPSHOT = 'on_learning_remote_stage_snapshot_v1'
 const JOURNEY_UPDATED_EVENT = 'on-learning:journey-updated'
 const RETENTION_DAYS = 180
 
@@ -173,10 +174,17 @@ export function getJourneyStage(): JourneyStage {
     (item) => item.enrollmentStatus === 'enrolled',
   )
 
-  if (hasSuccessfulEnrollment) return 'enrollment_done'
-  if (hasSelectedCourse) return 'course_selected'
-  if (hasDiagnosis) return 'diagnosis_done'
-  return 'start'
+  const derivedStage: JourneyStage = hasSuccessfulEnrollment
+    ? 'enrollment_done'
+    : hasSelectedCourse
+      ? 'course_selected'
+      : hasDiagnosis
+        ? 'diagnosis_done'
+        : 'start'
+
+  const snapshotStage = getRemoteJourneyStageSnapshot()
+  if (!snapshotStage) return derivedStage
+  return stageOrder.indexOf(snapshotStage) > stageOrder.indexOf(derivedStage) ? snapshotStage : derivedStage
 }
 
 function appendJourneyEvent(event: JourneyEvent) {
@@ -192,7 +200,26 @@ export function clearJourneyData() {
   localStorage.removeItem(KEY_SELECTED_COURSE)
   localStorage.removeItem(KEY_ENROLLMENT)
   localStorage.removeItem(KEY_JOURNEY_EVENTS)
+  localStorage.removeItem(KEY_REMOTE_STAGE_SNAPSHOT)
   emitJourneyUpdated()
+}
+
+export function setRemoteJourneyStageSnapshot(stage: JourneyStage | null) {
+  if (!stage) {
+    localStorage.removeItem(KEY_REMOTE_STAGE_SNAPSHOT)
+    emitJourneyUpdated()
+    return
+  }
+  localStorage.setItem(KEY_REMOTE_STAGE_SNAPSHOT, stage)
+  emitJourneyUpdated()
+}
+
+export function getRemoteJourneyStageSnapshot(): JourneyStage | null {
+  const raw = localStorage.getItem(KEY_REMOTE_STAGE_SNAPSHOT)
+  if (!raw) return null
+  if (isJourneyStage(raw)) return raw
+  localStorage.removeItem(KEY_REMOTE_STAGE_SNAPSHOT)
+  return null
 }
 
 export function subscribeJourneyUpdates(callback: () => void): () => void {
@@ -207,4 +234,10 @@ export function subscribeJourneyUpdates(callback: () => void): () => void {
 
 function emitJourneyUpdated() {
   window.dispatchEvent(new Event(JOURNEY_UPDATED_EVENT))
+}
+
+const stageOrder: JourneyStage[] = ['start', 'diagnosis_done', 'course_selected', 'enrollment_done']
+
+function isJourneyStage(value: string): value is JourneyStage {
+  return stageOrder.includes(value as JourneyStage)
 }

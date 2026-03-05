@@ -2,6 +2,7 @@ import type { ReactElement } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 
 import { getRouteAccessDecision, type RouteAccessPolicy } from '../shared/orchestration/access'
+import { runtimeConfig } from '../shared/config/runtime'
 import { isFeatureEnabled } from '../shared/orchestration/features'
 import { getJourneyStage, type JourneyStage } from '../shared/state/learningFlow'
 import { isAuthenticated } from '../shared/state/auth'
@@ -63,6 +64,10 @@ export function StageGuard({
   }
   if (!decision.allowed && decision.gate === 'role-denied') {
     return <Navigate replace to="/?gate=role-denied" />
+  }
+  if (!decision.allowed && decision.gate === 'stage-locked' && runtimeConfig.apiMode === 'remote') {
+    // In remote mode, stage can be ahead on server-side. Let page-level loaders handle prerequisite UX.
+    return children
   }
   if (!decision.allowed) {
     return <Navigate replace to={withNext('stage-locked', decision.nextPath)} />

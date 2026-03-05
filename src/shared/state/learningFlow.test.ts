@@ -7,9 +7,11 @@ import {
   getEnrollmentRecords,
   getJourneyEvents,
   getJourneyStage,
+  getRemoteJourneyStageSnapshot,
   getSelectedCourse,
   saveDiagnosisPayload,
   saveSelectedCourse,
+  setRemoteJourneyStageSnapshot,
   type DiagnosisPayload,
 } from './learningFlow'
 
@@ -224,5 +226,23 @@ describe('learningFlow journey lifecycle', () => {
 
     expect(getJourneyStage()).toBe('start')
     expect(localStorage.getItem('on_learning_selected_course_v1')).toBeNull()
+  })
+
+  it('applies remote stage snapshot when local stage is behind', () => {
+    expect(getJourneyStage()).toBe('start')
+    setRemoteJourneyStageSnapshot('course_selected')
+
+    expect(getRemoteJourneyStageSnapshot()).toBe('course_selected')
+    expect(getJourneyStage()).toBe('course_selected')
+  })
+
+  it('clears remote stage snapshot on journey reset', () => {
+    setRemoteJourneyStageSnapshot('enrollment_done')
+    expect(getJourneyStage()).toBe('enrollment_done')
+
+    clearJourneyData()
+
+    expect(getRemoteJourneyStageSnapshot()).toBeNull()
+    expect(getJourneyStage()).toBe('start')
   })
 })

@@ -18,6 +18,7 @@ import {
   type JourneyEvent,
   type JourneyStage,
   type RecommendedCourse,
+  setRemoteJourneyStageSnapshot,
 } from '../state/learningFlow'
 import { getUserRole } from '../state/session'
 
@@ -79,6 +80,7 @@ export async function submitDiagnosis(payload: DiagnosisPayload): Promise<void> 
       method: 'POST',
       body: JSON.stringify(payload),
     })
+    setRemoteJourneyStageSnapshot('diagnosis_done')
     appendAuditLog('diagnosis_submitted', `원격 진단 제출: ${payload.userId}`)
     return
   }
@@ -126,6 +128,7 @@ export async function selectRecommendedCourse(course: RecommendedCourse): Promis
       method: 'POST',
       body: JSON.stringify(course),
     })
+    setRemoteJourneyStageSnapshot('course_selected')
     appendAuditLog('course_selected', `원격 과정 선택: ${course.courseId}`)
     return
   }
@@ -148,6 +151,9 @@ export async function submitEnrollment(record: EnrollmentRecord): Promise<void> 
       method: 'POST',
       body: JSON.stringify(record),
     })
+    if (record.enrollmentStatus === 'enrolled') {
+      setRemoteJourneyStageSnapshot('enrollment_done')
+    }
     appendAuditLog('enrollment_submitted', `원격 신청 처리: ${record.courseId}`)
     return
   }
@@ -173,7 +179,9 @@ export async function fetchJourneyEvents(): Promise<JourneyEvent[]> {
 
 export async function fetchJourneyStage(): Promise<JourneyStage> {
   if (isRemoteMode()) {
-    return requestJson<JourneyStage>('/journey/stage')
+    const stage = await requestJson<JourneyStage>('/journey/stage')
+    setRemoteJourneyStageSnapshot(stage)
+    return stage
   }
   return withApiGuard(() => getJourneyStage())
 }
