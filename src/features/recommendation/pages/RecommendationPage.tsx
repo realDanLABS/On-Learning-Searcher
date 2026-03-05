@@ -10,7 +10,13 @@ import { ApiErrorMessage } from '../../../shared/components/ApiErrorMessage'
 import { SkillGapPanel } from '../../../shared/components/SkillGapPanel'
 import { AppShell } from '../../../shared/layouts/AppShell'
 import { getHandoffMessage } from '../../../shared/orchestration/handoff'
+import { resolveBestReachablePath } from '../../../shared/orchestration/smartPath'
+import { isAuthenticated } from '../../../shared/state/auth'
 import type { DiagnosisPayload, RecommendedCourse } from '../../../shared/state/learningFlow'
+import { getJourneyStage } from '../../../shared/state/learningFlow'
+import { hasUserProfile } from '../../../shared/state/profile'
+import { getUserRole } from '../../../shared/state/session'
+import { hasDiagnosisDraft } from '../../diagnosis/draftStorage'
 
 export function RecommendationPage() {
   const [diagnosis, setDiagnosis] = useState<DiagnosisPayload | null>(null)
@@ -57,6 +63,20 @@ export function RecommendationPage() {
     } finally {
       setSelectingCourseId(null)
     }
+  }
+
+  const moveToGuided = (preferredPath: string) => {
+    const nextPath = resolveBestReachablePath({
+      preferredPath,
+      context: {
+        authenticated: isAuthenticated(),
+        hasProfile: hasUserProfile(),
+        role: getUserRole(),
+        stage: getJourneyStage(),
+      },
+      hasDiagnosisDraft: hasDiagnosisDraft(),
+    })
+    navigate(nextPath ?? preferredPath)
   }
 
   return (
@@ -163,9 +183,9 @@ export function RecommendationPage() {
             <h2>다음 단계 안내</h2>
             <p>과정 선택 후 신청 연동에서 등록을 완료하면 이력 대시보드와 챗봇 상담으로 이어집니다.</p>
             <div className="journey-actions">
-              <Link className="secondary-btn link-btn" to="/course-linking?from=recommendation">
+              <button className="secondary-btn" onClick={() => moveToGuided('/course-linking')} type="button">
                 신청 연동 바로가기
-              </Link>
+              </button>
               <Link className="secondary-btn link-btn" to="/chatbot">
                 AI 상담 먼저 보기
               </Link>
@@ -192,12 +212,12 @@ export function RecommendationPage() {
             </li>
           </ul>
           <div className="journey-actions">
-            <Link className="primary-btn link-btn" to="/course-linking?from=recommendation">
+            <button className="primary-btn" onClick={() => moveToGuided('/course-linking')} type="button">
               신청 연동으로 이동
-            </Link>
-            <Link className="secondary-btn link-btn" to="/history">
+            </button>
+            <button className="secondary-btn" onClick={() => moveToGuided('/history')} type="button">
               이력 대시보드 보기
-            </Link>
+            </button>
           </div>
         </section>
       )}

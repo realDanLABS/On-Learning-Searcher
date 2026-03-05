@@ -4,9 +4,14 @@ import { Link, useNavigate } from 'react-router-dom'
 import { submitDiagnosis } from '../../../shared/api/learningApi'
 import { ApiErrorMessage } from '../../../shared/components/ApiErrorMessage'
 import { AppShell } from '../../../shared/layouts/AppShell'
+import { resolveBestReachablePath } from '../../../shared/orchestration/smartPath'
+import { isAuthenticated } from '../../../shared/state/auth'
+import { getJourneyStage } from '../../../shared/state/learningFlow'
 import { getUserProfile } from '../../../shared/state/profile'
+import { hasUserProfile } from '../../../shared/state/profile'
+import { getUserRole } from '../../../shared/state/session'
 import { type AnswerMap, buildSummary } from '../diagnosisResult'
-import { clearDiagnosisDraft, loadDiagnosisDraft, saveDiagnosisDraft } from '../draftStorage'
+import { clearDiagnosisDraft, hasDiagnosisDraft, loadDiagnosisDraft, saveDiagnosisDraft } from '../draftStorage'
 import { diagnosisQuestions } from '../questions'
 
 export function DiagnosisPage() {
@@ -91,6 +96,20 @@ export function DiagnosisPage() {
     }
   }
 
+  const moveToGuided = (preferredPath: string) => {
+    const nextPath = resolveBestReachablePath({
+      preferredPath,
+      context: {
+        authenticated: isAuthenticated(),
+        hasProfile: hasUserProfile(),
+        role: getUserRole(),
+        stage: getJourneyStage(),
+      },
+      hasDiagnosisDraft: hasDiagnosisDraft(),
+    })
+    navigate(nextPath ?? preferredPath)
+  }
+
   const canGoNext = isFinished || answers[currentQuestion.id] !== undefined
 
   return (
@@ -171,9 +190,9 @@ export function DiagnosisPage() {
         <h2>진단 가이드</h2>
         <p>진단 완료 후 추천 과정 선택까지 약 2분 내에 진행할 수 있습니다.</p>
         <div className="journey-actions">
-          <Link className="secondary-btn link-btn" to="/history">
+          <button className="secondary-btn" onClick={() => moveToGuided('/history')} type="button">
             이전 진단/학습 이력 보기
-          </Link>
+          </button>
           <Link className="secondary-btn link-btn" to="/chatbot">
             챗봇에게 진단 준비 질문하기
           </Link>
