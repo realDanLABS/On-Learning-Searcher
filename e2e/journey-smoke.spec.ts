@@ -69,3 +69,19 @@ test('locked top-nav redirects to home guidance and recommended step', async ({ 
   await page.getByRole('button', { name: '권장 페이지로 이동' }).click()
   await expect(page).toHaveURL(/\/diagnosis/)
 })
+
+test('home primary CTA resumes unfinished diagnosis draft', async ({ page }) => {
+  await prepareLoggedInProfile(page)
+  await page.getByRole('button', { name: '진단 시작' }).first().click()
+  await expect(page).toHaveURL(/\/diagnosis/)
+
+  await page.getByRole('button', { name: '예' }).click()
+  await page.getByRole('button', { name: '다음' }).click()
+  await page.getByRole('button', { name: '보통' }).click()
+  await page.goto('/')
+
+  await expect(page.getByRole('button', { name: '바로 시작: 3) 미완료 진단 이어하기' })).toBeVisible()
+  await page.getByRole('button', { name: '바로 시작: 3) 미완료 진단 이어하기' }).click()
+  await expect(page).toHaveURL(/\/diagnosis/)
+  await expect(page.getByText('2 / 10 답변 완료')).toBeVisible()
+})
