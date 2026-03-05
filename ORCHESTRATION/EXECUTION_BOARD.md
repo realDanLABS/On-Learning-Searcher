@@ -8,11 +8,11 @@
 
 | Worktree | Status | Owner Role | Current Goal | Next Check |
 |---|---|---|---|---|
-| foundation | TODO | Orchestrated | Landing->Diagnosis CTA + route coherence | T+0 |
-| diagnosis | IN_PROGRESS | Orchestrated | Result payload contract alignment | T+0 |
-| recommendation | TODO | Orchestrated | Recommendation cards from diagnosis payload | T+1 |
-| course-linking | TODO | Orchestrated | Enrollment link mapping | T+1 |
-| history | TODO | Orchestrated | Assessment+enrollment timeline | T+2 |
+| foundation | DONE | Orchestrated | Landing->Diagnosis CTA + route coherence | complete |
+| diagnosis | DONE | Orchestrated | Result payload contract alignment | complete |
+| recommendation | DONE | Orchestrated | Recommendation cards from diagnosis payload | complete |
+| course-linking | IN_PROGRESS | Orchestrated | Enrollment link mapping | T+1 |
+| history | IN_PROGRESS | Orchestrated | Assessment+enrollment timeline | T+2 |
 | chatbot | TODO | Orchestrated | Gap/reason contextual helper | T+2 |
 | responsive | TODO | Orchestrated | Breakpoint QA and fixes | T+3 |
 
