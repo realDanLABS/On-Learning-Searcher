@@ -95,6 +95,12 @@ export function getSelectedCourse(): RecommendedCourse | null {
 
 export function appendEnrollment(record: EnrollmentRecord) {
   const current = getEnrollmentRecords()
+  const duplicate = current.some(
+    (item) => item.courseId === record.courseId && item.enrollmentStatus === 'enrolled',
+  )
+  if (duplicate) {
+    return
+  }
   const next = [record, ...current]
   localStorage.setItem(KEY_ENROLLMENT, JSON.stringify(next))
   appendJourneyEvent({
@@ -142,4 +148,11 @@ function appendJourneyEvent(event: JourneyEvent) {
   if (duplicate) return
   const next = [event, ...current]
   localStorage.setItem(KEY_JOURNEY_EVENTS, JSON.stringify(next))
+}
+
+export function clearJourneyData() {
+  localStorage.removeItem(KEY_DIAGNOSIS)
+  localStorage.removeItem(KEY_SELECTED_COURSE)
+  localStorage.removeItem(KEY_ENROLLMENT)
+  localStorage.removeItem(KEY_JOURNEY_EVENTS)
 }

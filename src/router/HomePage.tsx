@@ -1,7 +1,11 @@
 import { Link } from 'react-router-dom'
 
 import { AppShell } from '../shared/layouts/AppShell'
-import { getDiagnosisPayload, getJourneyStage } from '../shared/state/learningFlow'
+import {
+  clearJourneyData,
+  getDiagnosisPayload,
+  getJourneyStage,
+} from '../shared/state/learningFlow'
 
 export function HomePage() {
   const diagnosis = getDiagnosisPayload()
@@ -14,6 +18,11 @@ export function HomePage() {
         : stage === 'course_selected'
           ? { to: '/course-linking', label: '신청 진행하기' }
           : { to: '/history', label: '이력 확인하기' }
+
+  const resetJourney = () => {
+    clearJourneyData()
+    window.location.reload()
+  }
 
   return (
     <AppShell
@@ -33,6 +42,9 @@ export function HomePage() {
           <Link className="secondary-btn link-btn" to="/recommendation">
             추천 과정 보기
           </Link>
+          <button className="secondary-btn" onClick={resetJourney} type="button">
+            데모 데이터 초기화
+          </button>
         </div>
         <p className="hint-text">현재 단계: {stage}</p>
       </section>

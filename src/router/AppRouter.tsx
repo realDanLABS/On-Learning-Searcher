@@ -7,6 +7,7 @@ import { HistoryPage } from '../features/history/pages/HistoryPage'
 import { RecommendationPage } from '../features/recommendation/pages/RecommendationPage'
 import { ResponsivePage } from '../features/responsive/pages/ResponsivePage'
 import { HomePage } from './HomePage'
+import { StageGuard } from './StageGuard'
 
 export function AppRouter() {
   return (
@@ -14,9 +15,30 @@ export function AppRouter() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/diagnosis" element={<DiagnosisPage />} />
-        <Route path="/recommendation" element={<RecommendationPage />} />
-        <Route path="/course-linking" element={<CourseLinkingPage />} />
-        <Route path="/history" element={<HistoryPage />} />
+        <Route
+          path="/recommendation"
+          element={
+            <StageGuard minStage="diagnosis_done">
+              <RecommendationPage />
+            </StageGuard>
+          }
+        />
+        <Route
+          path="/course-linking"
+          element={
+            <StageGuard minStage="course_selected">
+              <CourseLinkingPage />
+            </StageGuard>
+          }
+        />
+        <Route
+          path="/history"
+          element={
+            <StageGuard minStage="diagnosis_done">
+              <HistoryPage />
+            </StageGuard>
+          }
+        />
         <Route path="/chatbot" element={<ChatbotPage />} />
         <Route path="/responsive" element={<ResponsivePage />} />
         <Route path="*" element={<Navigate replace to="/" />} />
