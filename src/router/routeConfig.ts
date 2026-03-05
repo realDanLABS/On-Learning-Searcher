@@ -1,14 +1,9 @@
-import type { JourneyStage } from '../shared/state/learningFlow'
-import type { UserRole } from '../shared/state/session'
+import type { RouteAccessPolicy } from '../shared/orchestration/access'
 
-export type FeatureRoute = {
+export type FeatureRoute = RouteAccessPolicy & {
   path: string
   label: string
   description: string
-  minStage: JourneyStage
-  requireProfile?: boolean
-  requireAuth?: boolean
-  allowedRoles?: UserRole[]
 }
 
 export const featureRoutes: FeatureRoute[] = [

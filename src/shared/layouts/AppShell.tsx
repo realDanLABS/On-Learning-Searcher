@@ -4,7 +4,7 @@ import type { ReactNode } from 'react'
 import { runtimeConfig } from '../config/runtime'
 import { featureRoutes } from '../../router/routeConfig'
 import { JourneyProgressPanel } from '../components/JourneyProgressPanel'
-import { isStageAllowed } from '../orchestration/journey'
+import { canAccessRoute } from '../orchestration/access'
 import { clearJourneyData, getJourneyStage } from '../state/learningFlow'
 import { clearUserProfile, getUserProfile } from '../state/profile'
 import { clearUserRole, getUserRole } from '../state/session'
@@ -64,10 +64,12 @@ export function AppShell({ title, description, children }: AppShellProps) {
 
       <nav className="feature-nav" aria-label="주요 기능 이동">
         {featureRoutes.map((route) => {
-          const authAllowed = route.requireAuth === false || authenticated
-          const profileAllowed = route.requireProfile === false || Boolean(profile)
-          const roleAllowed = !route.allowedRoles || route.allowedRoles.includes(role)
-          const allowed = authAllowed && profileAllowed && roleAllowed && isStageAllowed(stage, route.minStage)
+          const allowed = canAccessRoute(route, {
+            authenticated,
+            hasProfile: Boolean(profile),
+            role,
+            stage,
+          })
 
           if (!allowed) {
             return (
