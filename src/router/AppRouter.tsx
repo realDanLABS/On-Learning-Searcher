@@ -37,7 +37,7 @@ export function AppRouter() {
         <Route
           path="/diagnosis"
           element={
-            <StageGuard minStage="start">
+            <StageGuard featureKey="diagnosis" minStage="start">
               <DiagnosisPage />
             </StageGuard>
           }
@@ -45,7 +45,7 @@ export function AppRouter() {
         <Route
           path="/recommendation"
           element={
-            <StageGuard minStage="diagnosis_done">
+            <StageGuard featureKey="recommendation" minStage="diagnosis_done">
               <RecommendationPage />
             </StageGuard>
           }
@@ -53,7 +53,7 @@ export function AppRouter() {
         <Route
           path="/course-linking"
           element={
-            <StageGuard minStage="course_selected">
+            <StageGuard featureKey="course-linking" minStage="course_selected">
               <CourseLinkingPage />
             </StageGuard>
           }
@@ -61,7 +61,7 @@ export function AppRouter() {
         <Route
           path="/history"
           element={
-            <StageGuard minStage="diagnosis_done">
+            <StageGuard featureKey="history" minStage="diagnosis_done">
               <HistoryPage />
             </StageGuard>
           }
@@ -69,7 +69,7 @@ export function AppRouter() {
         <Route
           path="/chatbot"
           element={
-            <StageGuard minStage="start">
+            <StageGuard featureKey="chatbot" minStage="start">
               <ChatbotPage />
             </StageGuard>
           }
@@ -77,7 +77,12 @@ export function AppRouter() {
         <Route
           path="/responsive"
           element={
-            <StageGuard allowedRoles={['admin']} minStage="start" requireProfile={false}>
+            <StageGuard
+              allowedRoles={['admin']}
+              featureKey="responsive"
+              minStage="start"
+              requireProfile={false}
+            >
               <ResponsivePage />
             </StageGuard>
           }

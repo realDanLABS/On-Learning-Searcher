@@ -8,7 +8,7 @@
 ## 2. Security & Privacy
 - [x] SSO (SAML/OIDC) integration
 - [x] RBAC (employee / manager / admin)
-- [ ] PII masking and retention policy
+- [x] PII masking and retention policy
 - [x] Audit logging for diagnosis/recommendation/enrollment actions
 
 ## 3. Backend Integration
@@ -21,7 +21,7 @@
 - [x] CI lint/build on PR and main
 - [x] E2E smoke test in CI
 - [ ] Error tracking integration (Sentry etc.)
-- [ ] Feature flags for safe rollout
+- [x] Feature flags for safe rollout
 
 ## 5. Observability
 - [x] Funnel metrics: landing->diagnosis->recommendation->enrollment

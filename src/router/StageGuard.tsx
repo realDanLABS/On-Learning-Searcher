@@ -2,6 +2,7 @@ import type { ReactElement } from 'react'
 import { Navigate } from 'react-router-dom'
 
 import { canAccessRoute, type RouteAccessPolicy } from '../shared/orchestration/access'
+import { isFeatureEnabled } from '../shared/orchestration/features'
 import {
   getRedirectForStage,
 } from '../shared/orchestration/journey'
@@ -9,6 +10,7 @@ import { getJourneyStage, type JourneyStage } from '../shared/state/learningFlow
 import { isAuthenticated } from '../shared/state/auth'
 import { hasUserProfile } from '../shared/state/profile'
 import { getUserRole, type UserRole } from '../shared/state/session'
+import type { FeatureKey } from '../shared/config/runtime'
 
 type StageGuardProps = {
   minStage: JourneyStage
@@ -16,6 +18,7 @@ type StageGuardProps = {
   requireProfile?: boolean
   requireAuth?: boolean
   allowedRoles?: UserRole[]
+  featureKey?: FeatureKey
 }
 
 export function StageGuard({
@@ -24,7 +27,12 @@ export function StageGuard({
   requireProfile = true,
   requireAuth = true,
   allowedRoles,
+  featureKey,
 }: StageGuardProps) {
+  if (featureKey && !isFeatureEnabled(featureKey)) {
+    return <Navigate replace to="/" />
+  }
+
   const policy: RouteAccessPolicy = {
     minStage,
     requireAuth,

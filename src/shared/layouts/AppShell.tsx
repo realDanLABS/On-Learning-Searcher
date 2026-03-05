@@ -5,11 +5,13 @@ import { runtimeConfig } from '../config/runtime'
 import { featureRoutes } from '../../router/routeConfig'
 import { JourneyProgressPanel } from '../components/JourneyProgressPanel'
 import { canAccessRoute } from '../orchestration/access'
+import { isFeatureEnabled } from '../orchestration/features'
 import { clearJourneyData, getJourneyStage } from '../state/learningFlow'
 import { clearUserProfile, getUserProfile } from '../state/profile'
 import { clearUserRole, getUserRole } from '../state/session'
 import { clearAuthentication, isAuthenticated } from '../state/auth'
 import { appendAuditLog } from '../observability/audit'
+import { maskEmployeeId } from '../security/privacy'
 
 type AppShellProps = {
   title: string
@@ -57,13 +59,14 @@ export function AppShell({ title, description, children }: AppShellProps) {
       {profile && (
         <section className="profile-banner" aria-label="사용자 프로필">
           <p>
-            {profile.name} ({profile.employeeId}) · {profile.organization}
+            {profile.name} ({maskEmployeeId(profile.employeeId)}) · {profile.organization}
           </p>
         </section>
       )}
 
       <nav className="feature-nav" aria-label="주요 기능 이동">
         {featureRoutes.map((route) => {
+          const featureEnabled = isFeatureEnabled(route.featureKey)
           const allowed = canAccessRoute(route, {
             authenticated,
             hasProfile: Boolean(profile),
@@ -71,10 +74,10 @@ export function AppShell({ title, description, children }: AppShellProps) {
             stage,
           })
 
-          if (!allowed) {
+          if (!featureEnabled || !allowed) {
             return (
               <span className="feature-link locked" key={route.path} title="현재 단계에서는 이동할 수 없습니다.">
-                {route.label} (잠금)
+                {route.label} {!featureEnabled ? '(비활성)' : '(잠금)'}
               </span>
             )
           }

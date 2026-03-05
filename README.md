@@ -12,6 +12,7 @@ npm run dev
 - `VITE_API_MODE=mock|remote` (`mock` 기본)
 - `VITE_API_MODE=remote`일 때 `VITE_API_BASE_URL` 필수
 - `VITE_SSO_LOGIN_URL`, `VITE_SSO_LOGOUT_URL`, `VITE_SSO_CALLBACK_URL` (remote 권장)
+- `VITE_DISABLED_FEATURES=chatbot,responsive` 형태로 기능 임시 비활성화
 
 ## 시작 전 핵심
 - 기능별 `git worktree`를 사용합니다.

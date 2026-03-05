@@ -1,4 +1,11 @@
 export type ApiMode = 'mock' | 'remote'
+export type FeatureKey =
+  | 'diagnosis'
+  | 'recommendation'
+  | 'course-linking'
+  | 'history'
+  | 'chatbot'
+  | 'responsive'
 
 export const runtimeConfig = {
   apiMode: (import.meta.env.VITE_API_MODE as ApiMode | undefined) || 'mock',
@@ -7,4 +14,15 @@ export const runtimeConfig = {
   ssoLogoutUrl: import.meta.env.VITE_SSO_LOGOUT_URL || '',
   ssoCallbackUrl: import.meta.env.VITE_SSO_CALLBACK_URL || '/auth/callback',
   ecampusCourseApplyUrl: import.meta.env.VITE_ECAMPUS_COURSE_APPLY_URL || 'https://example.com',
+  disabledFeatures: parseDisabledFeatures(import.meta.env.VITE_DISABLED_FEATURES || ''),
+}
+
+function parseDisabledFeatures(raw: string): FeatureKey[] {
+  return raw
+    .split(',')
+    .map((token) => token.trim())
+    .filter(Boolean)
+    .filter((token): token is FeatureKey =>
+      ['diagnosis', 'recommendation', 'course-linking', 'history', 'chatbot', 'responsive'].includes(token),
+    )
 }

@@ -54,6 +54,7 @@ const KEY_SELECTED_COURSE = 'on_learning_selected_course_v1'
 const KEY_ENROLLMENT = 'on_learning_enrollment_records_v1'
 const KEY_JOURNEY_EVENTS = 'on_learning_journey_events_v1'
 const JOURNEY_UPDATED_EVENT = 'on-learning:journey-updated'
+const RETENTION_DAYS = 180
 
 export function saveDiagnosisPayload(payload: DiagnosisPayload) {
   localStorage.setItem(KEY_DIAGNOSIS, JSON.stringify(payload))
@@ -130,7 +131,14 @@ export function getJourneyEvents(): JourneyEvent[] {
   const raw = localStorage.getItem(KEY_JOURNEY_EVENTS)
   if (!raw) return []
   try {
-    return JSON.parse(raw) as JourneyEvent[]
+    const all = JSON.parse(raw) as JourneyEvent[]
+    const cutoff = new Date()
+    cutoff.setDate(cutoff.getDate() - RETENTION_DAYS)
+    const kept = all.filter((item) => new Date(item.at) >= cutoff)
+    if (kept.length !== all.length) {
+      localStorage.setItem(KEY_JOURNEY_EVENTS, JSON.stringify(kept))
+    }
+    return kept
   } catch {
     return []
   }
