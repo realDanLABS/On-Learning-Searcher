@@ -16,7 +16,11 @@ import { getFunnelSnapshot, type FunnelSnapshot } from '../shared/observability/
 import { appendAuditLog } from '../shared/observability/audit'
 import { canAccessRoute } from '../shared/orchestration/access'
 import { getNextActionStatus } from '../shared/orchestration/nextAction'
-import { getJourneyChecklist, getJourneyStartBlockers } from '../shared/orchestration/readiness'
+import {
+  getHomePrimaryAction,
+  getJourneyChecklist,
+  getJourneyStartBlockers,
+} from '../shared/orchestration/readiness'
 import { isAuthenticated, setAuthenticated } from '../shared/state/auth'
 import {
   clearUserProfile,
@@ -98,6 +102,11 @@ export function HomePage() {
     hasProfile: profileReady,
   })
   const checklist = getJourneyChecklist({
+    authenticated,
+    hasProfile: profileReady,
+    stage,
+  })
+  const primaryAction = getHomePrimaryAction({
     authenticated,
     hasProfile: profileReady,
     stage,
@@ -184,6 +193,18 @@ export function HomePage() {
     appendAuditLog('login', 'mock 로그인 완료')
   }
 
+  const runPrimaryAction = () => {
+    if (primaryAction.kind === 'login') {
+      startLogin()
+      return
+    }
+    if (primaryAction.kind === 'save-profile') {
+      submitOnboarding()
+      return
+    }
+    navigate(primaryAction.to)
+  }
+
   return (
     <AppShell
       title="온러닝서처"
@@ -199,6 +220,9 @@ export function HomePage() {
           연결됩니다.
         </p>
         <div className="journey-actions">
+          <button className="primary-btn" onClick={runPrimaryAction} type="button">
+            {primaryAction.label}
+          </button>
           <button className="primary-btn" onClick={startLogin} type="button">
             {authenticated ? '로그인 완료' : '로그인'}
           </button>
