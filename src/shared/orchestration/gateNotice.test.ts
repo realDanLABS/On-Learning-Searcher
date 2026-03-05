@@ -3,6 +3,12 @@ import { describe, expect, it } from 'vitest'
 import { getGateNoticeFromSearch } from './gateNotice'
 
 describe('gate notice parser', () => {
+  it('parses auth-required with next path', () => {
+    const result = getGateNoticeFromSearch('?gate=auth-required&next=%2Fdiagnosis')
+    expect(result.message).toContain('로그인')
+    expect(result.nextPath).toBe('/diagnosis')
+  })
+
   it('parses stage-locked with next path', () => {
     const result = getGateNoticeFromSearch('?gate=stage-locked&next=%2Frecommendation')
     expect(result.message).toContain('현재 단계')
@@ -15,4 +21,3 @@ describe('gate notice parser', () => {
     expect(result.nextPath).toBe(null)
   })
 })
-

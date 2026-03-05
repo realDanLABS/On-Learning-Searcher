@@ -178,11 +178,11 @@ export function HomePage() {
   const submitOnboarding = () => {
     if (!authenticated) {
       setOnboardingError('로그인 후 프로필을 저장해 주세요.')
-      return
+      return false
     }
     if (!employeeId.trim() || !name.trim() || !organization.trim()) {
       setOnboardingError('사번, 이름, 소속을 모두 입력해 주세요.')
-      return
+      return false
     }
     saveUserProfile({
       employeeId: employeeId.trim(),
@@ -192,6 +192,7 @@ export function HomePage() {
     appendAuditLog('profile_saved', `프로필 저장: ${employeeId.trim()}`)
     setProfileReady(true)
     setOnboardingError(null)
+    return true
   }
 
   const startLogin = () => {
@@ -209,28 +210,56 @@ export function HomePage() {
       } catch {
         window.location.href = runtimeConfig.ssoLoginUrl
       }
-      return
+      return 'redirected' as const
     }
     setAuthenticated(true)
     setAuthenticatedState(true)
     setOnboardingError(null)
     appendAuditLog('login', 'mock 로그인 완료')
+    return 'local-success' as const
+  }
+
+  const moveToBestNextStep = (context: {
+    authenticated: boolean
+    hasProfile: boolean
+    stage: JourneyStage
+  }) => {
+    if (gateNextPath) {
+      navigate(gateNextPath)
+      return
+    }
+    const next = getNextActionStatus({
+      authenticated: context.authenticated,
+      hasProfile: context.hasProfile,
+      role,
+      stage: context.stage,
+      hasDiagnosisDraft: hasDiagnosisDraft(),
+    })
+    if (next.enabled) {
+      navigate(next.to)
+    }
   }
 
   const runPrimaryAction = () => {
     if (primaryAction.kind === 'login') {
-      startLogin()
+      const result = startLogin()
+      if (result === 'local-success' && profileReady) {
+        moveToBestNextStep({ authenticated: true, hasProfile: true, stage })
+      }
       return
     }
     if (primaryAction.kind === 'save-profile') {
-      submitOnboarding()
+      const saved = submitOnboarding()
+      if (saved) {
+        moveToBestNextStep({ authenticated: true, hasProfile: true, stage })
+      }
       return
     }
     if (!nextAction.enabled) {
       setOnboardingError(nextAction.reason ?? '현재 단계에서는 이동할 수 없습니다.')
       return
     }
-    navigate(primaryAction.to)
+    navigate(gateNextPath ?? primaryAction.to)
   }
 
   return (

@@ -1,5 +1,5 @@
 import type { ReactElement } from 'react'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
 
 import { getRouteAccessDecision, type RouteAccessPolicy } from '../shared/orchestration/access'
 import { isFeatureEnabled } from '../shared/orchestration/features'
@@ -26,8 +26,19 @@ export function StageGuard({
   allowedRoles,
   featureKey,
 }: StageGuardProps) {
+  const location = useLocation()
+  const requestedPath = `${location.pathname}${location.search}`
+  const withNext = (gate: string, nextPath?: string | null) => {
+    const params = new URLSearchParams()
+    params.set('gate', gate)
+    if (nextPath) {
+      params.set('next', nextPath)
+    }
+    return `/?${params.toString()}`
+  }
+
   if (featureKey && !isFeatureEnabled(featureKey)) {
-    return <Navigate replace to="/?gate=feature-disabled" />
+    return <Navigate replace to={withNext('feature-disabled', requestedPath)} />
   }
 
   const policy: RouteAccessPolicy = {
@@ -45,17 +56,16 @@ export function StageGuard({
   })
 
   if (!decision.allowed && decision.gate === 'auth-required') {
-    return <Navigate replace to="/?gate=auth-required" />
+    return <Navigate replace to={withNext('auth-required', requestedPath)} />
   }
   if (!decision.allowed && decision.gate === 'profile-required') {
-    return <Navigate replace to="/?gate=profile-required" />
+    return <Navigate replace to={withNext('profile-required', requestedPath)} />
   }
   if (!decision.allowed && decision.gate === 'role-denied') {
     return <Navigate replace to="/?gate=role-denied" />
   }
   if (!decision.allowed) {
-    const next = decision.nextPath ? `&next=${encodeURIComponent(decision.nextPath)}` : ''
-    return <Navigate replace to={`/?gate=stage-locked${next}`} />
+    return <Navigate replace to={withNext('stage-locked', decision.nextPath)} />
   }
 
   return children

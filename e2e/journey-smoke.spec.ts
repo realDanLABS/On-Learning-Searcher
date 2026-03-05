@@ -10,16 +10,19 @@ async function prepareUntilCourseLinking(page: import('@playwright/test').Page) 
   await page.getByLabel('소속').fill('경영지원본부')
   await page.getByRole('button', { name: '프로필 저장' }).first().click()
 
-  await page.getByRole('button', { name: '진단 시작' }).first().click()
+  await page.goto('/diagnosis')
   await expect(page).toHaveURL(/\/diagnosis/)
 
+  const diagnosisCard = page.locator('.diagnosis-question-card')
   for (let i = 0; i < 9; i += 1) {
-    await page.getByRole('button', { name: '예' }).click()
-    await page.getByRole('button', { name: '다음' }).click()
+    await diagnosisCard.getByRole('button', { name: '예' }).click()
+    await expect(diagnosisCard.getByRole('button', { name: '다음' })).toBeEnabled({ timeout: 2000 })
+    await diagnosisCard.getByRole('button', { name: '다음' }).click()
   }
 
-  await page.getByRole('button', { name: '예' }).click()
-  await page.getByRole('button', { name: '결과 보기' }).click()
+  await diagnosisCard.getByRole('button', { name: '예' }).click()
+  await expect(diagnosisCard.getByRole('button', { name: '결과 보기' })).toBeEnabled({ timeout: 2000 })
+  await diagnosisCard.getByRole('button', { name: '결과 보기' }).click()
   await page.getByRole('button', { name: '추천 과정 보기' }).click()
   await expect(page).toHaveURL(/\/recommendation/)
 
@@ -34,6 +37,11 @@ async function prepareLoggedInProfile(page: import('@playwright/test').Page) {
   await page.getByLabel('이름').fill('홍길동')
   await page.getByLabel('소속').fill('경영지원본부')
   await page.getByRole('button', { name: '프로필 저장' }).first().click()
+}
+
+async function prepareLoggedInOnly(page: import('@playwright/test').Page) {
+  await page.goto('/')
+  await page.getByRole('button', { name: '로그인' }).first().click()
 }
 
 test('landing to history e2e journey', async ({ page }) => {
@@ -72,12 +80,13 @@ test('locked top-nav redirects to home guidance and recommended step', async ({ 
 
 test('home primary CTA resumes unfinished diagnosis draft', async ({ page }) => {
   await prepareLoggedInProfile(page)
-  await page.getByRole('button', { name: '진단 시작' }).first().click()
+  await page.goto('/diagnosis')
   await expect(page).toHaveURL(/\/diagnosis/)
 
-  await page.getByRole('button', { name: '예' }).click()
-  await page.getByRole('button', { name: '다음' }).click()
-  await page.getByRole('button', { name: '보통' }).click()
+  const diagnosisCard = page.locator('.diagnosis-question-card')
+  await diagnosisCard.getByRole('button', { name: '예' }).click()
+  await diagnosisCard.getByRole('button', { name: '다음' }).click()
+  await diagnosisCard.getByRole('button', { name: '보통' }).click()
   await page.goto('/')
 
   await expect(page.getByRole('button', { name: '바로 시작: 3) 미완료 진단 이어하기' })).toBeVisible()
@@ -88,11 +97,12 @@ test('home primary CTA resumes unfinished diagnosis draft', async ({ page }) => 
 
 test('chatbot next action resumes unfinished diagnosis draft', async ({ page }) => {
   await prepareLoggedInProfile(page)
-  await page.getByRole('button', { name: '진단 시작' }).first().click()
+  await page.goto('/diagnosis')
   await expect(page).toHaveURL(/\/diagnosis/)
 
-  await page.getByRole('button', { name: '예' }).click()
-  await page.getByRole('button', { name: '다음' }).click()
+  const diagnosisCard = page.locator('.diagnosis-question-card')
+  await diagnosisCard.getByRole('button', { name: '예' }).click()
+  await diagnosisCard.getByRole('button', { name: '다음' }).click()
 
   await page.goto('/chatbot')
   const actionBarLink = page
@@ -102,4 +112,33 @@ test('chatbot next action resumes unfinished diagnosis draft', async ({ page }) 
   await actionBarLink.click()
   await expect(page).toHaveURL(/\/diagnosis/)
   await expect(page.getByText('1 / 10 답변 완료')).toBeVisible()
+})
+
+test('direct diagnosis access redirects with auth next path', async ({ page }) => {
+  await page.goto('/diagnosis')
+  await expect(page).toHaveURL(/\/\?gate=auth-required&next=%2Fdiagnosis/)
+})
+
+test('direct diagnosis access redirects with profile next path when only logged in', async ({ page }) => {
+  await prepareLoggedInOnly(page)
+  await page.goto('/diagnosis')
+  await expect(page).toHaveURL(/\/\?gate=profile-required&next=%2Fdiagnosis/)
+})
+
+test('home primary action auto-advances to diagnosis after profile save', async ({ page }) => {
+  await page.goto('/')
+  await page.evaluate(() => {
+    localStorage.clear()
+    sessionStorage.clear()
+  })
+  await page.reload()
+  await page.getByRole('button', { name: /1\) 로그인 진행$/ }).click()
+  await expect(page.getByText('인증 상태: 로그인됨')).toBeVisible()
+
+  await page.getByLabel('사번').fill('E10077')
+  await page.getByLabel('이름').fill('김서연')
+  await page.getByLabel('소속').fill('교육문화팀')
+
+  await page.getByRole('button', { name: /2\) 프로필 저장 진행$/ }).click()
+  await expect(page).toHaveURL(/\/diagnosis/)
 })
