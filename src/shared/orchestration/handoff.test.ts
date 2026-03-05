@@ -33,6 +33,16 @@ describe('handoff message', () => {
     expect(result?.kind).toBe('info')
   })
 
+  it('returns home to history notice', () => {
+    const result = getHandoffMessage('?from=home', 'history')
+    expect(result?.kind).toBe('info')
+  })
+
+  it('returns chatbot to history notice', () => {
+    const result = getHandoffMessage('?from=chatbot', 'history')
+    expect(result?.kind).toBe('info')
+  })
+
   it('returns null when no handoff', () => {
     expect(getHandoffMessage('', 'history')).toBeNull()
   })

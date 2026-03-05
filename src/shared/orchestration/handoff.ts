@@ -48,5 +48,19 @@ export function getHandoffMessage(search: string, page: 'recommendation' | 'cour
     }
   }
 
+  if (page === 'history' && from === 'home') {
+    return {
+      kind: 'info',
+      text: '홈에서 이력으로 이동했습니다. 진단/추천/신청 단계를 완료하면 이력이 상세히 표시됩니다.',
+    }
+  }
+
+  if (page === 'history' && from === 'chatbot') {
+    return {
+      kind: 'info',
+      text: '챗봇 상담에서 이력으로 이동했습니다. 상담 제안과 실제 신청 이력을 함께 점검해 보세요.',
+    }
+  }
+
   return null
 }

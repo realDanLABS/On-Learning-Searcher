@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import {
   fetchDiagnosis,
@@ -684,14 +684,48 @@ export function HomePage() {
           ) : (
             <p>아직 진단 결과가 없습니다. 먼저 진단을 시작해 주세요.</p>
           )}
-          {canOpenHistory ? <Link to="/history">학습 이력 확인</Link> : <span>이력은 진단 완료 후 확인 가능합니다.</span>}
+          {canOpenHistory ? (
+            <button
+              className="secondary-btn"
+              onClick={() =>
+                moveToBestNextStep(
+                  {
+                    authenticated,
+                    hasProfile: profileReady,
+                    stage,
+                  },
+                  '/history?from=home',
+                )
+              }
+              type="button"
+            >
+              학습 이력 확인
+            </button>
+          ) : (
+            <span>이력은 진단 완료 후 확인 가능합니다.</span>
+          )}
         </article>
 
         <article className="feature-card">
           <h3>추천 학습 흐름</h3>
           <p>진단 결과의 역량 갭을 기준으로 추천 과정과 신청 버튼을 제공합니다.</p>
           {canOpenCourseLinking ? (
-            <Link to="/course-linking">신청 연동 페이지</Link>
+            <button
+              className="secondary-btn"
+              onClick={() =>
+                moveToBestNextStep(
+                  {
+                    authenticated,
+                    hasProfile: profileReady,
+                    stage,
+                  },
+                  '/course-linking?from=home',
+                )
+              }
+              type="button"
+            >
+              신청 연동 페이지
+            </button>
           ) : (
             <span>추천 과정 선택 후 신청 연동이 활성화됩니다.</span>
           )}
@@ -704,7 +738,22 @@ export function HomePage() {
           <p>신청 완료: {funnel.enrollmentCompleted} ({funnel.conversionToEnrollment}%)</p>
           <p>드롭오프(진단→선택): {funnel.dropOffAfterDiagnosis}</p>
           <p>드롭오프(선택→신청): {funnel.dropOffAfterSelection}</p>
-          <Link to="/history">상세 이력 보기</Link>
+          <button
+            className="secondary-btn"
+            onClick={() =>
+              moveToBestNextStep(
+                {
+                  authenticated,
+                  hasProfile: profileReady,
+                  stage,
+                },
+                '/history?from=home',
+              )
+            }
+            type="button"
+          >
+            상세 이력 보기
+          </button>
         </article>
       </section>
 

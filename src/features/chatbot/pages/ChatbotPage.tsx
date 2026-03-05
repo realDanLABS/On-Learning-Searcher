@@ -57,6 +57,7 @@ export function ChatbotPage() {
       },
       hasDiagnosisDraft: hasDiagnosisDraft(),
     }) ?? preferredPath
+  const historyPathFromChatbot = resolveGuidedPath('/history?from=chatbot')
 
   const botReply = useMemo(() => {
     const gaps = diagnosis?.topGaps?.join(', ') || '진단 데이터 없음'
@@ -144,7 +145,7 @@ export function ChatbotPage() {
               {nextAction.label} (잠금)
             </button>
           )}
-          <Link className="secondary-btn link-btn" to="/history">
+          <Link className="secondary-btn link-btn" to={historyPathFromChatbot}>
             이력 페이지 이동
           </Link>
         </div>
