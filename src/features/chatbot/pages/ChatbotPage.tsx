@@ -72,11 +72,11 @@ export function ChatbotPage() {
       },
       '이번 달 학습계획 제안해줘': {
         text: `이번 달에는 2개 과정을 목표로 하세요. 현재 신청 이력 ${enrollments.length}건 기준으로 부족 역량 우선 과정을 추천합니다.`,
-        actionTo: resolveGuidedPath('/history'),
-        actionLabel: '이력 기반 계획 보기',
+        actionTo: nextAction.enabled ? nextAction.to : resolveGuidedPath('/history'),
+        actionLabel: '현재 단계 기준 계획 실행',
       },
     }
-  }, [diagnosis, enrollments.length])
+  }, [diagnosis, enrollments.length, nextAction.enabled, nextAction.to])
 
   const ask = (question: string) => {
     const nextId = idRef.current

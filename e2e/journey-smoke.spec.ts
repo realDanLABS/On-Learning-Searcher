@@ -346,7 +346,7 @@ test('chatbot monthly-plan CTA routes to diagnosis before journey progress', asy
   await prepareLoggedInProfile(page)
   await page.goto('/chatbot')
   await page.getByRole('button', { name: '이번 달 학습계획 제안해줘' }).click()
-  await page.getByRole('link', { name: '이력 기반 계획 보기' }).last().click()
+  await page.getByRole('link', { name: '현재 단계 기준 계획 실행' }).last().click()
   await expect(page).toHaveURL(/\/diagnosis/)
 })
 
@@ -354,6 +354,14 @@ test('chatbot monthly-plan CTA routes to history after enrollment completion', a
   await prepareEnrollmentDone(page)
   await page.goto('/chatbot')
   await page.getByRole('button', { name: '이번 달 학습계획 제안해줘' }).click()
-  await page.getByRole('link', { name: '이력 기반 계획 보기' }).last().click()
+  await page.getByRole('link', { name: '현재 단계 기준 계획 실행' }).last().click()
   await expect(page).toHaveURL(/\/history/)
+})
+
+test('chatbot monthly-plan CTA routes to enrollment when course is selected', async ({ page }) => {
+  await prepareUntilCourseLinking(page)
+  await page.goto('/chatbot')
+  await page.getByRole('button', { name: '이번 달 학습계획 제안해줘' }).click()
+  await page.getByRole('link', { name: '현재 단계 기준 계획 실행' }).last().click()
+  await expect(page).toHaveURL(/\/course-linking/)
 })
