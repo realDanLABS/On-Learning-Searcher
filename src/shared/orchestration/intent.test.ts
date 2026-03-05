@@ -21,4 +21,9 @@ describe('pending next-path intent', () => {
     expect(consumePendingNextPath()).toBe('/diagnosis')
     expect(getPendingNextPath()).toBe(null)
   })
+
+  it('ignores unsafe external path', () => {
+    savePendingNextPath('https://evil.example')
+    expect(getPendingNextPath()).toBe(null)
+  })
 })

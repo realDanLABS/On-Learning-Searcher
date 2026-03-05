@@ -1,6 +1,7 @@
 import { featureRoutes } from '../../router/routeConfig'
 import { getRouteAccessDecision, type RouteAccessContext } from './access'
 import { getNextActionStatus } from './nextAction'
+import { sanitizeInternalPath } from './safePath'
 
 export type SmartPathInput = {
   preferredPath?: string | null
@@ -10,11 +11,12 @@ export type SmartPathInput = {
 }
 
 function resolveCandidate(path: string | null | undefined, context: RouteAccessContext): string | null {
-  if (!path) return null
-  const route = featureRoutes.find((item) => item.path === path)
-  if (!route) return path
+  const safePath = sanitizeInternalPath(path)
+  if (!safePath) return null
+  const route = featureRoutes.find((item) => item.path === safePath)
+  if (!route) return safePath
   const decision = getRouteAccessDecision(route, context)
-  if (decision.allowed) return path
+  if (decision.allowed) return safePath
   return decision.nextPath
 }
 

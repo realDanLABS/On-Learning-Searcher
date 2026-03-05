@@ -41,4 +41,17 @@ describe('resolveBestReachablePath', () => {
     })
     expect(result).toBe('/diagnosis')
   })
+
+  it('ignores unsafe preferred path and falls back to next action', () => {
+    const result = resolveBestReachablePath({
+      preferredPath: 'https://evil.example',
+      context: {
+        authenticated: true,
+        hasProfile: true,
+        role: 'employee',
+        stage: 'start',
+      },
+    })
+    expect(result).toBe('/diagnosis')
+  })
 })

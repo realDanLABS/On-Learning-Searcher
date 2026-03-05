@@ -20,4 +20,9 @@ describe('gate notice parser', () => {
     expect(result.message).toContain('권한')
     expect(result.nextPath).toBe(null)
   })
+
+  it('drops unsafe external next path', () => {
+    const result = getGateNoticeFromSearch('?gate=auth-required&next=https%3A%2F%2Fevil.example')
+    expect(result.nextPath).toBe(null)
+  })
 })

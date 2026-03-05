@@ -211,3 +211,16 @@ test('stale pending intent does not override completed-stage next action', async
   await page.getByRole('button', { name: '현재 단계 이어서 진행' }).click()
   await expect(page).toHaveURL(/\/history/)
 })
+
+test('unsafe external next parameter is ignored during onboarding flow', async ({ page }) => {
+  await page.goto('/?gate=auth-required&next=https%3A%2F%2Fevil.example')
+  await page.getByRole('button', { name: /1\) 로그인 진행$/ }).click()
+  await expect(page.getByText('인증 상태: 로그인됨')).toBeVisible()
+
+  await page.getByLabel('사번').fill('E10444')
+  await page.getByLabel('이름').fill('최윤서')
+  await page.getByLabel('소속').fill('교육문화팀')
+  await page.getByRole('button', { name: /2\) 프로필 저장 진행$/ }).click()
+
+  await expect(page).toHaveURL(/\/diagnosis/)
+})

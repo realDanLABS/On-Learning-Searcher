@@ -1,3 +1,5 @@
+import { sanitizeInternalPath } from './safePath'
+
 export type GateNotice = {
   message: string | null
   nextPath: string | null
@@ -6,7 +8,7 @@ export type GateNotice = {
 export function getGateNoticeFromSearch(search: string): GateNotice {
   const params = new URLSearchParams(search)
   const gate = params.get('gate')
-  const nextPath = params.get('next')
+  const nextPath = sanitizeInternalPath(params.get('next'))
 
   if (!gate) {
     return { message: null, nextPath: null }
@@ -29,4 +31,3 @@ export function getGateNoticeFromSearch(search: string): GateNotice {
   }
   return { message: null, nextPath: null }
 }
-
