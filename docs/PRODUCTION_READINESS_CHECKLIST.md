@@ -23,6 +23,7 @@
 - [x] CI lint/build on PR and main
 - [x] Unit/integration tests for journey orchestration
 - [x] Browser E2E smoke test in CI (`e2e/journey-smoke.spec.ts`)
+- [x] Remote contract rehearsal E2E gate in CI (`npm run test:e2e:remote`)
 - [x] Error tracking integration (Sentry etc.)
 - [x] Feature flags for safe rollout
 
