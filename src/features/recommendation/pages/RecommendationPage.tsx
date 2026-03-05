@@ -18,6 +18,7 @@ export function RecommendationPage() {
   const [loading, setLoading] = useState(true)
   const [loadError, setLoadError] = useState<string | null>(null)
   const [actionError, setActionError] = useState<string | null>(null)
+  const [selectingCourseId, setSelectingCourseId] = useState<string | null>(null)
   const location = useLocation()
   const navigate = useNavigate()
   const [levelFilter, setLevelFilter] = useState<'all' | '입문' | '중급' | '심화'>('all')
@@ -48,10 +49,13 @@ export function RecommendationPage() {
   const moveToEnrollment = async (course: RecommendedCourse) => {
     try {
       setActionError(null)
+      setSelectingCourseId(course.courseId)
       await selectRecommendedCourse(course)
       navigate('/course-linking?from=recommendation')
     } catch (error) {
       setActionError(getErrorMessage(error, '과정 선택 처리 중 오류가 발생했습니다. 다시 시도해 주세요.'))
+    } finally {
+      setSelectingCourseId(null)
     }
   }
 
@@ -134,8 +138,13 @@ export function RecommendationPage() {
                       </span>
                     ))}
                   </div>
-                  <button className="primary-btn" onClick={() => void moveToEnrollment(course)} type="button">
-                    신청하기
+                  <button
+                    className="primary-btn"
+                    disabled={Boolean(selectingCourseId)}
+                    onClick={() => void moveToEnrollment(course)}
+                    type="button"
+                  >
+                    {selectingCourseId === course.courseId ? '처리 중...' : '신청하기'}
                   </button>
                 </article>
               ))
