@@ -8,6 +8,7 @@ import {
   setForcedApiErrorMode,
 } from '../shared/api/learningApi'
 import { getErrorMessage } from '../shared/api/errorMessage'
+import { consumeSessionExpiredNotice } from '../shared/auth/sessionSignals'
 import { runtimeConfig } from '../shared/config/runtime'
 import { AppShell } from '../shared/layouts/AppShell'
 import { getFunnelSnapshot, type FunnelSnapshot } from '../shared/observability/funnel'
@@ -43,8 +44,13 @@ export function HomePage() {
   const [organization, setOrganization] = useState('')
   const [onboardingError, setOnboardingError] = useState<string | null>(null)
   const [profileReady, setProfileReady] = useState(false)
+  const [sessionNotice, setSessionNotice] = useState<string | null>(null)
 
   useEffect(() => {
+    if (consumeSessionExpiredNotice()) {
+      setSessionNotice('세션이 만료되었습니다. 다시 로그인 후 이용해 주세요.')
+    }
+
     const run = async () => {
       try {
         setLoadError(null)
@@ -110,6 +116,7 @@ export function HomePage() {
     >
       <section className="hero-card">
         <h2>학습 여정 시작</h2>
+        {sessionNotice && <p className="error-text">{sessionNotice}</p>}
         {loadError && <p className="error-text">{loadError}</p>}
         {loading && <p className="hint-text">로딩 중...</p>}
         <p>

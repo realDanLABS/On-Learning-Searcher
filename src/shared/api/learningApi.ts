@@ -1,4 +1,5 @@
 import { runtimeConfig } from '../config/runtime'
+import { emitSessionExpiredNotice } from '../auth/sessionSignals'
 import { ApiError } from './apiError'
 import {
   appendEnrollment,
@@ -240,7 +241,10 @@ async function requestJson<T>(path: string, init?: RequestInit): Promise<T> {
     })
 
     if (!response.ok) {
-      if (response.status === 401) throw new ApiError('unauthorized', 'Authentication required', 401)
+      if (response.status === 401) {
+        emitSessionExpiredNotice()
+        throw new ApiError('unauthorized', 'Authentication required', 401)
+      }
       if (response.status === 403) throw new ApiError('forbidden', 'Access denied', 403)
       if (response.status >= 500) throw new ApiError('server', 'Server error', response.status)
       throw new ApiError('unknown', `API request failed: ${response.status}`, response.status)

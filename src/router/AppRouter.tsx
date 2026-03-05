@@ -1,4 +1,5 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { useEffect } from 'react'
+import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 
 import { ChatbotPage } from '../features/chatbot/pages/ChatbotPage'
 import { CourseLinkingPage } from '../features/course-linking/pages/CourseLinkingPage'
@@ -6,12 +7,29 @@ import { DiagnosisPage } from '../features/diagnosis/pages/DiagnosisPage'
 import { HistoryPage } from '../features/history/pages/HistoryPage'
 import { RecommendationPage } from '../features/recommendation/pages/RecommendationPage'
 import { ResponsivePage } from '../features/responsive/pages/ResponsivePage'
+import { subscribeSessionExpired } from '../shared/auth/sessionSignals'
 import { HomePage } from './HomePage'
 import { StageGuard } from './StageGuard'
+
+function SessionExpiredWatcher() {
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  useEffect(() => {
+    return subscribeSessionExpired(() => {
+      if (location.pathname !== '/') {
+        navigate('/', { replace: true })
+      }
+    })
+  }, [location.pathname, navigate])
+
+  return null
+}
 
 export function AppRouter() {
   return (
     <BrowserRouter>
+      <SessionExpiredWatcher />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route
