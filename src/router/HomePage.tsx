@@ -14,7 +14,7 @@ import { runtimeConfig } from '../shared/config/runtime'
 import { AppShell } from '../shared/layouts/AppShell'
 import { getFunnelSnapshot, type FunnelSnapshot } from '../shared/observability/funnel'
 import { appendAuditLog } from '../shared/observability/audit'
-import { canAccessRoute } from '../shared/orchestration/access'
+import { canAccessRoute, getRouteAccessDecision } from '../shared/orchestration/access'
 import { getGateNoticeFromSearch } from '../shared/orchestration/gateNotice'
 import { getNextActionStatus } from '../shared/orchestration/nextAction'
 import {
@@ -224,9 +224,27 @@ export function HomePage() {
     hasProfile: boolean
     stage: JourneyStage
   }) => {
+    const routeContext = {
+      authenticated: context.authenticated,
+      hasProfile: context.hasProfile,
+      role,
+      stage: context.stage,
+    }
     if (gateNextPath) {
-      navigate(gateNextPath)
-      return
+      const gateRoute = featureRoutes.find((route) => route.path === gateNextPath)
+      if (!gateRoute) {
+        navigate(gateNextPath)
+        return
+      }
+      const decision = getRouteAccessDecision(gateRoute, routeContext)
+      if (decision.allowed) {
+        navigate(gateNextPath)
+        return
+      }
+      if (decision.nextPath) {
+        navigate(decision.nextPath)
+        return
+      }
     }
     const next = getNextActionStatus({
       authenticated: context.authenticated,
@@ -259,7 +277,11 @@ export function HomePage() {
       setOnboardingError(nextAction.reason ?? '현재 단계에서는 이동할 수 없습니다.')
       return
     }
-    navigate(gateNextPath ?? primaryAction.to)
+    moveToBestNextStep({
+      authenticated,
+      hasProfile: profileReady,
+      stage,
+    })
   }
 
   return (

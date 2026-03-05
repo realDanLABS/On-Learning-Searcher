@@ -142,3 +142,18 @@ test('home primary action auto-advances to diagnosis after profile save', async 
   await page.getByRole('button', { name: /2\) 프로필 저장 진행$/ }).click()
   await expect(page).toHaveURL(/\/diagnosis/)
 })
+
+test('gated next recommendation falls back to diagnosis after onboarding', async ({ page }) => {
+  await page.goto('/recommendation')
+  await expect(page).toHaveURL(/\/\?gate=auth-required&next=%2Frecommendation/)
+
+  await page.getByRole('button', { name: /1\) 로그인 진행$/ }).click()
+  await expect(page.getByText('인증 상태: 로그인됨')).toBeVisible()
+
+  await page.getByLabel('사번').fill('E10111')
+  await page.getByLabel('이름').fill('이민호')
+  await page.getByLabel('소속').fill('경영지원본부')
+  await page.getByRole('button', { name: /2\) 프로필 저장 진행$/ }).click()
+
+  await expect(page).toHaveURL(/\/diagnosis/)
+})
