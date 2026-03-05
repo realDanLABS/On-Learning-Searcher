@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import {
   fetchDiagnosis,
@@ -8,6 +8,7 @@ import {
 } from '../../../shared/api/learningApi'
 import { getErrorMessage } from '../../../shared/api/errorMessage'
 import { AppShell } from '../../../shared/layouts/AppShell'
+import { getHandoffMessage } from '../../../shared/orchestration/handoff'
 import type { DiagnosisPayload, RecommendedCourse } from '../../../shared/state/learningFlow'
 
 export function RecommendationPage() {
@@ -16,8 +17,10 @@ export function RecommendationPage() {
   const [loading, setLoading] = useState(true)
   const [loadError, setLoadError] = useState<string | null>(null)
   const [actionError, setActionError] = useState<string | null>(null)
+  const location = useLocation()
   const navigate = useNavigate()
   const [levelFilter, setLevelFilter] = useState<'all' | '입문' | '중급' | '심화'>('all')
+  const handoff = getHandoffMessage(location.search, 'recommendation')
 
   const loadData = useCallback(async () => {
     try {
@@ -40,7 +43,7 @@ export function RecommendationPage() {
     try {
       setActionError(null)
       await selectRecommendedCourse(course)
-      navigate('/course-linking')
+      navigate('/course-linking?from=recommendation')
     } catch (error) {
       setActionError(getErrorMessage(error, '과정 선택 처리 중 오류가 발생했습니다. 다시 시도해 주세요.'))
     }
@@ -64,6 +67,12 @@ export function RecommendationPage() {
       {actionError && (
         <section className="hero-card">
           <p className="error-text">{actionError}</p>
+        </section>
+      )}
+
+      {handoff && (
+        <section className="hero-card">
+          <p className={handoff.kind === 'success' ? 'success-text' : 'hint-text'}>{handoff.text}</p>
         </section>
       )}
 
@@ -135,7 +144,7 @@ export function RecommendationPage() {
         <h2>다음 단계 안내</h2>
         <p>과정 선택 후 신청 연동에서 등록을 완료하면 이력 대시보드와 챗봇 상담으로 이어집니다.</p>
         <div className="journey-actions">
-          <Link className="secondary-btn link-btn" to="/course-linking">
+          <Link className="secondary-btn link-btn" to="/course-linking?from=recommendation">
             신청 연동 바로가기
           </Link>
           <Link className="secondary-btn link-btn" to="/chatbot">

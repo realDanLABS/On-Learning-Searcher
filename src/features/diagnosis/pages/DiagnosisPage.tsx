@@ -94,7 +94,7 @@ export function DiagnosisPage() {
         categoryScores,
         topGaps,
       })
-      navigate('/recommendation')
+      navigate('/recommendation?from=diagnosis')
     } catch (error) {
       setSubmitError(getErrorMessage(error, '진단 결과 저장 중 오류가 발생했습니다. 다시 시도해 주세요.'))
     }

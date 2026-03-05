@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 import {
   fetchDiagnosis,
@@ -10,6 +10,7 @@ import { getErrorMessage } from '../../../shared/api/errorMessage'
 import { AppShell } from '../../../shared/layouts/AppShell'
 import { getAuditLogs, type AuditRecord } from '../../../shared/observability/audit'
 import { getWeeklyConversionSeries, type WeeklyConversionPoint } from '../../../shared/observability/funnel'
+import { getHandoffMessage } from '../../../shared/orchestration/handoff'
 import { getUserRole } from '../../../shared/state/session'
 import {
   clearJourneyData,
@@ -19,6 +20,7 @@ import {
 } from '../../../shared/state/learningFlow'
 
 export function HistoryPage() {
+  const location = useLocation()
   const [diagnosis, setDiagnosis] = useState<DiagnosisPayload | null>(null)
   const [enrollments, setEnrollments] = useState<EnrollmentRecord[]>([])
   const [events, setEvents] = useState<JourneyEvent[]>([])
@@ -28,6 +30,7 @@ export function HistoryPage() {
   const [loadError, setLoadError] = useState<string | null>(null)
   const role = getUserRole()
   const canViewManagerSummary = role === 'manager' || role === 'admin'
+  const handoff = getHandoffMessage(location.search, 'history')
 
   const loadData = async () => {
     try {
@@ -78,6 +81,12 @@ export function HistoryPage() {
       {loading && (
         <section className="hero-card">
           <p className="hint-text">이력 데이터를 불러오는 중입니다...</p>
+        </section>
+      )}
+
+      {handoff && (
+        <section className="hero-card">
+          <p className={handoff.kind === 'success' ? 'success-text' : 'hint-text'}>{handoff.text}</p>
         </section>
       )}
 

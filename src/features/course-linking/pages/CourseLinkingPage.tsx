@@ -8,6 +8,7 @@ import {
 import { getErrorMessage } from '../../../shared/api/errorMessage'
 import { runtimeConfig } from '../../../shared/config/runtime'
 import { AppShell } from '../../../shared/layouts/AppShell'
+import { getHandoffMessage } from '../../../shared/orchestration/handoff'
 import type { EnrollmentRecord, RecommendedCourse } from '../../../shared/state/learningFlow'
 import { buildEcampusApplyUrl, parseEnrollmentCallback } from '../enrollmentCallback'
 
@@ -21,6 +22,7 @@ export function CourseLinkingPage() {
   const [callbackNotice, setCallbackNotice] = useState<string | null>(null)
   const hasCourse = Boolean(course)
   const callbackHandled = useRef(false)
+  const handoff = getHandoffMessage(location.search, 'course-linking')
 
   const loadCourse = async () => {
     try {
@@ -112,6 +114,12 @@ export function CourseLinkingPage() {
       {loading && (
         <section className="hero-card">
           <p className="hint-text">과정 정보를 불러오는 중입니다...</p>
+        </section>
+      )}
+
+      {handoff && (
+        <section className="hero-card">
+          <p className={handoff.kind === 'success' ? 'success-text' : 'hint-text'}>{handoff.text}</p>
         </section>
       )}
 
