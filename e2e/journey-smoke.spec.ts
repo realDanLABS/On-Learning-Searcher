@@ -61,6 +61,12 @@ async function prepareDiagnosisDone(page: import('@playwright/test').Page) {
   await expect(page).toHaveURL(/\/recommendation/)
 }
 
+async function prepareEnrollmentDone(page: import('@playwright/test').Page) {
+  await prepareUntilCourseLinking(page)
+  await page.getByRole('button', { name: '신청 완료 처리' }).click()
+  await expect(page).toHaveURL(/\/history/)
+}
+
 test('landing to history e2e journey', async ({ page }) => {
   await prepareUntilCourseLinking(page)
 
@@ -334,4 +340,20 @@ test('recommendation page without diagnosis redirects to locked guidance', async
   await expect(page).toHaveURL(/\/\?gate=stage-locked&next=%2Fdiagnosis/)
   await page.getByRole('button', { name: '권장 페이지로 이동' }).click()
   await expect(page).toHaveURL(/\/diagnosis/)
+})
+
+test('chatbot monthly-plan CTA routes to diagnosis before journey progress', async ({ page }) => {
+  await prepareLoggedInProfile(page)
+  await page.goto('/chatbot')
+  await page.getByRole('button', { name: '이번 달 학습계획 제안해줘' }).click()
+  await page.getByRole('link', { name: '이력 기반 계획 보기' }).last().click()
+  await expect(page).toHaveURL(/\/diagnosis/)
+})
+
+test('chatbot monthly-plan CTA routes to history after enrollment completion', async ({ page }) => {
+  await prepareEnrollmentDone(page)
+  await page.goto('/chatbot')
+  await page.getByRole('button', { name: '이번 달 학습계획 제안해줘' }).click()
+  await page.getByRole('link', { name: '이력 기반 계획 보기' }).last().click()
+  await expect(page).toHaveURL(/\/history/)
 })
