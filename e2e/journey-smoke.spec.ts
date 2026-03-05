@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 
-test('landing to history e2e journey', async ({ page }) => {
+async function prepareUntilCourseLinking(page: import('@playwright/test').Page) {
   await page.goto('/')
 
   await page.getByRole('button', { name: '로그인' }).first().click()
@@ -25,10 +25,21 @@ test('landing to history e2e journey', async ({ page }) => {
 
   await page.getByRole('button', { name: '신청하기' }).first().click()
   await expect(page).toHaveURL(/\/course-linking/)
+}
+
+test('landing to history e2e journey', async ({ page }) => {
+  await prepareUntilCourseLinking(page)
 
   await page.getByRole('button', { name: '신청 완료 처리' }).click()
   await expect(page).toHaveURL(/\/history/)
 
   await expect(page.getByRole('heading', { name: '진단 결과 및 학습 이력' })).toBeVisible()
   await expect(page.getByRole('heading', { name: '신청/수강 이력' })).toBeVisible()
+})
+
+test('ecampus callback success auto-redirects to history', async ({ page }) => {
+  await prepareUntilCourseLinking(page)
+  await page.goto('/course-linking?enrollment=success&courseId=DIG-101')
+  await expect(page).toHaveURL(/\/history\?from=enrollment/)
+  await expect(page.getByRole('heading', { name: '진단 결과 및 학습 이력' })).toBeVisible()
 })

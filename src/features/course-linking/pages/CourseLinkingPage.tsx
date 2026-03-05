@@ -70,7 +70,7 @@ export function CourseLinkingPage() {
 
   const applyUrl = useMemo(() => {
     if (!course || typeof window === 'undefined') return runtimeConfig.ecampusCourseApplyUrl
-    const callbackUrl = `${window.location.origin}/course-linking?enrollment=success&courseId=${course.courseId}`
+    const callbackUrl = `${window.location.origin}/course-linking?source=ecampus&courseId=${course.courseId}`
     return buildEcampusApplyUrl(runtimeConfig.ecampusCourseApplyUrl, callbackUrl, course.courseId)
   }, [course])
 
