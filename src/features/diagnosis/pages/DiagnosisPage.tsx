@@ -4,18 +4,15 @@ import { Link, useNavigate } from 'react-router-dom'
 import { submitDiagnosis } from '../../../shared/api/learningApi'
 import { ApiErrorMessage } from '../../../shared/components/ApiErrorMessage'
 import { AppShell } from '../../../shared/layouts/AppShell'
-import { resolveBestReachablePath } from '../../../shared/orchestration/smartPath'
-import { isAuthenticated } from '../../../shared/state/auth'
-import { getJourneyStage } from '../../../shared/state/learningFlow'
+import { useGuidedNavigate } from '../../../shared/orchestration/useGuidedNavigate'
 import { getUserProfile } from '../../../shared/state/profile'
-import { hasUserProfile } from '../../../shared/state/profile'
-import { getUserRole } from '../../../shared/state/session'
 import { type AnswerMap, buildSummary } from '../diagnosisResult'
-import { clearDiagnosisDraft, hasDiagnosisDraft, loadDiagnosisDraft, saveDiagnosisDraft } from '../draftStorage'
+import { clearDiagnosisDraft, loadDiagnosisDraft, saveDiagnosisDraft } from '../draftStorage'
 import { diagnosisQuestions } from '../questions'
 
 export function DiagnosisPage() {
   const navigate = useNavigate()
+  const guidedNavigate = useGuidedNavigate()
   const [step, setStep] = useState(0)
   const [answers, setAnswers] = useState<AnswerMap>(() => loadDiagnosisDraft())
   const [submitError, setSubmitError] = useState<unknown | null>(null)
@@ -94,20 +91,6 @@ export function DiagnosisPage() {
     } catch (error) {
       setSubmitError(error)
     }
-  }
-
-  const moveToGuided = (preferredPath: string) => {
-    const nextPath = resolveBestReachablePath({
-      preferredPath,
-      context: {
-        authenticated: isAuthenticated(),
-        hasProfile: hasUserProfile(),
-        role: getUserRole(),
-        stage: getJourneyStage(),
-      },
-      hasDiagnosisDraft: hasDiagnosisDraft(),
-    })
-    navigate(nextPath ?? preferredPath)
   }
 
   const canGoNext = isFinished || answers[currentQuestion.id] !== undefined
@@ -190,7 +173,7 @@ export function DiagnosisPage() {
         <h2>진단 가이드</h2>
         <p>진단 완료 후 추천 과정 선택까지 약 2분 내에 진행할 수 있습니다.</p>
         <div className="journey-actions">
-          <button className="secondary-btn" onClick={() => moveToGuided('/history')} type="button">
+          <button className="secondary-btn" onClick={() => guidedNavigate('/history')} type="button">
             이전 진단/학습 이력 보기
           </button>
           <Link className="secondary-btn link-btn" to="/chatbot">

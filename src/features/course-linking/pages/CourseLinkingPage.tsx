@@ -9,17 +9,13 @@ import { ApiErrorMessage } from '../../../shared/components/ApiErrorMessage'
 import { runtimeConfig } from '../../../shared/config/runtime'
 import { AppShell } from '../../../shared/layouts/AppShell'
 import { getHandoffMessage } from '../../../shared/orchestration/handoff'
-import { resolveBestReachablePath } from '../../../shared/orchestration/smartPath'
-import { isAuthenticated } from '../../../shared/state/auth'
+import { useGuidedNavigate } from '../../../shared/orchestration/useGuidedNavigate'
 import type { EnrollmentRecord, RecommendedCourse } from '../../../shared/state/learningFlow'
-import { getJourneyStage } from '../../../shared/state/learningFlow'
-import { hasUserProfile } from '../../../shared/state/profile'
-import { getUserRole } from '../../../shared/state/session'
-import { hasDiagnosisDraft } from '../../diagnosis/draftStorage'
 import { buildEcampusApplyUrl, parseEnrollmentCallback } from '../enrollmentCallback'
 
 export function CourseLinkingPage() {
   const navigate = useNavigate()
+  const guidedNavigate = useGuidedNavigate()
   const location = useLocation()
   const [course, setCourse] = useState<RecommendedCourse | null>(null)
   const [loading, setLoading] = useState(true)
@@ -114,18 +110,7 @@ export function CourseLinkingPage() {
   }
 
   const moveToRecommendedStep = () => {
-    const nextPath = resolveBestReachablePath({
-      preferredPath: '/recommendation',
-      gateNextPath: '/course-linking',
-      context: {
-        authenticated: isAuthenticated(),
-        hasProfile: hasUserProfile(),
-        role: getUserRole(),
-        stage: getJourneyStage(),
-      },
-      hasDiagnosisDraft: hasDiagnosisDraft(),
-    })
-    navigate(nextPath ?? '/recommendation')
+    guidedNavigate('/recommendation', '/course-linking')
   }
 
   return (
