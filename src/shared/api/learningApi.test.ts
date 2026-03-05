@@ -139,6 +139,6 @@ describe('learningApi error mode', () => {
       json: async () => ({ data: { invalid: true } }),
     } as Response)
 
-    await expect(fetchRecommendedCourses('all')).rejects.toMatchObject({ code: 'server' })
+    await expect(fetchRecommendedCourses('all')).rejects.toMatchObject({ code: 'invalid_payload' })
   })
 })

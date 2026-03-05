@@ -55,7 +55,7 @@ describe('profileApi', () => {
     } as Response)
 
     await expect(saveProfile({ employeeId: 'E9999', name: 'Park', organization: 'Ops' })).rejects.toMatchObject({
-      code: 'server',
+      code: 'invalid_payload',
     })
   })
 })

@@ -1,6 +1,6 @@
 import { runtimeConfig } from '../config/runtime'
 import { emitSessionExpiredNotice } from '../auth/sessionSignals'
-import { ApiError } from './apiError'
+import { ApiError, toApiErrorFromStatus } from './apiError'
 import { appendAuditLog } from '../observability/audit'
 import { reportError } from '../observability/errorTracking'
 import {
@@ -295,9 +295,7 @@ async function requestJsonOnce<T>(
         emitSessionExpiredNotice()
         throw new ApiError('unauthorized', 'Authentication required', 401)
       }
-      if (response.status === 403) throw new ApiError('forbidden', 'Access denied', 403)
-      if (response.status >= 500) throw new ApiError('server', 'Server error', response.status)
-      throw new ApiError('unknown', `API request failed: ${response.status}`, response.status)
+      throw toApiErrorFromStatus(response.status, `API request failed: ${response.status}`)
     }
 
     if (response.status === 204) {
@@ -308,12 +306,12 @@ async function requestJsonOnce<T>(
     if (payload && typeof payload === 'object' && 'data' in payload) {
       const data = payload.data
       if (validate && !validate(data)) {
-        throw new ApiError('server', `Invalid API payload: ${path}`, 502)
+        throw new ApiError('invalid_payload', `Invalid API payload: ${path}`, 502)
       }
       return data
     }
     if (validate && !validate(payload)) {
-      throw new ApiError('server', `Invalid API payload: ${path}`, 502)
+      throw new ApiError('invalid_payload', `Invalid API payload: ${path}`, 502)
     }
     return payload as T
   } catch (error) {

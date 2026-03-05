@@ -41,6 +41,6 @@ describe('authApi mock mode', () => {
       json: async () => ({ wrong: true }),
     } as Response)
 
-    await expect(syncAuthSession()).rejects.toMatchObject({ code: 'server' })
+    await expect(syncAuthSession()).rejects.toMatchObject({ code: 'invalid_payload' })
   })
 })

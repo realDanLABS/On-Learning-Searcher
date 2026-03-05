@@ -1,7 +1,7 @@
 import { runtimeConfig } from '../config/runtime'
 import { reportError } from '../observability/errorTracking'
 import { type UserProfile, saveUserProfile } from '../state/profile'
-import { ApiError } from './apiError'
+import { ApiError, toApiErrorFromStatus } from './apiError'
 
 export async function saveProfile(profile: UserProfile): Promise<UserProfile> {
   if (!isRemoteMode()) {
@@ -78,22 +78,19 @@ async function requestJsonOnce<T>(
     })
 
     if (!response.ok) {
-      if (response.status === 401) throw new ApiError('unauthorized', 'Authentication required', 401)
-      if (response.status === 403) throw new ApiError('forbidden', 'Access denied', 403)
-      if (response.status >= 500) throw new ApiError('server', 'Server error', response.status)
-      throw new ApiError('unknown', `API request failed: ${response.status}`, response.status)
+      throw toApiErrorFromStatus(response.status, `API request failed: ${response.status}`)
     }
 
     const payload = (await response.json()) as T | { data: T }
     if (payload && typeof payload === 'object' && 'data' in payload) {
       const data = payload.data
       if (validate && !validate(data)) {
-        throw new ApiError('server', `Invalid API payload: ${path}`, 502)
+        throw new ApiError('invalid_payload', `Invalid API payload: ${path}`, 502)
       }
       return data
     }
     if (validate && !validate(payload)) {
-      throw new ApiError('server', `Invalid API payload: ${path}`, 502)
+      throw new ApiError('invalid_payload', `Invalid API payload: ${path}`, 502)
     }
     return payload as T
   } catch (error) {
