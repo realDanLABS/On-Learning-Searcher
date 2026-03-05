@@ -95,24 +95,34 @@ export function RecommendationPage() {
       )}
 
       <section className="feature-grid">
-        {filtered.map((course) => (
-          <article className="feature-card" key={course.courseId}>
-            <h3>{course.courseTitle}</h3>
-            <p>
-              난이도 {course.level} | {course.durationHours}시간
-            </p>
-            <div className="tag-row">
-              {course.reasonTags.map((tag) => (
-                <span className="reason-tag" key={tag}>
-                  {tag}
-                </span>
-              ))}
-            </div>
-            <button className="primary-btn" onClick={() => moveToEnrollment(course)} type="button">
-              신청하기
+        {filtered.length > 0 ? (
+          filtered.map((course) => (
+            <article className="feature-card" key={course.courseId}>
+              <h3>{course.courseTitle}</h3>
+              <p>
+                난이도 {course.level} | {course.durationHours}시간
+              </p>
+              <div className="tag-row">
+                {course.reasonTags.map((tag) => (
+                  <span className="reason-tag" key={tag}>
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              <button className="primary-btn" onClick={() => moveToEnrollment(course)} type="button">
+                신청하기
+              </button>
+            </article>
+          ))
+        ) : (
+          <article className="feature-card">
+            <h3>필터 조건에 맞는 과정이 없습니다</h3>
+            <p>필터를 초기화하거나 진단을 다시 수행해 추천 범위를 넓혀주세요.</p>
+            <button className="secondary-btn" onClick={() => setLevelFilter('all')} type="button">
+              필터 초기화
             </button>
           </article>
-        ))}
+        )}
       </section>
     </AppShell>
   )

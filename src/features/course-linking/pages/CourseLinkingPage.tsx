@@ -9,6 +9,7 @@ import {
 
 export function CourseLinkingPage() {
   const course = getSelectedCourse()
+  const hasCourse = Boolean(course)
 
   const requestEnrollment = () => {
     if (!course) return
@@ -27,7 +28,7 @@ export function CourseLinkingPage() {
       title="교육 신청 연동"
       description="추천 과정을 선택하면 신청 후 이력 페이지에서 상태를 확인할 수 있습니다."
     >
-      {!course && (
+      {!hasCourse && (
         <section className="hero-card">
           <h2>선택된 과정이 없습니다</h2>
           <p>추천 페이지에서 과정을 선택하고 다시 들어와 주세요.</p>
@@ -37,7 +38,7 @@ export function CourseLinkingPage() {
         </section>
       )}
 
-      {course && (
+      {hasCourse && course && (
         <section className="hero-card">
           <h2>{course.courseTitle}</h2>
           <p>과정코드: {course.courseId}</p>
@@ -54,6 +55,9 @@ export function CourseLinkingPage() {
               이력 확인하기
             </Link>
           </div>
+          <p className="hint-text">
+            신청 완료 처리 버튼을 누르면 이력 페이지에서 등록 상태를 바로 확인할 수 있습니다.
+          </p>
         </section>
       )}
     </AppShell>
