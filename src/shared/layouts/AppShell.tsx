@@ -8,6 +8,7 @@ import { JourneyFlowGuide } from '../components/JourneyFlowGuide'
 import { JourneyProgressPanel } from '../components/JourneyProgressPanel'
 import { getRouteAccessDecision } from '../orchestration/access'
 import { isFeatureEnabled } from '../orchestration/features'
+import { getNextActionStatus } from '../orchestration/nextAction'
 import { clearJourneyData, getJourneyStage } from '../state/learningFlow'
 import { clearUserProfile, getUserProfile } from '../state/profile'
 import { clearUserRole, getUserRole } from '../state/session'
@@ -16,6 +17,7 @@ import { appendAuditLog } from '../observability/audit'
 import { maskEmployeeId } from '../security/privacy'
 import { clearDiagnosisDraft } from '../../features/diagnosis/draftStorage'
 import { clearPendingNextPath } from '../orchestration/intent'
+import { hasDiagnosisDraft } from '../../features/diagnosis/draftStorage'
 
 type AppShellProps = {
   title: string
@@ -29,6 +31,13 @@ export function AppShell({ title, description, children }: AppShellProps) {
   const authenticated = isAuthenticated()
   const role = getUserRole()
   const stage = getJourneyStage()
+  const nextAction = getNextActionStatus({
+    authenticated,
+    hasProfile: Boolean(profile),
+    role,
+    stage,
+    hasDiagnosisDraft: hasDiagnosisDraft(),
+  })
   const onLogout = () => {
     appendAuditLog('logout', `로그아웃: role=${role}`)
     clearAuthentication()
@@ -60,6 +69,15 @@ export function AppShell({ title, description, children }: AppShellProps) {
           <p>{description}</p>
         </div>
         <div className="header-actions">
+          {nextAction.enabled ? (
+            <Link className="primary-btn link-btn header-next-link" to={nextAction.to}>
+              다음 단계 진행: {nextAction.label}
+            </Link>
+          ) : (
+            <button className="primary-btn header-next-link" disabled title={nextAction.reason} type="button">
+              다음 단계 잠금
+            </button>
+          )}
           <Link className="home-link" to="/">
             홈으로
           </Link>

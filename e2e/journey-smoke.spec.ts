@@ -172,6 +172,13 @@ test('chatbot next action resumes unfinished diagnosis draft', async ({ page }) 
   await expect(page.getByText('1 / 10 답변 완료')).toBeVisible()
 })
 
+test('global header CTA moves user to the next journey step', async ({ page }) => {
+  await prepareLoggedInProfile(page)
+  await page.goto('/chatbot')
+  await page.getByRole('link', { name: '다음 단계 진행: 진단 시작' }).click()
+  await expect(page).toHaveURL(/\/diagnosis/)
+})
+
 test('direct diagnosis access redirects with auth next path', async ({ page }) => {
   await page.goto('/diagnosis')
   await expect(page).toHaveURL(/\/\?gate=auth-required&next=%2Fdiagnosis/)

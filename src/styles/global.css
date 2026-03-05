@@ -56,6 +56,12 @@ a {
   display: inline-flex;
   gap: 8px;
   align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.header-next-link {
+  white-space: nowrap;
 }
 
 .eyebrow {
