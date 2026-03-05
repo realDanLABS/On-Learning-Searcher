@@ -200,3 +200,14 @@ test('onboarding card actions also auto-advance to diagnosis', async ({ page }) 
 
   await expect(page).toHaveURL(/\/diagnosis/)
 })
+
+test('stale pending intent does not override completed-stage next action', async ({ page }) => {
+  await prepareUntilCourseLinking(page)
+  await page.getByRole('button', { name: '신청 완료 처리' }).click()
+  await expect(page).toHaveURL(/\/history/)
+
+  await page.goto('/?gate=stage-locked&next=%2Frecommendation')
+  await page.goto('/')
+  await page.getByRole('button', { name: '현재 단계 이어서 진행' }).click()
+  await expect(page).toHaveURL(/\/history/)
+})

@@ -25,7 +25,6 @@ import {
 import { resolveBestReachablePath } from '../shared/orchestration/smartPath'
 import {
   clearPendingNextPath,
-  consumePendingNextPath,
   getPendingNextPath,
   savePendingNextPath,
 } from '../shared/orchestration/intent'
@@ -285,7 +284,7 @@ export function HomePage() {
       role: getUserRole(),
       stage: getJourneyStage() ?? context.stage,
     }
-    const fallbackNextPath = getPendingNextPath()
+    const fallbackNextPath = gateNextPath ? null : getPendingNextPath()
     const nextPath = resolveBestReachablePath({
       preferredPath,
       gateNextPath: gateNextPath ?? fallbackNextPath,
@@ -298,10 +297,7 @@ export function HomePage() {
       hasDiagnosisDraft: hasDiagnosisDraft(),
     })
     if (nextPath) {
-      const consumed = consumePendingNextPath()
-      if (consumed && consumed !== nextPath) {
-        savePendingNextPath(nextPath)
-      }
+      clearPendingNextPath()
       navigate(nextPath)
     }
   }
