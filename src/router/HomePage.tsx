@@ -23,6 +23,12 @@ import {
   getJourneyStartBlockers,
 } from '../shared/orchestration/readiness'
 import { resolveBestReachablePath } from '../shared/orchestration/smartPath'
+import {
+  clearPendingNextPath,
+  consumePendingNextPath,
+  getPendingNextPath,
+  savePendingNextPath,
+} from '../shared/orchestration/intent'
 import { isAuthenticated, setAuthenticated } from '../shared/state/auth'
 import {
   clearUserProfile,
@@ -109,6 +115,9 @@ export function HomePage() {
     const gateNotice = getGateNoticeFromSearch(location.search)
     setGateNotice(gateNotice.message)
     setGateNextPath(gateNotice.nextPath)
+    if (gateNotice.nextPath) {
+      savePendingNextPath(gateNotice.nextPath)
+    }
   }, [location.search])
   const nextAction = getNextActionStatus({
     authenticated,
@@ -191,6 +200,7 @@ export function HomePage() {
     appendAuditLog('journey_reset', '사용자 수동 초기화')
     clearJourneyData()
     clearDiagnosisDraft()
+    clearPendingNextPath()
     clearUserProfile()
     window.location.reload()
   }
@@ -263,9 +273,10 @@ export function HomePage() {
       role: getUserRole(),
       stage: getJourneyStage() ?? context.stage,
     }
+    const fallbackNextPath = getPendingNextPath()
     const nextPath = resolveBestReachablePath({
       preferredPath,
-      gateNextPath,
+      gateNextPath: gateNextPath ?? fallbackNextPath,
       context: {
       authenticated: liveContext.authenticated,
       hasProfile: liveContext.hasProfile,
@@ -275,6 +286,10 @@ export function HomePage() {
       hasDiagnosisDraft: hasDiagnosisDraft(),
     })
     if (nextPath) {
+      const consumed = consumePendingNextPath()
+      if (consumed && consumed !== nextPath) {
+        savePendingNextPath(nextPath)
+      }
       navigate(nextPath)
     }
   }

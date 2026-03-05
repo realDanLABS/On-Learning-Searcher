@@ -164,3 +164,19 @@ test('recommended button resolves to reachable step when next is recommendation'
   await page.getByRole('button', { name: '권장 페이지로 이동' }).click()
   await expect(page).toHaveURL(/\/diagnosis/)
 })
+
+test('stored next intent survives query loss and continues onboarding flow', async ({ page }) => {
+  await page.goto('/recommendation')
+  await expect(page).toHaveURL(/\/\?gate=auth-required&next=%2Frecommendation/)
+
+  await page.goto('/')
+  await page.getByRole('button', { name: /1\) 로그인 진행$/ }).click()
+  await expect(page.getByText('인증 상태: 로그인됨')).toBeVisible()
+
+  await page.getByLabel('사번').fill('E10222')
+  await page.getByLabel('이름').fill('박지훈')
+  await page.getByLabel('소속').fill('교육문화팀')
+  await page.getByRole('button', { name: /2\) 프로필 저장 진행$/ }).click()
+
+  await expect(page).toHaveURL(/\/diagnosis/)
+})
