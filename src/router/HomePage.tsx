@@ -10,6 +10,7 @@ import {
 import { runtimeConfig } from '../shared/config/runtime'
 import { AppShell } from '../shared/layouts/AppShell'
 import { getFunnelSnapshot, type FunnelSnapshot } from '../shared/observability/funnel'
+import { getNextJourneyAction } from '../shared/orchestration/journey'
 import {
   clearUserProfile,
   getUserProfile,
@@ -67,14 +68,7 @@ export function HomePage() {
     }
     void run()
   }, [])
-  const nextAction =
-    stage === 'start'
-      ? { to: '/diagnosis', label: '역량 진단 시작' }
-      : stage === 'diagnosis_done'
-        ? { to: '/recommendation', label: '추천 과정 확인' }
-        : stage === 'course_selected'
-          ? { to: '/course-linking', label: '신청 진행하기' }
-          : { to: '/history', label: '이력 확인하기' }
+  const nextAction = getNextJourneyAction(stage)
 
   const resetJourney = () => {
     clearJourneyData()

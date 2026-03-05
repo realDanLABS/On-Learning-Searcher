@@ -115,6 +115,13 @@ a {
   background: var(--primary-soft);
 }
 
+.feature-link.locked {
+  color: #8a94aa;
+  background: #f3f5fa;
+  border-style: dashed;
+  cursor: not-allowed;
+}
+
 .content {
   margin-top: 20px;
   display: grid;

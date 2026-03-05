@@ -1,25 +1,24 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
+import { getNextJourneyAction, stageOrder } from '../orchestration/journey'
 import {
   getJourneyStage,
   subscribeJourneyUpdates,
   type JourneyStage,
 } from '../state/learningFlow'
 
-const stages: Array<{ key: JourneyStage; label: string }> = [
-  { key: 'start', label: '시작' },
-  { key: 'diagnosis_done', label: '진단 완료' },
-  { key: 'course_selected', label: '과정 선택' },
-  { key: 'enrollment_done', label: '신청 완료' },
-]
-
-function getNextAction(stage: JourneyStage) {
-  if (stage === 'start') return { to: '/diagnosis', label: '진단 시작' }
-  if (stage === 'diagnosis_done') return { to: '/recommendation', label: '추천 확인' }
-  if (stage === 'course_selected') return { to: '/course-linking', label: '신청 진행' }
-  return { to: '/history', label: '이력 보기' }
-}
+const stages: Array<{ key: JourneyStage; label: string }> = stageOrder.map((key) => ({
+  key,
+  label:
+    key === 'start'
+      ? '시작'
+      : key === 'diagnosis_done'
+        ? '진단 완료'
+        : key === 'course_selected'
+          ? '과정 선택'
+          : '신청 완료',
+}))
 
 export function JourneyProgressPanel() {
   const [stage, setStage] = useState<JourneyStage>(() => getJourneyStage())
@@ -30,7 +29,7 @@ export function JourneyProgressPanel() {
   }, [])
 
   const currentIndex = stages.findIndex((item) => item.key === stage)
-  const nextAction = getNextAction(stage)
+  const nextAction = getNextJourneyAction(stage)
 
   return (
     <section className="journey-progress-panel" aria-label="학습 여정 진행 상황">
