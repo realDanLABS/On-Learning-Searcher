@@ -1,19 +1,147 @@
+import { useEffect, useMemo, useState } from 'react'
+
 import { AppShell } from '../../../shared/layouts/AppShell'
+import { buildSummary, type AnswerMap } from '../diagnosisResult'
+import { diagnosisQuestions } from '../questions'
+
+const STORAGE_KEY = 'on-learning-diagnosis-answers-v1'
 
 export function DiagnosisPage() {
+  const [step, setStep] = useState(0)
+  const [answers, setAnswers] = useState<AnswerMap>(() => {
+    const raw = localStorage.getItem(STORAGE_KEY)
+    if (!raw) {
+      return {}
+    }
+
+    try {
+      return JSON.parse(raw) as AnswerMap
+    } catch {
+      localStorage.removeItem(STORAGE_KEY)
+      return {}
+    }
+  })
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(answers))
+  }, [answers])
+
+  const currentQuestion = diagnosisQuestions[step]
+  const isFinished = step >= diagnosisQuestions.length
+
+  const answeredCount = useMemo(
+    () => Object.keys(answers).filter((key) => answers[key] !== undefined).length,
+    [answers],
+  )
+
+  const progress = Math.round((answeredCount / diagnosisQuestions.length) * 100)
+
+  const summary = useMemo(() => buildSummary(answers), [answers])
+
+  const selectAnswer = (value: number) => {
+    setAnswers((prev) => ({ ...prev, [currentQuestion.id]: value }))
+  }
+
+  const goNext = () => {
+    if (step < diagnosisQuestions.length) {
+      setStep((prev) => prev + 1)
+    }
+  }
+
+  const goPrev = () => {
+    if (step > 0) {
+      setStep((prev) => prev - 1)
+    }
+  }
+
+  const resetDiagnosis = () => {
+    setStep(0)
+    setAnswers({})
+    localStorage.removeItem(STORAGE_KEY)
+  }
+
+  const canGoNext =
+    isFinished || answers[currentQuestion.id] !== undefined
+
   return (
     <AppShell
       title="AI 역량 진단"
-      description="OX형/선택형 질문 플로우를 구현할 기본 페이지입니다."
+      description="10문항 기준의 MVP 진단 플로우입니다. 응답은 브라우저에 임시 저장됩니다."
     >
-      <section className="hero-card">
-        <h2>다음 구현 항목</h2>
-        <ul>
-          <li>질문 단계(Stepper)와 진행률</li>
-          <li>답변 저장 상태 관리</li>
-          <li>진단 결과 요약 카드</li>
-        </ul>
+      <section className="hero-card diagnosis-progress-card">
+        <div className="progress-row">
+          <strong>진행률 {progress}%</strong>
+          <span>
+            {answeredCount} / {diagnosisQuestions.length} 답변 완료
+          </span>
+        </div>
+        <div className="progress-track" role="progressbar" aria-valuenow={progress}>
+          <div className="progress-fill" style={{ width: `${progress}%` }} />
+        </div>
       </section>
+
+      {!isFinished && (
+        <section className="hero-card diagnosis-question-card">
+          <p className="question-step">
+            문항 {step + 1} / {diagnosisQuestions.length}
+          </p>
+          <h2>{currentQuestion.title}</h2>
+          <div className="answer-options">
+            {currentQuestion.options.map((option) => {
+              const isActive = answers[currentQuestion.id] === option.value
+              return (
+                <button
+                  className={isActive ? 'answer-btn active' : 'answer-btn'}
+                  key={option.label}
+                  onClick={() => selectAnswer(option.value)}
+                  type="button"
+                >
+                  {option.label}
+                </button>
+              )
+            })}
+          </div>
+
+          <div className="diagnosis-actions">
+            <button
+              className="secondary-btn"
+              disabled={step === 0}
+              onClick={goPrev}
+              type="button"
+            >
+              이전
+            </button>
+            <button
+              className="primary-btn"
+              disabled={!canGoNext}
+              onClick={goNext}
+              type="button"
+            >
+              {step === diagnosisQuestions.length - 1 ? '결과 보기' : '다음'}
+            </button>
+          </div>
+        </section>
+      )}
+
+      {isFinished && (
+        <section className="hero-card diagnosis-result-card">
+          <h2>진단 결과 요약</h2>
+          <p>
+            총점 {summary.totalScore} / {summary.maxScore} | 수준: {summary.level}
+          </p>
+          <p>강점: {summary.strengths.join(', ')}</p>
+          <p>집중 성장 영역: {summary.growthArea}</p>
+
+          <div className="diagnosis-actions">
+            <button className="secondary-btn" onClick={goPrev} type="button">
+              마지막 문항으로
+            </button>
+            <button className="primary-btn" onClick={resetDiagnosis} type="button">
+              처음부터 다시
+            </button>
+          </div>
+        </section>
+      )}
     </AppShell>
   )
 }
