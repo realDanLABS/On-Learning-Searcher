@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest'
 import {
   getNextJourneyAction,
   getRedirectForStage,
+  getStagePath,
   isStageAllowed,
 } from './journey'
 
@@ -25,5 +26,11 @@ describe('journey orchestration helpers', () => {
     expect(getNextJourneyAction('course_selected').to).toBe('/course-linking')
     expect(getNextJourneyAction('enrollment_done').to).toBe('/history')
   })
-})
 
+  it('returns stage path for progress navigation', () => {
+    expect(getStagePath('start')).toBe('/')
+    expect(getStagePath('diagnosis_done')).toBe('/recommendation')
+    expect(getStagePath('course_selected')).toBe('/course-linking')
+    expect(getStagePath('enrollment_done')).toBe('/history')
+  })
+})

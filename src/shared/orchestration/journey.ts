@@ -22,3 +22,9 @@ export function getNextJourneyAction(stage: JourneyStage): NextJourneyAction {
   return { to: '/history', label: '이력 보기' }
 }
 
+export function getStagePath(stage: JourneyStage) {
+  if (stage === 'start') return '/'
+  if (stage === 'diagnosis_done') return '/recommendation'
+  if (stage === 'course_selected') return '/course-linking'
+  return '/history'
+}

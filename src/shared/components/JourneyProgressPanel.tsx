@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-import { stageOrder } from '../orchestration/journey'
+import { getStagePath, stageOrder } from '../orchestration/journey'
 import { getNextActionStatus } from '../orchestration/nextAction'
 import { isAuthenticated } from '../state/auth'
 import {
@@ -45,6 +45,14 @@ export function JourneyProgressPanel() {
       <div className="journey-track">
         {stages.map((item, index) => {
           const status = index < currentIndex ? 'done' : index === currentIndex ? 'active' : 'todo'
+          if (index <= currentIndex) {
+            return (
+              <Link className={`journey-node ${status} link`} key={item.key} to={getStagePath(item.key)}>
+                <span className="dot" />
+                <span className="label">{item.label}</span>
+              </Link>
+            )
+          }
           return (
             <div className={`journey-node ${status}`} key={item.key}>
               <span className="dot" />

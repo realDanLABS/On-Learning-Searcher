@@ -384,6 +384,11 @@ input {
   font-size: 12px;
 }
 
+.journey-node.link {
+  text-decoration: none;
+  cursor: pointer;
+}
+
 .journey-node .dot {
   width: 8px;
   height: 8px;
