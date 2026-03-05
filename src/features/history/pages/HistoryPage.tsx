@@ -8,10 +8,11 @@ import {
 } from '../../../shared/api/learningApi'
 import { AppShell } from '../../../shared/layouts/AppShell'
 import { getUserRole } from '../../../shared/state/session'
-import type {
-  DiagnosisPayload,
-  EnrollmentRecord,
-  JourneyEvent,
+import {
+  clearJourneyData,
+  type DiagnosisPayload,
+  type EnrollmentRecord,
+  type JourneyEvent,
 } from '../../../shared/state/learningFlow'
 
 export function HistoryPage() {
@@ -46,6 +47,11 @@ export function HistoryPage() {
     const completionRate = enrollments.length === 0 ? 0 : Math.round((completed / enrollments.length) * 100)
     return { completed, completionRate }
   }, [enrollments])
+
+  const resetJourney = () => {
+    clearJourneyData()
+    window.location.href = '/'
+  }
 
   return (
     <AppShell
@@ -139,6 +145,18 @@ export function HistoryPage() {
             ))}
           </ul>
         )}
+      </section>
+
+      <section className="hero-card">
+        <h2>다음 액션</h2>
+        <div className="journey-actions">
+          <Link className="primary-btn link-btn" to="/chatbot">
+            AI 상담 이어가기
+          </Link>
+          <button className="secondary-btn" onClick={resetJourney} type="button">
+            새로운 진단 여정 시작
+          </button>
+        </div>
       </section>
     </AppShell>
   )

@@ -52,6 +52,7 @@ const KEY_DIAGNOSIS = 'on_learning_diagnosis_payload_v1'
 const KEY_SELECTED_COURSE = 'on_learning_selected_course_v1'
 const KEY_ENROLLMENT = 'on_learning_enrollment_records_v1'
 const KEY_JOURNEY_EVENTS = 'on_learning_journey_events_v1'
+const JOURNEY_UPDATED_EVENT = 'on-learning:journey-updated'
 
 export function saveDiagnosisPayload(payload: DiagnosisPayload) {
   localStorage.setItem(KEY_DIAGNOSIS, JSON.stringify(payload))
@@ -61,6 +62,7 @@ export function saveDiagnosisPayload(payload: DiagnosisPayload) {
     at: payload.diagnosedAt,
     label: `진단 완료 (${payload.totalScore}/${payload.maxScore})`,
   })
+  emitJourneyUpdated()
 }
 
 export function getDiagnosisPayload(): DiagnosisPayload | null {
@@ -81,6 +83,7 @@ export function saveSelectedCourse(course: RecommendedCourse) {
     at: new Date().toISOString(),
     label: `추천 과정 선택: ${course.courseTitle}`,
   })
+  emitJourneyUpdated()
 }
 
 export function getSelectedCourse(): RecommendedCourse | null {
@@ -109,6 +112,7 @@ export function appendEnrollment(record: EnrollmentRecord) {
     at: record.enrollmentRequestedAt,
     label: `신청 처리: ${record.courseTitle} (${record.enrollmentStatus})`,
   })
+  emitJourneyUpdated()
 }
 
 export function getEnrollmentRecords(): EnrollmentRecord[] {
@@ -155,4 +159,19 @@ export function clearJourneyData() {
   localStorage.removeItem(KEY_SELECTED_COURSE)
   localStorage.removeItem(KEY_ENROLLMENT)
   localStorage.removeItem(KEY_JOURNEY_EVENTS)
+  emitJourneyUpdated()
+}
+
+export function subscribeJourneyUpdates(callback: () => void): () => void {
+  const handler = () => callback()
+  window.addEventListener(JOURNEY_UPDATED_EVENT, handler)
+  window.addEventListener('storage', handler)
+  return () => {
+    window.removeEventListener(JOURNEY_UPDATED_EVENT, handler)
+    window.removeEventListener('storage', handler)
+  }
+}
+
+function emitJourneyUpdated() {
+  window.dispatchEvent(new Event(JOURNEY_UPDATED_EVENT))
 }

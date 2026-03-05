@@ -128,6 +128,19 @@ export function RecommendationPage() {
           </article>
         )}
       </section>
+
+      <section className="hero-card">
+        <h2>다음 단계 안내</h2>
+        <p>과정 선택 후 신청 연동에서 등록을 완료하면 이력 대시보드와 챗봇 상담으로 이어집니다.</p>
+        <div className="journey-actions">
+          <Link className="secondary-btn link-btn" to="/course-linking">
+            신청 연동 바로가기
+          </Link>
+          <Link className="secondary-btn link-btn" to="/chatbot">
+            AI 상담 먼저 보기
+          </Link>
+        </div>
+      </section>
     </AppShell>
   )
 }

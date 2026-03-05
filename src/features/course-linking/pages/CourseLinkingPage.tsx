@@ -1,17 +1,20 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import {
   fetchSelectedCourse,
   submitEnrollment,
 } from '../../../shared/api/learningApi'
+import { runtimeConfig } from '../../../shared/config/runtime'
 import { AppShell } from '../../../shared/layouts/AppShell'
 import type { EnrollmentRecord, RecommendedCourse } from '../../../shared/state/learningFlow'
 
 export function CourseLinkingPage() {
+  const navigate = useNavigate()
   const [course, setCourse] = useState<RecommendedCourse | null>(null)
   const [loading, setLoading] = useState(true)
   const [loadError, setLoadError] = useState<string | null>(null)
+  const [submitting, setSubmitting] = useState(false)
   const hasCourse = Boolean(course)
 
   const loadCourse = async () => {
@@ -40,9 +43,13 @@ export function CourseLinkingPage() {
       enrollmentStatus: 'enrolled',
     }
     try {
+      setSubmitting(true)
       await submitEnrollment(record)
+      navigate('/history')
     } catch {
       setLoadError('신청 처리 중 오류가 발생했습니다. 다시 시도해 주세요.')
+    } finally {
+      setSubmitting(false)
     }
   }
 
@@ -84,11 +91,21 @@ export function CourseLinkingPage() {
           <p>추천근거: {course.reasonTags.join(', ')}</p>
 
           <div className="journey-actions">
-            <a className="secondary-btn link-btn" href="https://example.com" rel="noreferrer" target="_blank">
+            <a
+              className="secondary-btn link-btn"
+              href={runtimeConfig.ecampusCourseApplyUrl}
+              rel="noreferrer"
+              target="_blank"
+            >
               이캠퍼스 신청 페이지 열기
             </a>
-            <button className="primary-btn" onClick={() => void requestEnrollment()} type="button">
-              신청 완료 처리
+            <button
+              className="primary-btn"
+              disabled={submitting}
+              onClick={() => void requestEnrollment()}
+              type="button"
+            >
+              {submitting ? '처리 중...' : '신청 완료 처리'}
             </button>
             <Link className="primary-btn link-btn" to="/history">
               이력 확인하기
@@ -96,6 +113,9 @@ export function CourseLinkingPage() {
           </div>
           <p className="hint-text">
             신청 완료 처리 버튼을 누르면 이력 페이지에서 등록 상태를 바로 확인할 수 있습니다.
+          </p>
+          <p className="hint-text">
+            운영 환경에서는 `VITE_ECAMPUS_COURSE_APPLY_URL` 값으로 실제 신청 링크를 연결하세요.
           </p>
         </section>
       )}

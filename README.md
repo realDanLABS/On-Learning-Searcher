@@ -8,6 +8,8 @@ npm install
 npm run dev
 ```
 
+환경 변수는 `.env.example`을 참고해서 설정합니다.
+
 ## 시작 전 핵심
 - 기능별 `git worktree`를 사용합니다.
 - 한 기능은 한 브랜치(한 worktree)에서만 작업합니다.

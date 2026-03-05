@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { submitDiagnosis } from '../../../shared/api/learningApi'
 import { AppShell } from '../../../shared/layouts/AppShell'
@@ -172,6 +172,19 @@ export function DiagnosisPage() {
           </div>
         </section>
       )}
+
+      <section className="hero-card">
+        <h2>진단 가이드</h2>
+        <p>진단 완료 후 추천 과정 선택까지 약 2분 내에 진행할 수 있습니다.</p>
+        <div className="journey-actions">
+          <Link className="secondary-btn link-btn" to="/history">
+            이전 진단/학습 이력 보기
+          </Link>
+          <Link className="secondary-btn link-btn" to="/chatbot">
+            챗봇에게 진단 준비 질문하기
+          </Link>
+        </div>
+      </section>
     </AppShell>
   )
 }

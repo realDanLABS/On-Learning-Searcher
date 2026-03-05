@@ -1,6 +1,11 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-import { getJourneyStage, type JourneyStage } from '../state/learningFlow'
+import {
+  getJourneyStage,
+  subscribeJourneyUpdates,
+  type JourneyStage,
+} from '../state/learningFlow'
 
 const stages: Array<{ key: JourneyStage; label: string }> = [
   { key: 'start', label: '시작' },
@@ -17,7 +22,13 @@ function getNextAction(stage: JourneyStage) {
 }
 
 export function JourneyProgressPanel() {
-  const stage = getJourneyStage()
+  const [stage, setStage] = useState<JourneyStage>(() => getJourneyStage())
+
+  useEffect(() => {
+    const sync = () => setStage(getJourneyStage())
+    return subscribeJourneyUpdates(sync)
+  }, [])
+
   const currentIndex = stages.findIndex((item) => item.key === stage)
   const nextAction = getNextAction(stage)
 
