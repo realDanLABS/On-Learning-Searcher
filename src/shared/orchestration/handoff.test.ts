@@ -3,9 +3,34 @@ import { describe, expect, it } from 'vitest'
 import { getHandoffMessage } from './handoff'
 
 describe('handoff message', () => {
+  it('returns history to diagnosis notice', () => {
+    const result = getHandoffMessage('?from=history', 'diagnosis')
+    expect(result?.kind).toBe('info')
+  })
+
+  it('returns recommendation to diagnosis notice', () => {
+    const result = getHandoffMessage('?from=recommendation', 'diagnosis')
+    expect(result?.kind).toBe('info')
+  })
+
+  it('returns chatbot to diagnosis notice', () => {
+    const result = getHandoffMessage('?from=chatbot', 'diagnosis')
+    expect(result?.kind).toBe('info')
+  })
+
   it('returns diagnosis to recommendation notice', () => {
     const result = getHandoffMessage('?from=diagnosis', 'recommendation')
     expect(result?.kind).toBe('success')
+  })
+
+  it('returns history to recommendation notice', () => {
+    const result = getHandoffMessage('?from=history', 'recommendation')
+    expect(result?.kind).toBe('info')
+  })
+
+  it('returns course-linking to recommendation notice', () => {
+    const result = getHandoffMessage('?from=course-linking', 'recommendation')
+    expect(result?.kind).toBe('info')
   })
 
   it('returns recommendation to course-linking notice', () => {

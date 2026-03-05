@@ -98,7 +98,7 @@ export function RecommendationPage() {
         <section className="hero-card">
           <h2>진단 결과가 필요합니다</h2>
           <p>추천 정확도를 위해 먼저 역량 진단을 완료해 주세요.</p>
-          <Link className="primary-btn link-btn" to="/diagnosis">
+          <Link className="primary-btn link-btn" to="/diagnosis?from=recommendation">
             진단하러 가기
           </Link>
         </section>

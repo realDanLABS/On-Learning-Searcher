@@ -110,7 +110,7 @@ export function CourseLinkingPage() {
   }
 
   const moveToRecommendedStep = () => {
-    guidedNavigate('/recommendation', '/course-linking')
+    guidedNavigate('/recommendation?from=course-linking', '/course-linking')
   }
 
   return (

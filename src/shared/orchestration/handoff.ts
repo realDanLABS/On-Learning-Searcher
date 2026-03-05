@@ -5,14 +5,49 @@ export type HandoffMessage = {
 
 export function getHandoffMessage(
   search: string,
-  page: 'recommendation' | 'course-linking' | 'history' | 'chatbot',
+  page: 'diagnosis' | 'recommendation' | 'course-linking' | 'history' | 'chatbot',
 ): HandoffMessage {
   const from = new URLSearchParams(search).get('from')
+
+  if (page === 'diagnosis' && from === 'history') {
+    return {
+      kind: 'info',
+      text: '이력 페이지에서 진단으로 이동했습니다. 최신 역량 상태를 다시 점검해 보세요.',
+    }
+  }
+
+  if (page === 'diagnosis' && from === 'recommendation') {
+    return {
+      kind: 'info',
+      text: '추천 단계에서 진단으로 돌아왔습니다. 진단을 갱신하면 추천 정확도가 향상됩니다.',
+    }
+  }
+
+  if (page === 'diagnosis' && from === 'chatbot') {
+    return {
+      kind: 'info',
+      text: '챗봇 상담 후 진단으로 이동했습니다. 상담 내용을 반영해 응답을 진행해 보세요.',
+    }
+  }
 
   if (page === 'recommendation' && from === 'diagnosis') {
     return {
       kind: 'success',
       text: '진단이 완료되었습니다. 역량 갭 기반 추천 과정을 확인해 주세요.',
+    }
+  }
+
+  if (page === 'recommendation' && from === 'history') {
+    return {
+      kind: 'info',
+      text: '이력 페이지에서 추천으로 이동했습니다. 다음 성장 단계에 맞는 과정을 확인해 보세요.',
+    }
+  }
+
+  if (page === 'recommendation' && from === 'course-linking') {
+    return {
+      kind: 'info',
+      text: '신청 연동 단계에서 추천으로 돌아왔습니다. 과정을 다시 선택해 진행할 수 있습니다.',
     }
   }
 

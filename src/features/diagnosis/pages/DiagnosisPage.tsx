@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import { submitDiagnosis } from '../../../shared/api/learningApi'
 import { ApiErrorMessage } from '../../../shared/components/ApiErrorMessage'
 import { AppShell } from '../../../shared/layouts/AppShell'
+import { getHandoffMessage } from '../../../shared/orchestration/handoff'
 import { useGuidedNavigate } from '../../../shared/orchestration/useGuidedNavigate'
 import { getUserProfile } from '../../../shared/state/profile'
 import { type AnswerMap, buildSummary } from '../diagnosisResult'
@@ -12,6 +13,7 @@ import { diagnosisQuestions } from '../questions'
 
 export function DiagnosisPage() {
   const navigate = useNavigate()
+  const location = useLocation()
   const guidedNavigate = useGuidedNavigate()
   const [step, setStep] = useState(0)
   const [answers, setAnswers] = useState<AnswerMap>(() => loadDiagnosisDraft())
@@ -94,12 +96,19 @@ export function DiagnosisPage() {
   }
 
   const canGoNext = isFinished || answers[currentQuestion.id] !== undefined
+  const handoff = getHandoffMessage(location.search, 'diagnosis')
 
   return (
     <AppShell
       title="AI 역량 진단"
       description="10문항 기준의 MVP 진단 플로우입니다. 응답은 브라우저에 임시 저장됩니다."
     >
+      {handoff && (
+        <section className="hero-card">
+          <p className={handoff.kind === 'success' ? 'success-text' : 'hint-text'}>{handoff.text}</p>
+        </section>
+      )}
+
       <section className="hero-card diagnosis-progress-card">
         <div className="progress-row">
           <strong>진행률 {progress}%</strong>
