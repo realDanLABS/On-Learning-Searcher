@@ -67,5 +67,40 @@ describe('full journey orchestration', () => {
     expect(auditActions).toContain('course_selected')
     expect(auditActions).toContain('enrollment_submitted')
   })
-})
 
+  it('does not mark journey done when enrollment fails', async () => {
+    setAuthenticated(true)
+    setUserRole('employee')
+    saveUserProfile({
+      employeeId: 'E1002',
+      name: 'Tester2',
+      organization: 'Education',
+    })
+
+    await submitDiagnosis({
+      userId: 'E1002',
+      diagnosedAt: '2026-03-06T01:00:00.000Z',
+      totalScore: 11,
+      maxScore: 20,
+      categoryScores: {
+        digital: 3,
+        leadership: 2,
+        collaboration: 3,
+        problemSolving: 3,
+      },
+      topGaps: ['digital', 'leadership'],
+    })
+
+    const firstCourse = (await fetchRecommendedCourses('all'))[0]
+    await selectRecommendedCourse(firstCourse)
+
+    await submitEnrollment({
+      courseId: firstCourse.courseId,
+      courseTitle: firstCourse.courseTitle,
+      enrollmentRequestedAt: '2026-03-06T01:10:00.000Z',
+      enrollmentStatus: 'failed',
+    })
+
+    expect(await fetchJourneyStage()).toBe('course_selected')
+  })
+})

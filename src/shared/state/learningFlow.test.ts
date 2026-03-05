@@ -102,4 +102,38 @@ describe('learningFlow journey lifecycle', () => {
     expect(events[0]).toHaveProperty('type')
     expect(events[0]).toHaveProperty('label')
   })
+
+  it('keeps stage at course_selected when only failed enrollment exists', () => {
+    saveDiagnosisPayload({
+      userId: 'u3',
+      diagnosedAt: '2026-03-05T02:00:00.000Z',
+      totalScore: 7,
+      maxScore: 10,
+      categoryScores: {
+        digital: 2,
+        leadership: 2,
+        collaboration: 1,
+        problemSolving: 2,
+      },
+      topGaps: ['collaboration', 'digital'],
+    })
+
+    saveSelectedCourse({
+      courseId: 'COL-180',
+      courseTitle: '부서간 협업 문제 해결 워크숍',
+      level: '중급',
+      durationHours: 5,
+      reasonTags: ['collaboration', 'skill-gap'],
+      recommendedBy: 'skill-gap',
+    })
+
+    appendEnrollment({
+      courseId: 'COL-180',
+      courseTitle: '부서간 협업 문제 해결 워크숍',
+      enrollmentRequestedAt: '2026-03-05T02:10:00.000Z',
+      enrollmentStatus: 'failed',
+    })
+
+    expect(getJourneyStage()).toBe('course_selected')
+  })
 })

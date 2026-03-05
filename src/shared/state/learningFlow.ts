@@ -147,9 +147,11 @@ export function getJourneyEvents(): JourneyEvent[] {
 export function getJourneyStage(): JourneyStage {
   const hasDiagnosis = Boolean(getDiagnosisPayload())
   const hasSelectedCourse = Boolean(getSelectedCourse())
-  const hasEnrollment = getEnrollmentRecords().length > 0
+  const hasSuccessfulEnrollment = getEnrollmentRecords().some(
+    (item) => item.enrollmentStatus === 'enrolled',
+  )
 
-  if (hasEnrollment) return 'enrollment_done'
+  if (hasSuccessfulEnrollment) return 'enrollment_done'
   if (hasSelectedCourse) return 'course_selected'
   if (hasDiagnosis) return 'diagnosis_done'
   return 'start'
