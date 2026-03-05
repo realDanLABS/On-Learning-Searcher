@@ -180,3 +180,23 @@ test('stored next intent survives query loss and continues onboarding flow', asy
 
   await expect(page).toHaveURL(/\/diagnosis/)
 })
+
+test('onboarding card actions also auto-advance to diagnosis', async ({ page }) => {
+  await page.goto('/')
+  await page.evaluate(() => {
+    localStorage.clear()
+    sessionStorage.clear()
+  })
+  await page.reload()
+
+  const onboardingCard = page.locator('.feature-card').filter({ hasText: '1단계: 로그인/프로필' })
+  await onboardingCard.getByRole('button', { name: '로그인' }).click()
+  await expect(page.getByText('인증 상태: 로그인됨')).toBeVisible()
+
+  await page.getByLabel('사번').fill('E10333')
+  await page.getByLabel('이름').fill('정하늘')
+  await page.getByLabel('소속').fill('경영지원본부')
+  await onboardingCard.getByRole('button', { name: '프로필 저장' }).click()
+
+  await expect(page).toHaveURL(/\/diagnosis/)
+})

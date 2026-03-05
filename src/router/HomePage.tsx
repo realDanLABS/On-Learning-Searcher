@@ -320,6 +320,34 @@ export function HomePage() {
     }, primaryAction.kind === 'navigate' ? primaryAction.to : null)
   }
 
+  const runOnboardingCardLogin = () => {
+    const result = startLogin()
+    if (result === 'local-success' && hasUserProfile()) {
+      moveToBestNextStep(
+        {
+          authenticated: true,
+          hasProfile: true,
+          stage,
+        },
+        '/diagnosis',
+      )
+    }
+  }
+
+  const runOnboardingCardProfileSave = () => {
+    const saved = submitOnboarding()
+    if (saved) {
+      moveToBestNextStep(
+        {
+          authenticated: true,
+          hasProfile: true,
+          stage,
+        },
+        '/diagnosis',
+      )
+    }
+  }
+
   return (
     <AppShell
       title="온러닝서처"
@@ -454,10 +482,10 @@ export function HomePage() {
           <p>{authenticated ? '로그인 완료' : '로그인이 필요합니다.'}</p>
           <p>{profileReady ? '프로필 저장 완료' : '프로필 저장이 필요합니다.'}</p>
           <div className="journey-actions">
-            <button className="secondary-btn" onClick={startLogin} type="button">
+            <button className="secondary-btn" onClick={runOnboardingCardLogin} type="button">
               {authenticated ? '로그인 상태 확인' : '로그인'}
             </button>
-            <button className="secondary-btn" onClick={submitOnboarding} type="button">
+            <button className="secondary-btn" onClick={runOnboardingCardProfileSave} type="button">
               {profileReady ? '프로필 수정' : '프로필 저장'}
             </button>
           </div>
