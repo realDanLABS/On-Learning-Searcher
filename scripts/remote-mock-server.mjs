@@ -194,6 +194,29 @@ const server = http.createServer(async (req, res) => {
       return
     }
 
+    if (req.method === 'PUT' && url.pathname === '/profile') {
+      const payload = await readJson(req)
+      if (!payload || typeof payload !== 'object') {
+        sendJson(req, res, 400, { error: 'Invalid profile payload' })
+        return
+      }
+      const employeeId = typeof payload.employeeId === 'string' ? payload.employeeId : ''
+      const name = typeof payload.name === 'string' ? payload.name : ''
+      const organization = typeof payload.organization === 'string' ? payload.organization : ''
+      if (!employeeId || !name || !organization) {
+        sendJson(req, res, 400, { error: 'Missing profile fields' })
+        return
+      }
+
+      session = {
+        authenticated: true,
+        role: session.role || 'employee',
+        profile: { employeeId, name, organization },
+      }
+      sendJson(req, res, 200, session.profile)
+      return
+    }
+
     if (req.method === 'GET' && url.pathname === '/diagnosis') {
       sendJson(req, res, 200, diagnosis)
       return

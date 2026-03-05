@@ -21,6 +21,12 @@ paths:
       responses:
         '200':
           description: Auth session payload
+  /profile:
+    put:
+      summary: Upsert current user profile
+      responses:
+        '200':
+          description: Saved profile payload
   /diagnosis:
     post:
       summary: Submit diagnosis result

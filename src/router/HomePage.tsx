@@ -8,6 +8,7 @@ import {
   setForcedApiErrorMode,
 } from '../shared/api/learningApi'
 import { syncAuthSession } from '../shared/api/authApi'
+import { saveProfile } from '../shared/api/profileApi'
 import { getErrorMessage } from '../shared/api/errorMessage'
 import { consumeSessionExpiredNotice } from '../shared/auth/sessionSignals'
 import { runtimeConfig } from '../shared/config/runtime'
@@ -33,7 +34,6 @@ import {
   clearUserProfile,
   getUserProfile,
   hasUserProfile,
-  saveUserProfile,
 } from '../shared/state/profile'
 import { getUserRole, setUserRole, type UserRole } from '../shared/state/session'
 import {
@@ -89,6 +89,7 @@ export function HomePage() {
   const [name, setName] = useState('')
   const [organization, setOrganization] = useState('')
   const [onboardingError, setOnboardingError] = useState<string | null>(null)
+  const [profileSaving, setProfileSaving] = useState(false)
   const [profileReady, setProfileReady] = useState(false)
   const [sessionNotice, setSessionNotice] = useState<string | null>(null)
   const [gateNotice, setGateNotice] = useState<string | null>(null)
@@ -258,7 +259,7 @@ export function HomePage() {
     window.location.reload()
   }
 
-  const submitOnboarding = () => {
+  const submitOnboarding = async () => {
     if (!authenticated) {
       setOnboardingError('로그인 후 프로필을 저장해 주세요.')
       return false
@@ -267,15 +268,26 @@ export function HomePage() {
       setOnboardingError('사번, 이름, 소속을 모두 입력해 주세요.')
       return false
     }
-    saveUserProfile({
-      employeeId: employeeId.trim(),
-      name: name.trim(),
-      organization: organization.trim(),
-    })
-    appendAuditLog('profile_saved', `프로필 저장: ${employeeId.trim()}`)
-    setProfileReady(true)
-    setOnboardingError(null)
-    return true
+    try {
+      setProfileSaving(true)
+      const saved = await saveProfile({
+        employeeId: employeeId.trim(),
+        name: name.trim(),
+        organization: organization.trim(),
+      })
+      setEmployeeId(saved.employeeId)
+      setName(saved.name)
+      setOrganization(saved.organization)
+      appendAuditLog('profile_saved', `프로필 저장: ${saved.employeeId}`)
+      setProfileReady(true)
+      setOnboardingError(null)
+      return true
+    } catch (error) {
+      setOnboardingError(getErrorMessage(error, '프로필 저장 중 오류가 발생했습니다. 다시 시도해 주세요.'))
+      return false
+    } finally {
+      setProfileSaving(false)
+    }
   }
 
   const startLogin = () => {
@@ -331,7 +343,7 @@ export function HomePage() {
     }
   }
 
-  const runPrimaryAction = () => {
+  const runPrimaryAction = async () => {
     if (primaryAction.kind === 'login') {
       const result = startLogin()
       if (result === 'local-success' && profileReady) {
@@ -340,7 +352,7 @@ export function HomePage() {
       return
     }
     if (primaryAction.kind === 'save-profile') {
-      const saved = submitOnboarding()
+      const saved = await submitOnboarding()
       if (saved) {
         moveToBestNextStep({ authenticated: true, hasProfile: true, stage })
       }
@@ -371,8 +383,8 @@ export function HomePage() {
     }
   }
 
-  const runOnboardingCardProfileSave = () => {
-    const saved = submitOnboarding()
+  const runOnboardingCardProfileSave = async () => {
+    const saved = await submitOnboarding()
     if (saved) {
       moveToBestNextStep(
         {
@@ -401,7 +413,7 @@ export function HomePage() {
           연결됩니다.
         </p>
         <div className="journey-actions">
-          <button className="primary-btn" onClick={runPrimaryAction} type="button">
+          <button className="primary-btn" disabled={profileSaving} onClick={() => void runPrimaryAction()} type="button">
             {canStartNext ? `바로 시작: ${primaryAction.label}` : primaryAction.label}
           </button>
           <button
@@ -522,8 +534,13 @@ export function HomePage() {
             <button className="secondary-btn" onClick={runOnboardingCardLogin} type="button">
               {authenticated ? '로그인 상태 확인' : '로그인'}
             </button>
-            <button className="secondary-btn" onClick={runOnboardingCardProfileSave} type="button">
-              {profileReady ? '프로필 수정' : '프로필 저장'}
+            <button
+              className="secondary-btn"
+              disabled={profileSaving}
+              onClick={() => void runOnboardingCardProfileSave()}
+              type="button"
+            >
+              {profileSaving ? '프로필 저장 중...' : profileReady ? '프로필 수정' : '프로필 저장'}
             </button>
           </div>
         </article>
