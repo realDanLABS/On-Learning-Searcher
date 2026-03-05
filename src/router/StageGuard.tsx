@@ -30,7 +30,7 @@ export function StageGuard({
   featureKey,
 }: StageGuardProps) {
   if (featureKey && !isFeatureEnabled(featureKey)) {
-    return <Navigate replace to="/" />
+    return <Navigate replace to="/?gate=feature-disabled" />
   }
 
   const policy: RouteAccessPolicy = {
@@ -48,16 +48,16 @@ export function StageGuard({
   })
 
   if (!allowed && requireAuth && !isAuthenticated()) {
-    return <Navigate replace to="/" />
+    return <Navigate replace to="/?gate=auth-required" />
   }
   if (!allowed && requireProfile && !hasUserProfile()) {
-    return <Navigate replace to="/" />
+    return <Navigate replace to="/?gate=profile-required" />
   }
   if (!allowed && allowedRoles && !allowedRoles.includes(getUserRole())) {
-    return <Navigate replace to="/" />
+    return <Navigate replace to="/?gate=role-denied" />
   }
   if (!allowed) {
-    return <Navigate replace to={getRedirectForStage(minStage)} />
+    return <Navigate replace to={`/?gate=stage-locked&next=${encodeURIComponent(getRedirectForStage(minStage))}`} />
   }
 
   return children

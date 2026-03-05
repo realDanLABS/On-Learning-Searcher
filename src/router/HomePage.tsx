@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import {
   fetchDiagnosis,
@@ -36,6 +36,7 @@ import {
 import { featureRoutes } from './routeConfig'
 
 export function HomePage() {
+  const location = useLocation()
   const navigate = useNavigate()
   const [diagnosis, setDiagnosis] = useState<DiagnosisPayload | null>(null)
   const [stage, setStage] = useState<JourneyStage>('start')
@@ -58,6 +59,7 @@ export function HomePage() {
   const [onboardingError, setOnboardingError] = useState<string | null>(null)
   const [profileReady, setProfileReady] = useState(false)
   const [sessionNotice, setSessionNotice] = useState<string | null>(null)
+  const [gateNotice, setGateNotice] = useState<string | null>(null)
   const [authenticated, setAuthenticatedState] = useState(false)
 
   useEffect(() => {
@@ -91,6 +93,36 @@ export function HomePage() {
     }
     void run()
   }, [])
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search)
+    const gate = params.get('gate')
+    if (!gate) {
+      setGateNotice(null)
+      return
+    }
+    if (gate === 'auth-required') {
+      setGateNotice('로그인이 필요한 단계입니다. 로그인 후 다시 진행해 주세요.')
+      return
+    }
+    if (gate === 'profile-required') {
+      setGateNotice('프로필 저장이 필요한 단계입니다. 사번/이름/소속을 먼저 저장해 주세요.')
+      return
+    }
+    if (gate === 'role-denied') {
+      setGateNotice('현재 권한으로 접근할 수 없는 페이지입니다.')
+      return
+    }
+    if (gate === 'feature-disabled') {
+      setGateNotice('운영 정책에 의해 현재 기능이 비활성화되어 있습니다.')
+      return
+    }
+    if (gate === 'stage-locked') {
+      setGateNotice('현재 단계에서는 접근할 수 없습니다. 안내된 순서대로 진행해 주세요.')
+      return
+    }
+    setGateNotice(null)
+  }, [location.search])
   const nextAction = getNextActionStatus({
     authenticated,
     hasProfile: profileReady,
@@ -202,6 +234,10 @@ export function HomePage() {
       submitOnboarding()
       return
     }
+    if (!nextAction.enabled) {
+      setOnboardingError(nextAction.reason ?? '현재 단계에서는 이동할 수 없습니다.')
+      return
+    }
     navigate(primaryAction.to)
   }
 
@@ -212,6 +248,7 @@ export function HomePage() {
     >
       <section className="hero-card">
         <h2>학습 여정 시작</h2>
+        {gateNotice && <p className="error-text">{gateNotice}</p>}
         {sessionNotice && <p className="error-text">{sessionNotice}</p>}
         {loadError && <p className="error-text">{loadError}</p>}
         {loading && <p className="hint-text">로딩 중...</p>}
