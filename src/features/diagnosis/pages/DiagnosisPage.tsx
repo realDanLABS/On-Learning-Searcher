@@ -6,27 +6,17 @@ import { getErrorMessage } from '../../../shared/api/errorMessage'
 import { AppShell } from '../../../shared/layouts/AppShell'
 import { getUserProfile } from '../../../shared/state/profile'
 import { type AnswerMap, buildSummary } from '../diagnosisResult'
+import { clearDiagnosisDraft, loadDiagnosisDraft, saveDiagnosisDraft } from '../draftStorage'
 import { diagnosisQuestions } from '../questions'
-
-const STORAGE_KEY = 'on-learning-diagnosis-answers-v1'
 
 export function DiagnosisPage() {
   const navigate = useNavigate()
   const [step, setStep] = useState(0)
-  const [answers, setAnswers] = useState<AnswerMap>(() => {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    if (!raw) return {}
-    try {
-      return JSON.parse(raw) as AnswerMap
-    } catch {
-      localStorage.removeItem(STORAGE_KEY)
-      return {}
-    }
-  })
+  const [answers, setAnswers] = useState<AnswerMap>(() => loadDiagnosisDraft())
   const [submitError, setSubmitError] = useState<string | null>(null)
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(answers))
+    saveDiagnosisDraft(answers)
   }, [answers])
 
   const currentQuestion = diagnosisQuestions[step]
@@ -79,7 +69,7 @@ export function DiagnosisPage() {
   const resetDiagnosis = () => {
     setStep(0)
     setAnswers({})
-    localStorage.removeItem(STORAGE_KEY)
+    clearDiagnosisDraft()
   }
 
   const moveToRecommendation = async () => {
@@ -94,6 +84,7 @@ export function DiagnosisPage() {
         categoryScores,
         topGaps,
       })
+      clearDiagnosisDraft()
       navigate('/recommendation?from=diagnosis')
     } catch (error) {
       setSubmitError(getErrorMessage(error, '진단 결과 저장 중 오류가 발생했습니다. 다시 시도해 주세요.'))

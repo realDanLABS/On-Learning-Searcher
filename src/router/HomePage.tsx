@@ -35,6 +35,7 @@ import {
   type JourneyStage,
 } from '../shared/state/learningFlow'
 import { featureRoutes } from './routeConfig'
+import { clearDiagnosisDraft, hasDiagnosisDraft } from '../features/diagnosis/draftStorage'
 
 export function HomePage() {
   const location = useLocation()
@@ -63,6 +64,7 @@ export function HomePage() {
   const [gateNotice, setGateNotice] = useState<string | null>(null)
   const [gateNextPath, setGateNextPath] = useState<string | null>(null)
   const [authenticated, setAuthenticatedState] = useState(false)
+  const [diagnosisDraft, setDiagnosisDraft] = useState(false)
   const debugEnabled =
     runtimeConfig.debugTools || new URLSearchParams(location.search).get('debug') === '1'
 
@@ -82,6 +84,7 @@ export function HomePage() {
         setRole(getUserRole())
         setApiErrorMode(isForcedApiErrorMode())
         setAuthenticatedState(isAuthenticated())
+        setDiagnosisDraft(hasDiagnosisDraft())
         const profile = getUserProfile()
         if (profile) {
           setEmployeeId(profile.employeeId)
@@ -128,6 +131,7 @@ export function HomePage() {
   const canGoRecommendation = stage !== 'start'
   const canGoEnrollment = stage === 'course_selected' || stage === 'enrollment_done'
   const canGoHistory = stage !== 'start'
+  const canResumeDiagnosis = canGoDiagnosis && stage === 'start' && diagnosisDraft
   const historyRoute = featureRoutes.find((route) => route.path === '/history')
   const courseLinkingRoute = featureRoutes.find((route) => route.path === '/course-linking')
   const canOpenHistory =
@@ -150,6 +154,7 @@ export function HomePage() {
   const resetJourney = () => {
     appendAuditLog('journey_reset', '사용자 수동 초기화')
     clearJourneyData()
+    clearDiagnosisDraft()
     clearUserProfile()
     window.location.reload()
   }
@@ -262,6 +267,11 @@ export function HomePage() {
               API 오류 모드: {apiErrorMode ? 'ON' : 'OFF'}
             </button>
           )}
+          {canResumeDiagnosis && (
+            <button className="secondary-btn" onClick={() => navigate('/diagnosis')} type="button">
+              미완료 진단 이어하기
+            </button>
+          )}
         </div>
         {onboardingError && <p className="error-text">{onboardingError}</p>}
         {!profileReady && (
@@ -269,6 +279,9 @@ export function HomePage() {
         )}
         {blockers.length > 0 && <p className="hint-text">진입 조건: {blockers.join(' / ')}</p>}
         {nextAction.reason && <p className="hint-text">{nextAction.reason}</p>}
+        {canResumeDiagnosis && (
+          <p className="hint-text">이전에 진행하던 진단 응답이 저장되어 있습니다. 이어서 완료할 수 있습니다.</p>
+        )}
         {gateNextPath && (
           <div className="journey-actions">
             <button className="secondary-btn" onClick={() => navigate(gateNextPath)} type="button">
