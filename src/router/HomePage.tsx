@@ -1,10 +1,19 @@
 import { Link } from 'react-router-dom'
 
 import { AppShell } from '../shared/layouts/AppShell'
-import { getDiagnosisPayload } from '../shared/state/learningFlow'
+import { getDiagnosisPayload, getJourneyStage } from '../shared/state/learningFlow'
 
 export function HomePage() {
   const diagnosis = getDiagnosisPayload()
+  const stage = getJourneyStage()
+  const nextAction =
+    stage === 'start'
+      ? { to: '/diagnosis', label: '역량 진단 시작' }
+      : stage === 'diagnosis_done'
+        ? { to: '/recommendation', label: '추천 과정 확인' }
+        : stage === 'course_selected'
+          ? { to: '/course-linking', label: '신청 진행하기' }
+          : { to: '/history', label: '이력 확인하기' }
 
   return (
     <AppShell
@@ -18,13 +27,14 @@ export function HomePage() {
           연결됩니다.
         </p>
         <div className="journey-actions">
-          <Link className="primary-btn link-btn" to="/diagnosis">
-            역량 진단 시작
+          <Link className="primary-btn link-btn" to={nextAction.to}>
+            {nextAction.label}
           </Link>
           <Link className="secondary-btn link-btn" to="/recommendation">
             추천 과정 보기
           </Link>
         </div>
+        <p className="hint-text">현재 단계: {stage}</p>
       </section>
 
       <section className="feature-grid">

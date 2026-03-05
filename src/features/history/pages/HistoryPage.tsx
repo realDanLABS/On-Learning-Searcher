@@ -4,11 +4,13 @@ import { AppShell } from '../../../shared/layouts/AppShell'
 import {
   getDiagnosisPayload,
   getEnrollmentRecords,
+  getJourneyEvents,
 } from '../../../shared/state/learningFlow'
 
 export function HistoryPage() {
   const diagnosis = getDiagnosisPayload()
   const enrollments = getEnrollmentRecords()
+  const events = getJourneyEvents()
 
   return (
     <AppShell
@@ -56,6 +58,22 @@ export function HistoryPage() {
               ))}
             </tbody>
           </table>
+        )}
+      </section>
+
+      <section className="hero-card">
+        <h2>학습 여정 타임라인</h2>
+        {events.length === 0 ? (
+          <p>아직 기록된 이벤트가 없습니다.</p>
+        ) : (
+          <ul className="timeline-list">
+            {events.map((event) => (
+              <li key={event.id}>
+                <strong>{event.label}</strong>
+                <span>{new Date(event.at).toLocaleString('ko-KR')}</span>
+              </li>
+            ))}
+          </ul>
         )}
       </section>
     </AppShell>
