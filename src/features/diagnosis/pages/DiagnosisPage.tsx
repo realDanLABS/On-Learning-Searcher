@@ -1,19 +1,19 @@
 import { useEffect, useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import { AppShell } from '../../../shared/layouts/AppShell'
-import { buildSummary, type AnswerMap } from '../diagnosisResult'
+import { saveDiagnosisPayload } from '../../../shared/state/learningFlow'
+import { type AnswerMap, buildSummary } from '../diagnosisResult'
 import { diagnosisQuestions } from '../questions'
 
 const STORAGE_KEY = 'on-learning-diagnosis-answers-v1'
 
 export function DiagnosisPage() {
+  const navigate = useNavigate()
   const [step, setStep] = useState(0)
   const [answers, setAnswers] = useState<AnswerMap>(() => {
     const raw = localStorage.getItem(STORAGE_KEY)
-    if (!raw) {
-      return {}
-    }
-
+    if (!raw) return {}
     try {
       return JSON.parse(raw) as AnswerMap
     } catch {
@@ -35,8 +35,27 @@ export function DiagnosisPage() {
   )
 
   const progress = Math.round((answeredCount / diagnosisQuestions.length) * 100)
-
   const summary = useMemo(() => buildSummary(answers), [answers])
+
+  const categoryScores = useMemo(
+    () =>
+      diagnosisQuestions.reduce(
+        (acc, q) => {
+          const key = q.category === 'problem-solving' ? 'problemSolving' : q.category
+          acc[key] += answers[q.id] ?? 0
+          return acc
+        },
+        { digital: 0, leadership: 0, collaboration: 0, problemSolving: 0 },
+      ),
+    [answers],
+  )
+
+  const topGaps = useMemo(() => {
+    return Object.entries(categoryScores)
+      .sort((a, b) => a[1] - b[1])
+      .slice(0, 2)
+      .map(([key]) => key)
+  }, [categoryScores])
 
   const selectAnswer = (value: number) => {
     setAnswers((prev) => ({ ...prev, [currentQuestion.id]: value }))
@@ -60,8 +79,19 @@ export function DiagnosisPage() {
     localStorage.removeItem(STORAGE_KEY)
   }
 
-  const canGoNext =
-    isFinished || answers[currentQuestion.id] !== undefined
+  const moveToRecommendation = () => {
+    saveDiagnosisPayload({
+      userId: 'employee-demo',
+      diagnosedAt: new Date().toISOString(),
+      totalScore: summary.totalScore,
+      maxScore: summary.maxScore,
+      categoryScores,
+      topGaps,
+    })
+    navigate('/recommendation')
+  }
+
+  const canGoNext = isFinished || answers[currentQuestion.id] !== undefined
 
   return (
     <AppShell
@@ -103,20 +133,10 @@ export function DiagnosisPage() {
           </div>
 
           <div className="diagnosis-actions">
-            <button
-              className="secondary-btn"
-              disabled={step === 0}
-              onClick={goPrev}
-              type="button"
-            >
+            <button className="secondary-btn" disabled={step === 0} onClick={goPrev} type="button">
               이전
             </button>
-            <button
-              className="primary-btn"
-              disabled={!canGoNext}
-              onClick={goNext}
-              type="button"
-            >
+            <button className="primary-btn" disabled={!canGoNext} onClick={goNext} type="button">
               {step === diagnosisQuestions.length - 1 ? '결과 보기' : '다음'}
             </button>
           </div>
@@ -136,7 +156,10 @@ export function DiagnosisPage() {
             <button className="secondary-btn" onClick={goPrev} type="button">
               마지막 문항으로
             </button>
-            <button className="primary-btn" onClick={resetDiagnosis} type="button">
+            <button className="primary-btn" onClick={moveToRecommendation} type="button">
+              추천 과정 보기
+            </button>
+            <button className="secondary-btn" onClick={resetDiagnosis} type="button">
               처음부터 다시
             </button>
           </div>
