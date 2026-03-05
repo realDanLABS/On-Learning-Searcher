@@ -73,6 +73,7 @@ export function getDiagnosisPayload(): DiagnosisPayload | null {
   try {
     return JSON.parse(raw) as DiagnosisPayload
   } catch {
+    localStorage.removeItem(KEY_DIAGNOSIS)
     return null
   }
 }
@@ -94,6 +95,7 @@ export function getSelectedCourse(): RecommendedCourse | null {
   try {
     return JSON.parse(raw) as RecommendedCourse
   } catch {
+    localStorage.removeItem(KEY_SELECTED_COURSE)
     return null
   }
 }
@@ -121,8 +123,14 @@ export function getEnrollmentRecords(): EnrollmentRecord[] {
   const raw = localStorage.getItem(KEY_ENROLLMENT)
   if (!raw) return []
   try {
-    return JSON.parse(raw) as EnrollmentRecord[]
+    const parsed = JSON.parse(raw)
+    if (!Array.isArray(parsed)) {
+      localStorage.removeItem(KEY_ENROLLMENT)
+      return []
+    }
+    return parsed as EnrollmentRecord[]
   } catch {
+    localStorage.removeItem(KEY_ENROLLMENT)
     return []
   }
 }
@@ -131,7 +139,12 @@ export function getJourneyEvents(): JourneyEvent[] {
   const raw = localStorage.getItem(KEY_JOURNEY_EVENTS)
   if (!raw) return []
   try {
-    const all = JSON.parse(raw) as JourneyEvent[]
+    const parsed = JSON.parse(raw)
+    if (!Array.isArray(parsed)) {
+      localStorage.removeItem(KEY_JOURNEY_EVENTS)
+      return []
+    }
+    const all = parsed as JourneyEvent[]
     const cutoff = new Date()
     cutoff.setDate(cutoff.getDate() - RETENTION_DAYS)
     const kept = all.filter((item) => new Date(item.at) >= cutoff)
@@ -140,6 +153,7 @@ export function getJourneyEvents(): JourneyEvent[] {
     }
     return kept
   } catch {
+    localStorage.removeItem(KEY_JOURNEY_EVENTS)
     return []
   }
 }

@@ -3,9 +3,11 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import {
   appendEnrollment,
   clearJourneyData,
+  getDiagnosisPayload,
   getEnrollmentRecords,
   getJourneyEvents,
   getJourneyStage,
+  getSelectedCourse,
   saveDiagnosisPayload,
   saveSelectedCourse,
   type DiagnosisPayload,
@@ -135,5 +137,25 @@ describe('learningFlow journey lifecycle', () => {
     })
 
     expect(getJourneyStage()).toBe('course_selected')
+  })
+
+  it('removes corrupted diagnosis/selected-course payloads', () => {
+    localStorage.setItem('on_learning_diagnosis_payload_v1', '{broken')
+    localStorage.setItem('on_learning_selected_course_v1', '{broken')
+
+    expect(getDiagnosisPayload()).toBeNull()
+    expect(getSelectedCourse()).toBeNull()
+    expect(localStorage.getItem('on_learning_diagnosis_payload_v1')).toBeNull()
+    expect(localStorage.getItem('on_learning_selected_course_v1')).toBeNull()
+  })
+
+  it('removes corrupted list payloads for enrollments/events', () => {
+    localStorage.setItem('on_learning_enrollment_records_v1', '{"invalid":true}')
+    localStorage.setItem('on_learning_journey_events_v1', '{"invalid":true}')
+
+    expect(getEnrollmentRecords()).toEqual([])
+    expect(getJourneyEvents()).toEqual([])
+    expect(localStorage.getItem('on_learning_enrollment_records_v1')).toBeNull()
+    expect(localStorage.getItem('on_learning_journey_events_v1')).toBeNull()
   })
 })
