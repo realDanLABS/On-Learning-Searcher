@@ -47,3 +47,6 @@ src/
 ## 협업 템플릿
 - PR 템플릿: `.github/pull_request_template.md`
 - 이슈 템플릿: `.github/ISSUE_TEMPLATE/*`
+
+## Agent Policy
+- Orchestrator lock: [AGENTS.md](AGENTS.md)
