@@ -27,7 +27,12 @@ export function RecommendationPage() {
     try {
       setLoadError(null)
       setLoading(true)
-      setDiagnosis(await fetchDiagnosis())
+      const diagnosisPayload = await fetchDiagnosis()
+      setDiagnosis(diagnosisPayload)
+      if (!diagnosisPayload) {
+        setCourses([])
+        return
+      }
       setCourses(await fetchRecommendedCourses(levelFilter))
     } catch (error) {
       setLoadError(getErrorMessage(error, '추천 데이터를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.'))

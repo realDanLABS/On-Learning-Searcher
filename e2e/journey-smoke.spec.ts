@@ -365,3 +365,25 @@ test('chatbot monthly-plan CTA routes to enrollment when course is selected', as
   await page.getByRole('link', { name: '현재 단계 기준 계획 실행' }).last().click()
   await expect(page).toHaveURL(/\/course-linking/)
 })
+
+test('recommendation handles missing diagnosis safely when selected-course state is corrupted', async ({ page }) => {
+  await prepareLoggedInProfile(page)
+  await page.evaluate(() => {
+    localStorage.setItem(
+      'on_learning_selected_course_v1',
+      JSON.stringify({
+        courseId: 'DIG-101',
+        courseTitle: '디지털 생산성 툴 실무',
+        level: '입문',
+        durationHours: 6,
+        reasonTags: ['digital', 'skill-gap'],
+        recommendedBy: 'skill-gap',
+      }),
+    )
+    localStorage.removeItem('on_learning_diagnosis_payload_v1')
+  })
+  await page.goto('/recommendation')
+
+  await expect(page.getByRole('heading', { name: '진단 결과가 필요합니다' })).toBeVisible()
+  await expect(page.getByRole('button', { name: '신청하기' })).toHaveCount(0)
+})
