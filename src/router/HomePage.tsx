@@ -1,30 +1,51 @@
 import { Link } from 'react-router-dom'
 
 import { AppShell } from '../shared/layouts/AppShell'
-import { featureRoutes } from './routeConfig'
+import { getDiagnosisPayload } from '../shared/state/learningFlow'
 
 export function HomePage() {
+  const diagnosis = getDiagnosisPayload()
+
   return (
     <AppShell
-      title="온러닝서처 Foundation"
-      description="PRD 핵심 기능을 병렬 개발할 수 있도록 기본 골격을 준비한 상태입니다."
+      title="온러닝서처"
+      description="역량 진단부터 추천 학습 신청까지 한 번에 이어지는 학습 여정을 제공합니다."
     >
       <section className="hero-card">
-        <h2>프로젝트 시작 상태</h2>
+        <h2>학습 여정 시작</h2>
         <p>
-          현재 화면은 Foundation 브랜치에서 만든 공통 셸입니다. 각 기능 브랜치에서
-          이 레이아웃을 재사용해 UI/기능을 확장하면 됩니다.
+          1) 역량 진단을 완료하면 2) 맞춤 과정 추천이 생성되고, 3) 바로 교육 신청까지
+          연결됩니다.
         </p>
+        <div className="journey-actions">
+          <Link className="primary-btn link-btn" to="/diagnosis">
+            역량 진단 시작
+          </Link>
+          <Link className="secondary-btn link-btn" to="/recommendation">
+            추천 과정 보기
+          </Link>
+        </div>
       </section>
 
       <section className="feature-grid">
-        {featureRoutes.map((route) => (
-          <article className="feature-card" key={route.path}>
-            <h3>{route.label}</h3>
-            <p>{route.description}</p>
-            <Link to={route.path}>기능 페이지 열기</Link>
-          </article>
-        ))}
+        <article className="feature-card">
+          <h3>현재 진단 상태</h3>
+          {diagnosis ? (
+            <p>
+              총점 {diagnosis.totalScore}/{diagnosis.maxScore}, 최근 진단일{' '}
+              {new Date(diagnosis.diagnosedAt).toLocaleDateString('ko-KR')}
+            </p>
+          ) : (
+            <p>아직 진단 결과가 없습니다. 먼저 진단을 시작해 주세요.</p>
+          )}
+          <Link to="/history">학습 이력 확인</Link>
+        </article>
+
+        <article className="feature-card">
+          <h3>추천 학습 흐름</h3>
+          <p>진단 결과의 역량 갭을 기준으로 추천 과정과 신청 버튼을 제공합니다.</p>
+          <Link to="/course-linking">신청 연동 페이지</Link>
+        </article>
       </section>
     </AppShell>
   )
