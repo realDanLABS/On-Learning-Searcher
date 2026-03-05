@@ -40,7 +40,12 @@ export function getAuditLogs(): AuditRecord[] {
   const raw = localStorage.getItem(KEY_AUDIT_LOGS)
   if (!raw) return []
   try {
-    const all = JSON.parse(raw) as AuditRecord[]
+    const parsed = JSON.parse(raw)
+    if (!Array.isArray(parsed)) {
+      localStorage.removeItem(KEY_AUDIT_LOGS)
+      return []
+    }
+    const all = parsed as AuditRecord[]
     const cutoff = new Date()
     cutoff.setDate(cutoff.getDate() - RETENTION_DAYS)
     const kept = all.filter((item) => new Date(item.at) >= cutoff)
@@ -49,6 +54,7 @@ export function getAuditLogs(): AuditRecord[] {
     }
     return kept
   } catch {
+    localStorage.removeItem(KEY_AUDIT_LOGS)
     return []
   }
 }

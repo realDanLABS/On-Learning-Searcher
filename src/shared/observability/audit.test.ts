@@ -14,4 +14,16 @@ describe('audit logs', () => {
     expect(logs[0].action).toBe('login')
     expect(logs[0].detail.includes('E****12')).toBe(true)
   })
+
+  it('removes malformed json payload', () => {
+    localStorage.setItem('on_learning_audit_logs_v1', '{broken')
+    expect(getAuditLogs()).toEqual([])
+    expect(localStorage.getItem('on_learning_audit_logs_v1')).toBeNull()
+  })
+
+  it('removes non-array payload', () => {
+    localStorage.setItem('on_learning_audit_logs_v1', '{"invalid":true}')
+    expect(getAuditLogs()).toEqual([])
+    expect(localStorage.getItem('on_learning_audit_logs_v1')).toBeNull()
+  })
 })
