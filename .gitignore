@@ -36,3 +36,7 @@ lerna-debug.log*
 
 # local git worktree directories
 worktrees/
+
+# Playwright artifacts
+playwright-report/
+test-results/

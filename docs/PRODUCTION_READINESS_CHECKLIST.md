@@ -6,7 +6,7 @@
 - [x] Responsive QA page and baseline mobile behavior
 
 ## 2. Security & Privacy
-- [x] SSO (SAML/OIDC) integration
+- [x] SSO (SAML/OIDC) integration path and callback route
 - [x] RBAC (employee / manager / admin)
 - [x] PII masking and retention policy
 - [x] Audit logging for diagnosis/recommendation/enrollment actions
@@ -15,11 +15,12 @@
 - [ ] Replace localStorage contracts with backend API
 - [ ] Persist diagnosis payload and recommendation responses server-side
 - [ ] Enrollment status sync from e-campus API
-- [ ] Retry/timeout/fallback policy for external APIs
+- [x] Retry/timeout/fallback policy for external APIs
 
 ## 4. Reliability
 - [x] CI lint/build on PR and main
-- [x] E2E smoke test in CI
+- [x] Unit/integration tests for journey orchestration
+- [x] Browser E2E smoke test in CI (`e2e/journey-smoke.spec.ts`)
 - [x] Error tracking integration (Sentry etc.)
 - [x] Feature flags for safe rollout
 
@@ -32,4 +33,4 @@
 - [ ] Staging environment sign-off
 - [ ] Security review sign-off
 - [ ] UAT sign-off from HR/L&D stakeholders
-- [ ] Rollback runbook prepared
+- [x] Rollback runbook prepared
