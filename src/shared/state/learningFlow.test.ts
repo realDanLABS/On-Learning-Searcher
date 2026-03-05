@@ -207,4 +207,22 @@ describe('learningFlow journey lifecycle', () => {
     expect(localStorage.getItem('on_learning_enrollment_records_v1')).toBeNull()
     expect(localStorage.getItem('on_learning_journey_events_v1')).toBeNull()
   })
+
+  it('auto-recovers selected course when diagnosis is missing', () => {
+    localStorage.setItem(
+      'on_learning_selected_course_v1',
+      JSON.stringify({
+        courseId: 'DIG-101',
+        courseTitle: '디지털 생산성 툴 실무',
+        level: '입문',
+        durationHours: 6,
+        reasonTags: ['digital', 'skill-gap'],
+        recommendedBy: 'skill-gap',
+      }),
+    )
+    localStorage.removeItem('on_learning_diagnosis_payload_v1')
+
+    expect(getJourneyStage()).toBe('start')
+    expect(localStorage.getItem('on_learning_selected_course_v1')).toBeNull()
+  })
 })

@@ -161,8 +161,14 @@ export function getJourneyEvents(): JourneyEvent[] {
 }
 
 export function getJourneyStage(): JourneyStage {
-  const hasDiagnosis = Boolean(getDiagnosisPayload())
-  const hasSelectedCourse = Boolean(getSelectedCourse())
+  const diagnosis = getDiagnosisPayload()
+  const selectedCourse = getSelectedCourse()
+  const hasDiagnosis = Boolean(diagnosis)
+  if (!hasDiagnosis && selectedCourse) {
+    // Selected course without diagnosis is an inconsistent state; recover automatically.
+    localStorage.removeItem(KEY_SELECTED_COURSE)
+  }
+  const hasSelectedCourse = hasDiagnosis && Boolean(selectedCourse)
   const hasSuccessfulEnrollment = hasSelectedCourse && getEnrollmentRecords().some(
     (item) => item.enrollmentStatus === 'enrolled',
   )

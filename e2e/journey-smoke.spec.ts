@@ -397,6 +397,7 @@ test('recommendation handles missing diagnosis safely when selected-course state
   })
   await page.goto('/recommendation')
 
-  await expect(page.getByRole('heading', { name: '진단 결과가 필요합니다' })).toBeVisible()
-  await expect(page.getByRole('button', { name: '신청하기' })).toHaveCount(0)
+  await expect(page).toHaveURL(/\/\?gate=stage-locked&next=%2Fdiagnosis/)
+  await page.getByRole('button', { name: '권장 페이지로 이동' }).click()
+  await expect(page).toHaveURL(/\/diagnosis/)
 })
