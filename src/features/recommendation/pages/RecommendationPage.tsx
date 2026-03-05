@@ -172,7 +172,7 @@ export function RecommendationPage() {
               >
                 신청 연동 바로가기
               </button>
-              <Link className="secondary-btn link-btn" to="/chatbot">
+              <Link className="secondary-btn link-btn" to="/chatbot?from=recommendation">
                 AI 상담 먼저 보기
               </Link>
             </div>

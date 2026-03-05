@@ -176,7 +176,7 @@ export function DiagnosisPage() {
           <button className="secondary-btn" onClick={() => guidedNavigate('/history?from=diagnosis')} type="button">
             이전 진단/학습 이력 보기
           </button>
-          <Link className="secondary-btn link-btn" to="/chatbot">
+          <Link className="secondary-btn link-btn" to="/chatbot?from=diagnosis">
             챗봇에게 진단 준비 질문하기
           </Link>
         </div>

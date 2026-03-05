@@ -106,7 +106,7 @@ export function HistoryPage() {
           </>
         ) : (
           <p>
-            진단 데이터가 없습니다. <Link to="/diagnosis">진단 시작하기</Link>
+            진단 데이터가 없습니다. <Link to="/diagnosis?from=history">진단 시작하기</Link>
           </p>
         )}
       </section>
@@ -115,7 +115,7 @@ export function HistoryPage() {
         <h2>신청/수강 이력</h2>
         {enrollments.length === 0 ? (
           <p>
-            신청 이력이 없습니다. <Link to="/recommendation">추천 과정 보기</Link>
+            신청 이력이 없습니다. <Link to="/recommendation?from=history">추천 과정 보기</Link>
           </p>
         ) : (
           <table className="history-table">
@@ -171,10 +171,10 @@ export function HistoryPage() {
       <section className="hero-card">
         <h2>다음 액션</h2>
         <div className="journey-actions">
-          <Link className="primary-btn link-btn" to="/chatbot">
+          <Link className="primary-btn link-btn" to="/chatbot?from=history">
             AI 상담 이어가기
           </Link>
-          <Link className="secondary-btn link-btn" to="/diagnosis">
+          <Link className="secondary-btn link-btn" to="/diagnosis?from=history">
             다시 진단 시작
           </Link>
           <button className="secondary-btn" onClick={resetJourney} type="button">

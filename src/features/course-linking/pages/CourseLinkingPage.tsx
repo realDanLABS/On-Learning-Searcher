@@ -148,7 +148,7 @@ export function CourseLinkingPage() {
             <button className="primary-btn" onClick={moveToRecommendedStep} type="button">
               권장 단계로 이동
             </button>
-            <Link className="secondary-btn link-btn" to="/recommendation">
+            <Link className="secondary-btn link-btn" to="/recommendation?from=course-linking">
               추천 페이지로 이동
             </Link>
           </div>
@@ -166,7 +166,7 @@ export function CourseLinkingPage() {
               <button className="secondary-btn" onClick={resetFailedCallback} type="button">
                 복귀 결과 다시 확인
               </button>
-              <Link className="secondary-btn link-btn" to="/recommendation?from=diagnosis">
+              <Link className="secondary-btn link-btn" to="/recommendation?from=course-linking">
                 추천 페이지로 돌아가기
               </Link>
             </div>

@@ -3,7 +3,10 @@ export type HandoffMessage = {
   text: string
 } | null
 
-export function getHandoffMessage(search: string, page: 'recommendation' | 'course-linking' | 'history'): HandoffMessage {
+export function getHandoffMessage(
+  search: string,
+  page: 'recommendation' | 'course-linking' | 'history' | 'chatbot',
+): HandoffMessage {
   const from = new URLSearchParams(search).get('from')
 
   if (page === 'recommendation' && from === 'diagnosis') {
@@ -59,6 +62,27 @@ export function getHandoffMessage(search: string, page: 'recommendation' | 'cour
     return {
       kind: 'info',
       text: '챗봇 상담에서 이력으로 이동했습니다. 상담 제안과 실제 신청 이력을 함께 점검해 보세요.',
+    }
+  }
+
+  if (page === 'chatbot' && from === 'diagnosis') {
+    return {
+      kind: 'info',
+      text: '진단 단계에서 상담으로 이동했습니다. 진단 결과를 바탕으로 학습 전략을 질문해 보세요.',
+    }
+  }
+
+  if (page === 'chatbot' && from === 'recommendation') {
+    return {
+      kind: 'info',
+      text: '추천 단계에서 상담으로 이동했습니다. 추천 근거와 우선순위를 함께 점검해 보세요.',
+    }
+  }
+
+  if (page === 'chatbot' && from === 'history') {
+    return {
+      kind: 'info',
+      text: '이력 페이지에서 상담으로 이동했습니다. 최근 수강 이력 기반 다음 학습 계획을 제안합니다.',
     }
   }
 

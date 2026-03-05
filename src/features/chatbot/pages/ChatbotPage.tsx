@@ -1,8 +1,9 @@
 import { useMemo, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 import { AppShell } from '../../../shared/layouts/AppShell'
 import { appendAuditLog } from '../../../shared/observability/audit'
+import { getHandoffMessage } from '../../../shared/orchestration/handoff'
 import { getNextActionStatus } from '../../../shared/orchestration/nextAction'
 import { resolveBestReachablePath } from '../../../shared/orchestration/smartPath'
 import { isAuthenticated } from '../../../shared/state/auth'
@@ -26,6 +27,7 @@ type ChatMessage = {
 const promptOptions = ['내 부족 역량 알려줘', '추천 이유 설명해줘', '이번 달 학습계획 제안해줘']
 
 export function ChatbotPage() {
+  const location = useLocation()
   const diagnosis = getDiagnosisPayload()
   const enrollments = getEnrollmentRecords()
   const journeyStage = getJourneyStage()
@@ -45,6 +47,7 @@ export function ChatbotPage() {
     },
   ])
   const idRef = useRef(1)
+  const handoff = getHandoffMessage(location.search, 'chatbot')
 
   const resolveGuidedPath = (preferredPath: string) =>
     resolveBestReachablePath({
@@ -104,6 +107,12 @@ export function ChatbotPage() {
       title="AI 챗봇 상담"
       description="진단/추천/이력 데이터를 바탕으로 학습 방향을 안내합니다."
     >
+      {handoff && (
+        <section className="hero-card">
+          <p className={handoff.kind === 'success' ? 'success-text' : 'hint-text'}>{handoff.text}</p>
+        </section>
+      )}
+
       <section className="hero-card">
         <h2>빠른 질문</h2>
         <div className="journey-actions">

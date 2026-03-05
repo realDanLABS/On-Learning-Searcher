@@ -43,6 +43,21 @@ describe('handoff message', () => {
     expect(result?.kind).toBe('info')
   })
 
+  it('returns diagnosis to chatbot notice', () => {
+    const result = getHandoffMessage('?from=diagnosis', 'chatbot')
+    expect(result?.kind).toBe('info')
+  })
+
+  it('returns recommendation to chatbot notice', () => {
+    const result = getHandoffMessage('?from=recommendation', 'chatbot')
+    expect(result?.kind).toBe('info')
+  })
+
+  it('returns history to chatbot notice', () => {
+    const result = getHandoffMessage('?from=history', 'chatbot')
+    expect(result?.kind).toBe('info')
+  })
+
   it('returns null when no handoff', () => {
     expect(getHandoffMessage('', 'history')).toBeNull()
   })
