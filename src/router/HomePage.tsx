@@ -48,6 +48,25 @@ import { featureRoutes } from './routeConfig'
 import { clearDiagnosisDraft, hasDiagnosisDraft } from '../features/diagnosis/draftStorage'
 import { SkillGapPanel } from '../shared/components/SkillGapPanel'
 
+function isNonEmpty(value: string) {
+  return value.trim().length > 0
+}
+
+function isConfiguredHttpUrl(value: string) {
+  if (!isNonEmpty(value)) return false
+  try {
+    const parsed = new URL(value)
+    return parsed.protocol === 'http:' || parsed.protocol === 'https:'
+  } catch {
+    return false
+  }
+}
+
+function isConfiguredApplyUrl(value: string) {
+  if (!isConfiguredHttpUrl(value)) return false
+  return !value.includes('example.com')
+}
+
 export function HomePage() {
   const location = useLocation()
   const navigate = useNavigate()
@@ -183,6 +202,31 @@ export function HomePage() {
   const canOpenCourseLinking =
     courseLinkingRoute &&
     canAccessRoute(courseLinkingRoute, routeContext)
+  const productionChecklist = [
+    {
+      label: '원격 API 모드 활성화',
+      done: runtimeConfig.apiMode === 'remote',
+      hint: 'VITE_API_MODE=remote',
+    },
+    {
+      label: '원격 API 엔드포인트 설정',
+      done: isConfiguredHttpUrl(runtimeConfig.apiBaseUrl),
+      hint: 'VITE_API_BASE_URL 설정 필요',
+    },
+    {
+      label: 'SSO 로그인/로그아웃 URL 설정',
+      done:
+        isConfiguredHttpUrl(runtimeConfig.ssoLoginUrl) && isConfiguredHttpUrl(runtimeConfig.ssoLogoutUrl),
+      hint: 'VITE_SSO_LOGIN_URL / VITE_SSO_LOGOUT_URL 설정 필요',
+    },
+    {
+      label: '이캠퍼스 신청 URL 설정',
+      done: isConfiguredApplyUrl(runtimeConfig.ecampusCourseApplyUrl),
+      hint: 'VITE_ECAMPUS_COURSE_APPLY_URL 운영 링크로 교체 필요',
+    },
+  ]
+  const productionReadyCount = productionChecklist.filter((item) => item.done).length
+  const productionReady = productionReadyCount === productionChecklist.length
 
   const getGateHint = (gate: RouteGate | null | undefined) => {
     if (gate === 'auth-required') return '로그인이 필요합니다.'
@@ -648,6 +692,25 @@ export function HomePage() {
       </section>
 
       {diagnosis && <SkillGapPanel diagnosis={diagnosis} title="현재 역량 갭 대시보드" />}
+
+      <section className="hero-card">
+        <h2>운영 전환 준비 상태</h2>
+        <p>
+          체크 {productionReadyCount}/{productionChecklist.length}{' '}
+          {productionReady ? '완료' : '진행 중'}
+        </p>
+        <ul className="checklist">
+          {productionChecklist.map((item) => (
+            <li className={item.done ? 'done' : 'todo'} key={item.label}>
+              {item.done ? '완료' : '대기'} - {item.label}
+              {!item.done ? ` (${item.hint})` : ''}
+            </li>
+          ))}
+        </ul>
+        <p className="hint-text">
+          릴리즈 전 전체 회귀는 `npm run release:check` 명령으로 한 번에 확인할 수 있습니다.
+        </p>
+      </section>
     </AppShell>
   )
 }

@@ -42,6 +42,9 @@ bash scripts/worktree-status.sh
 
 # main 기준 전체 워크트리 fast-forward 동기화
 bash scripts/sync-worktrees-from-main.sh
+
+# 릴리즈 전 전체 품질 점검 (lint + test + e2e + build + worktree status)
+npm run release:check
 ```
 
 ## 폴더 구조

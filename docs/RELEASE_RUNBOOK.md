@@ -1,11 +1,10 @@
 # Release Runbook
 
 ## Pre-release
-1. `npm run test`
-2. `npm run lint`
-3. `npm run build`
-4. E2E demo path: Landing -> Diagnosis -> Recommendation -> Course Linking -> History
-5. e-campus callback contract:
+1. `npm run release:check`
+2. `bash scripts/sync-worktrees-from-main.sh`
+3. E2E demo path: Landing -> Diagnosis -> Recommendation -> Course Linking -> History
+4. e-campus callback contract:
    - return URL target: `/course-linking`
    - required query: `enrollment=success|failed`
    - optional query: `courseId=<ID>`
