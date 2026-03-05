@@ -8,9 +8,10 @@ import {
 } from '../../../shared/api/learningApi'
 import { getErrorMessage } from '../../../shared/api/errorMessage'
 import { AppShell } from '../../../shared/layouts/AppShell'
-import { getAuditLogs, type AuditRecord } from '../../../shared/observability/audit'
+import { appendAuditLog, getAuditLogs, type AuditRecord } from '../../../shared/observability/audit'
 import { getWeeklyConversionSeries, type WeeklyConversionPoint } from '../../../shared/observability/funnel'
 import { getHandoffMessage } from '../../../shared/orchestration/handoff'
+import { clearPendingNextPath } from '../../../shared/orchestration/intent'
 import { getUserRole } from '../../../shared/state/session'
 import {
   clearJourneyData,
@@ -60,8 +61,10 @@ export function HistoryPage() {
   }, [enrollments])
 
   const resetJourney = () => {
+    appendAuditLog('journey_reset', '이력 페이지에서 여정 재시작')
     clearJourneyData()
     clearDiagnosisDraft()
+    clearPendingNextPath()
     window.location.href = '/'
   }
 
@@ -170,6 +173,9 @@ export function HistoryPage() {
         <div className="journey-actions">
           <Link className="primary-btn link-btn" to="/chatbot">
             AI 상담 이어가기
+          </Link>
+          <Link className="secondary-btn link-btn" to="/diagnosis">
+            다시 진단 시작
           </Link>
           <button className="secondary-btn" onClick={resetJourney} type="button">
             새로운 진단 여정 시작

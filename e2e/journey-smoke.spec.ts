@@ -269,3 +269,15 @@ test('locked recommendation card offers predecessor navigation', async ({ page }
   await recommendationCard.getByRole('button', { name: '선행 단계로 이동' }).click()
   await expect(page).toHaveURL(/\/diagnosis/)
 })
+
+test('history reset returns to home and starts a fresh diagnosis loop', async ({ page }) => {
+  await prepareUntilCourseLinking(page)
+  await page.getByRole('button', { name: '신청 완료 처리' }).click()
+  await expect(page).toHaveURL(/\/history/)
+
+  await page.getByRole('button', { name: '새로운 진단 여정 시작' }).click()
+  await expect(page).toHaveURL(/\/$/)
+
+  await page.getByRole('button', { name: '바로 시작: 3) 역량 진단 시작' }).click()
+  await expect(page).toHaveURL(/\/diagnosis/)
+})
