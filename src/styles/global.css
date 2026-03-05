@@ -331,6 +331,57 @@ a {
   padding: 4px 10px;
 }
 
+.skill-gap-list {
+  margin-top: 10px;
+  display: grid;
+  gap: 10px;
+}
+
+.skill-gap-item {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: #fbfdff;
+}
+
+.skill-gap-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+  font-size: 13px;
+}
+
+.skill-gap-head span {
+  color: var(--text-muted);
+}
+
+.skill-gap-track {
+  margin-top: 8px;
+  width: 100%;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--surface-muted);
+  overflow: hidden;
+}
+
+.skill-gap-fill {
+  height: 100%;
+  transition: width 0.2s ease;
+}
+
+.skill-gap-fill.critical {
+  background: #e34f4f;
+}
+
+.skill-gap-fill.watch {
+  background: #ef9d3e;
+}
+
+.skill-gap-fill.strong {
+  background: #2f9e63;
+}
+
 select {
   display: block;
   margin-top: 8px;

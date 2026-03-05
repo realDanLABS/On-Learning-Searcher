@@ -18,6 +18,7 @@ import {
   type EnrollmentRecord,
   type JourneyEvent,
 } from '../../../shared/state/learningFlow'
+import { clearDiagnosisDraft } from '../../diagnosis/draftStorage'
 
 export function HistoryPage() {
   const location = useLocation()
@@ -60,6 +61,7 @@ export function HistoryPage() {
 
   const resetJourney = () => {
     clearJourneyData()
+    clearDiagnosisDraft()
     window.location.href = '/'
   }
 

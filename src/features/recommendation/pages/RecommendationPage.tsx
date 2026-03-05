@@ -7,6 +7,7 @@ import {
   selectRecommendedCourse,
 } from '../../../shared/api/learningApi'
 import { getErrorMessage } from '../../../shared/api/errorMessage'
+import { SkillGapPanel } from '../../../shared/components/SkillGapPanel'
 import { AppShell } from '../../../shared/layouts/AppShell'
 import { getHandoffMessage } from '../../../shared/orchestration/handoff'
 import type { DiagnosisPayload, RecommendedCourse } from '../../../shared/state/learningFlow'
@@ -108,6 +109,8 @@ export function RecommendationPage() {
         </section>
       )}
 
+      {diagnosis && <SkillGapPanel diagnosis={diagnosis} title="추천 전 스킬 갭 확인" />}
+
       <section className="feature-grid">
         {courses.length > 0 ? (
           courses.map((course) => (
@@ -152,6 +155,34 @@ export function RecommendationPage() {
           </Link>
         </div>
       </section>
+
+      {diagnosis && (
+        <section className="hero-card">
+          <h2>30/60/90일 성장 로드맵</h2>
+          <ul className="timeline-list">
+            <li>
+              <strong>30일: 핵심 갭 1순위 집중</strong>
+              <span>{diagnosis.topGaps[0] ?? '디지털'} 영역의 입문/중급 과정을 우선 수강합니다.</span>
+            </li>
+            <li>
+              <strong>60일: 실무 적용 + 피드백</strong>
+              <span>선택한 과정을 실무에 적용하고 챗봇 상담으로 학습 계획을 조정합니다.</span>
+            </li>
+            <li>
+              <strong>90일: 재진단 및 다음 추천 루프</strong>
+              <span>이력 페이지에서 성과를 확인한 뒤 재진단으로 다음 학습 루프를 시작합니다.</span>
+            </li>
+          </ul>
+          <div className="journey-actions">
+            <Link className="primary-btn link-btn" to="/course-linking?from=recommendation">
+              신청 연동으로 이동
+            </Link>
+            <Link className="secondary-btn link-btn" to="/history">
+              이력 대시보드 보기
+            </Link>
+          </div>
+        </section>
+      )}
     </AppShell>
   )
 }

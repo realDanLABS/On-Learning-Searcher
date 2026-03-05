@@ -36,6 +36,7 @@ import {
 } from '../shared/state/learningFlow'
 import { featureRoutes } from './routeConfig'
 import { clearDiagnosisDraft, hasDiagnosisDraft } from '../features/diagnosis/draftStorage'
+import { SkillGapPanel } from '../shared/components/SkillGapPanel'
 
 export function HomePage() {
   const location = useLocation()
@@ -429,6 +430,8 @@ export function HomePage() {
           <Link to="/history">상세 이력 보기</Link>
         </article>
       </section>
+
+      {diagnosis && <SkillGapPanel diagnosis={diagnosis} title="현재 역량 갭 대시보드" />}
     </AppShell>
   )
 }
