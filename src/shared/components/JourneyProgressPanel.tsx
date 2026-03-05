@@ -1,12 +1,16 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-import { getNextJourneyAction, stageOrder } from '../orchestration/journey'
+import { stageOrder } from '../orchestration/journey'
+import { getNextActionStatus } from '../orchestration/nextAction'
+import { isAuthenticated } from '../state/auth'
 import {
   getJourneyStage,
   subscribeJourneyUpdates,
   type JourneyStage,
 } from '../state/learningFlow'
+import { hasUserProfile } from '../state/profile'
+import { getUserRole } from '../state/session'
 
 const stages: Array<{ key: JourneyStage; label: string }> = stageOrder.map((key) => ({
   key,
@@ -29,7 +33,12 @@ export function JourneyProgressPanel() {
   }, [])
 
   const currentIndex = stages.findIndex((item) => item.key === stage)
-  const nextAction = getNextJourneyAction(stage)
+  const nextAction = getNextActionStatus({
+    authenticated: isAuthenticated(),
+    hasProfile: hasUserProfile(),
+    role: getUserRole(),
+    stage,
+  })
 
   return (
     <section className="journey-progress-panel" aria-label="학습 여정 진행 상황">
@@ -44,9 +53,15 @@ export function JourneyProgressPanel() {
           )
         })}
       </div>
-      <Link className="primary-btn link-btn" to={nextAction.to}>
-        다음 단계: {nextAction.label}
-      </Link>
+      {nextAction.enabled ? (
+        <Link className="primary-btn link-btn" to={nextAction.to}>
+          다음 단계: {nextAction.label}
+        </Link>
+      ) : (
+        <button className="primary-btn" disabled type="button">
+          다음 단계 잠금: {nextAction.label}
+        </button>
+      )}
     </section>
   )
 }

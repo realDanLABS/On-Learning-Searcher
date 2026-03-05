@@ -2,12 +2,15 @@ import { useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import { AppShell } from '../../../shared/layouts/AppShell'
-import { getNextJourneyAction } from '../../../shared/orchestration/journey'
+import { getNextActionStatus } from '../../../shared/orchestration/nextAction'
+import { isAuthenticated } from '../../../shared/state/auth'
 import {
   getDiagnosisPayload,
   getEnrollmentRecords,
   getJourneyStage,
 } from '../../../shared/state/learningFlow'
+import { hasUserProfile } from '../../../shared/state/profile'
+import { getUserRole } from '../../../shared/state/session'
 
 type ChatMessage = {
   id: string
@@ -21,7 +24,12 @@ export function ChatbotPage() {
   const diagnosis = getDiagnosisPayload()
   const enrollments = getEnrollmentRecords()
   const journeyStage = getJourneyStage()
-  const nextAction = getNextJourneyAction(journeyStage)
+  const nextAction = getNextActionStatus({
+    authenticated: isAuthenticated(),
+    hasProfile: hasUserProfile(),
+    role: getUserRole(),
+    stage: journeyStage,
+  })
 
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -85,9 +93,15 @@ export function ChatbotPage() {
         <h2>바로가기</h2>
         <p className="hint-text">현재 여정 단계에 맞춰 다음 행동을 제안합니다.</p>
         <div className="journey-actions">
-          <Link className="primary-btn link-btn" to={nextAction.to}>
-            {nextAction.label}
-          </Link>
+          {nextAction.enabled ? (
+            <Link className="primary-btn link-btn" to={nextAction.to}>
+              {nextAction.label}
+            </Link>
+          ) : (
+            <button className="primary-btn" disabled type="button">
+              {nextAction.label} (잠금)
+            </button>
+          )}
           <Link className="secondary-btn link-btn" to="/history">
             이력 페이지 이동
           </Link>

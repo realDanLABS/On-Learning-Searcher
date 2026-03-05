@@ -15,7 +15,7 @@ import { AppShell } from '../shared/layouts/AppShell'
 import { getFunnelSnapshot, type FunnelSnapshot } from '../shared/observability/funnel'
 import { appendAuditLog } from '../shared/observability/audit'
 import { canAccessRoute } from '../shared/orchestration/access'
-import { getNextJourneyAction } from '../shared/orchestration/journey'
+import { getNextActionStatus } from '../shared/orchestration/nextAction'
 import { getJourneyChecklist, getJourneyStartBlockers } from '../shared/orchestration/readiness'
 import { isAuthenticated, setAuthenticated } from '../shared/state/auth'
 import {
@@ -87,7 +87,12 @@ export function HomePage() {
     }
     void run()
   }, [])
-  const nextAction = getNextJourneyAction(stage)
+  const nextAction = getNextActionStatus({
+    authenticated,
+    hasProfile: profileReady,
+    role,
+    stage,
+  })
   const blockers = getJourneyStartBlockers({
     authenticated,
     hasProfile: profileReady,
@@ -97,7 +102,7 @@ export function HomePage() {
     hasProfile: profileReady,
     stage,
   })
-  const canStartNext = blockers.length === 0
+  const canStartNext = blockers.length === 0 && nextAction.enabled
   const historyRoute = featureRoutes.find((route) => route.path === '/history')
   const courseLinkingRoute = featureRoutes.find((route) => route.path === '/course-linking')
   const canOpenHistory =
@@ -223,6 +228,7 @@ export function HomePage() {
           <p className="hint-text">진단 시작 전 기본 프로필을 먼저 저장해 주세요.</p>
         )}
         {blockers.length > 0 && <p className="hint-text">진입 조건: {blockers.join(' / ')}</p>}
+        {nextAction.reason && <p className="hint-text">{nextAction.reason}</p>}
         <p className="hint-text">인증 상태: {authenticated ? '로그인됨' : '로그인 필요'}</p>
         <p className="hint-text">현재 단계: {stage}</p>
         <p className="hint-text">현재 역할: {role}</p>
