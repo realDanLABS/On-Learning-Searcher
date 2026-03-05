@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 
 import { fetchDiagnosis, fetchJourneyStage } from '../shared/api/learningApi'
 import { AppShell } from '../shared/layouts/AppShell'
+import { getFunnelSnapshot, type FunnelSnapshot } from '../shared/observability/funnel'
 import {
   clearJourneyData,
   type DiagnosisPayload,
@@ -12,11 +13,19 @@ import {
 export function HomePage() {
   const [diagnosis, setDiagnosis] = useState<DiagnosisPayload | null>(null)
   const [stage, setStage] = useState<JourneyStage>('start')
+  const [funnel, setFunnel] = useState<FunnelSnapshot>({
+    diagnosisCompleted: 0,
+    courseSelected: 0,
+    enrollmentCompleted: 0,
+    conversionToSelection: 0,
+    conversionToEnrollment: 0,
+  })
 
   useEffect(() => {
     const run = async () => {
       setDiagnosis(await fetchDiagnosis())
       setStage(await fetchJourneyStage())
+      setFunnel(getFunnelSnapshot())
     }
     void run()
   }, [])
@@ -77,6 +86,14 @@ export function HomePage() {
           <h3>추천 학습 흐름</h3>
           <p>진단 결과의 역량 갭을 기준으로 추천 과정과 신청 버튼을 제공합니다.</p>
           <Link to="/course-linking">신청 연동 페이지</Link>
+        </article>
+
+        <article className="feature-card">
+          <h3>운영 퍼널 요약</h3>
+          <p>진단 완료: {funnel.diagnosisCompleted}</p>
+          <p>과정 선택: {funnel.courseSelected} ({funnel.conversionToSelection}%)</p>
+          <p>신청 완료: {funnel.enrollmentCompleted} ({funnel.conversionToEnrollment}%)</p>
+          <Link to="/history">상세 이력 보기</Link>
         </article>
       </section>
     </AppShell>
