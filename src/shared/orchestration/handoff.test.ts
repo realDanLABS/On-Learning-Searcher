@@ -23,6 +23,11 @@ describe('handoff message', () => {
     expect(result?.kind).toBe('info')
   })
 
+  it('returns auth-callback to diagnosis notice', () => {
+    const result = getHandoffMessage('?from=auth-callback', 'diagnosis')
+    expect(result?.kind).toBe('success')
+  })
+
   it('returns diagnosis to recommendation notice', () => {
     const result = getHandoffMessage('?from=diagnosis', 'recommendation')
     expect(result?.kind).toBe('success')

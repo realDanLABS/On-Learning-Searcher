@@ -1,5 +1,6 @@
 const fromByPathname: Record<string, string> = {
   '/': 'home',
+  '/auth/callback': 'auth-callback',
   '/diagnosis': 'diagnosis',
   '/recommendation': 'recommendation',
   '/course-linking': 'course-linking',

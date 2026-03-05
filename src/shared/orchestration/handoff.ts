@@ -37,6 +37,13 @@ export function getHandoffMessage(
     }
   }
 
+  if (page === 'diagnosis' && from === 'auth-callback') {
+    return {
+      kind: 'success',
+      text: '인증이 완료되어 진단 단계로 바로 이동했습니다. 설문을 시작해 주세요.',
+    }
+  }
+
   if (page === 'recommendation' && from === 'diagnosis') {
     return {
       kind: 'success',

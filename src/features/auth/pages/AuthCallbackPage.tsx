@@ -5,6 +5,7 @@ import { completeAuthCallback } from '../../../shared/api/authApi'
 import { ApiErrorMessage } from '../../../shared/components/ApiErrorMessage'
 import { AppShell } from '../../../shared/layouts/AppShell'
 import { consumePendingNextPath } from '../../../shared/orchestration/intent'
+import { withJourneyFrom } from '../../../shared/orchestration/journeyLink'
 import { resolveBestReachablePath } from '../../../shared/orchestration/smartPath'
 import { hasDiagnosisDraft } from '../../diagnosis/draftStorage'
 import { isAuthenticated } from '../../../shared/state/auth'
@@ -35,7 +36,7 @@ export function AuthCallbackPage() {
             hasDiagnosisDraft: hasDiagnosisDraft(),
           })
 
-          navigate(nextPath ?? '/', { replace: true })
+          navigate(withJourneyFrom(nextPath ?? '/', '/auth/callback'), { replace: true })
           return
         }
         setError('로그인에 실패했습니다. 다시 시도해 주세요.')
