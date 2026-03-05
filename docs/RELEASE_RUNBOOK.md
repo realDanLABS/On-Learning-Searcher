@@ -5,6 +5,10 @@
 2. `npm run lint`
 3. `npm run build`
 4. E2E demo path: Landing -> Diagnosis -> Recommendation -> Course Linking -> History
+5. e-campus callback contract:
+   - return URL target: `/course-linking`
+   - required query: `enrollment=success|failed`
+   - optional query: `courseId=<ID>`
 
 ## Rollout
 1. Deploy to staging

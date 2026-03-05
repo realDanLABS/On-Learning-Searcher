@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import {
   fetchSelectedCourse,
@@ -9,14 +9,18 @@ import { getErrorMessage } from '../../../shared/api/errorMessage'
 import { runtimeConfig } from '../../../shared/config/runtime'
 import { AppShell } from '../../../shared/layouts/AppShell'
 import type { EnrollmentRecord, RecommendedCourse } from '../../../shared/state/learningFlow'
+import { buildEcampusApplyUrl, parseEnrollmentCallback } from '../enrollmentCallback'
 
 export function CourseLinkingPage() {
   const navigate = useNavigate()
+  const location = useLocation()
   const [course, setCourse] = useState<RecommendedCourse | null>(null)
   const [loading, setLoading] = useState(true)
   const [loadError, setLoadError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
+  const [callbackNotice, setCallbackNotice] = useState<string | null>(null)
   const hasCourse = Boolean(course)
+  const callbackHandled = useRef(false)
 
   const loadCourse = async () => {
     try {
@@ -33,6 +37,42 @@ export function CourseLinkingPage() {
   useEffect(() => {
     void loadCourse()
   }, [])
+
+  useEffect(() => {
+    if (!course || callbackHandled.current) return
+    const callback = parseEnrollmentCallback(location.search)
+    if (!callback.status) return
+
+    callbackHandled.current = true
+    const enrollmentStatus = callback.status === 'success' ? 'enrolled' : 'failed'
+    const record: EnrollmentRecord = {
+      courseId: callback.courseId || course.courseId,
+      courseTitle: course.courseTitle,
+      enrollmentRequestedAt: new Date().toISOString(),
+      enrollmentStatus,
+    }
+
+    const run = async () => {
+      try {
+        await submitEnrollment(record)
+        if (enrollmentStatus === 'enrolled') {
+          navigate('/history?from=enrollment', { replace: true })
+          return
+        }
+        setCallbackNotice('외부 신청 결과가 실패로 반환되었습니다. 신청 정보를 다시 확인해 주세요.')
+      } catch (error) {
+        setLoadError(getErrorMessage(error, '복귀 결과 처리 중 오류가 발생했습니다. 다시 시도해 주세요.'))
+      }
+    }
+
+    void run()
+  }, [course, location.search, navigate])
+
+  const applyUrl = useMemo(() => {
+    if (!course || typeof window === 'undefined') return runtimeConfig.ecampusCourseApplyUrl
+    const callbackUrl = `${window.location.origin}/course-linking?enrollment=success&courseId=${course.courseId}`
+    return buildEcampusApplyUrl(runtimeConfig.ecampusCourseApplyUrl, callbackUrl, course.courseId)
+  }, [course])
 
   const requestEnrollment = async () => {
     if (!course) return
@@ -90,11 +130,12 @@ export function CourseLinkingPage() {
           <h2>{course.courseTitle}</h2>
           <p>과정코드: {course.courseId}</p>
           <p>추천근거: {course.reasonTags.join(', ')}</p>
+          {callbackNotice && <p className="error-text">{callbackNotice}</p>}
 
           <div className="journey-actions">
             <a
               className="secondary-btn link-btn"
-              href={runtimeConfig.ecampusCourseApplyUrl}
+              href={applyUrl}
               rel="noreferrer"
               target="_blank"
             >
@@ -116,7 +157,8 @@ export function CourseLinkingPage() {
             신청 완료 처리 버튼을 누르면 이력 페이지에서 등록 상태를 바로 확인할 수 있습니다.
           </p>
           <p className="hint-text">
-            운영 환경에서는 `VITE_ECAMPUS_COURSE_APPLY_URL` 값으로 실제 신청 링크를 연결하세요.
+            운영 환경에서는 `VITE_ECAMPUS_COURSE_APPLY_URL` 값으로 실제 신청 링크를 연결하고,
+            복귀 시 `enrollment=success|failed` 쿼리를 반환하도록 설정하세요.
           </p>
         </section>
       )}
