@@ -6,7 +6,6 @@ import {
   fetchRecommendedCourses,
   selectRecommendedCourse,
 } from '../../../shared/api/learningApi'
-import { getErrorMessage } from '../../../shared/api/errorMessage'
 import { ApiErrorMessage } from '../../../shared/components/ApiErrorMessage'
 import { SkillGapPanel } from '../../../shared/components/SkillGapPanel'
 import { AppShell } from '../../../shared/layouts/AppShell'
@@ -17,8 +16,8 @@ export function RecommendationPage() {
   const [diagnosis, setDiagnosis] = useState<DiagnosisPayload | null>(null)
   const [courses, setCourses] = useState<RecommendedCourse[]>([])
   const [loading, setLoading] = useState(true)
-  const [loadError, setLoadError] = useState<string | null>(null)
-  const [actionError, setActionError] = useState<string | null>(null)
+  const [loadError, setLoadError] = useState<unknown | null>(null)
+  const [actionError, setActionError] = useState<unknown | null>(null)
   const [selectingCourseId, setSelectingCourseId] = useState<string | null>(null)
   const location = useLocation()
   const navigate = useNavigate()
@@ -37,7 +36,7 @@ export function RecommendationPage() {
       }
       setCourses(await fetchRecommendedCourses(levelFilter))
     } catch (error) {
-      setLoadError(getErrorMessage(error, '추천 데이터를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.'))
+      setLoadError(error)
     } finally {
       setLoading(false)
     }
@@ -54,7 +53,7 @@ export function RecommendationPage() {
       await selectRecommendedCourse(course)
       navigate('/course-linking?from=recommendation')
     } catch (error) {
-      setActionError(getErrorMessage(error, '과정 선택 처리 중 오류가 발생했습니다. 다시 시도해 주세요.'))
+      setActionError(error)
     } finally {
       setSelectingCourseId(null)
     }
@@ -68,7 +67,7 @@ export function RecommendationPage() {
       {loadError && (
         <section className="hero-card">
           <h2>추천 데이터 오류</h2>
-          <ApiErrorMessage error={loadError} />
+          <ApiErrorMessage error={loadError} fallback="추천 데이터를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요." />
           <button className="primary-btn" onClick={() => void loadData()} type="button">
             다시 시도
           </button>
@@ -77,7 +76,7 @@ export function RecommendationPage() {
 
       {actionError && (
         <section className="hero-card">
-          <ApiErrorMessage error={actionError} />
+          <ApiErrorMessage error={actionError} fallback="과정 선택 처리 중 오류가 발생했습니다. 다시 시도해 주세요." />
         </section>
       )}
 

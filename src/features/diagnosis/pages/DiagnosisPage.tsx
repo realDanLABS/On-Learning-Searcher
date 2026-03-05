@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { submitDiagnosis } from '../../../shared/api/learningApi'
-import { getErrorMessage } from '../../../shared/api/errorMessage'
 import { ApiErrorMessage } from '../../../shared/components/ApiErrorMessage'
 import { AppShell } from '../../../shared/layouts/AppShell'
 import { getUserProfile } from '../../../shared/state/profile'
@@ -14,7 +13,7 @@ export function DiagnosisPage() {
   const navigate = useNavigate()
   const [step, setStep] = useState(0)
   const [answers, setAnswers] = useState<AnswerMap>(() => loadDiagnosisDraft())
-  const [submitError, setSubmitError] = useState<string | null>(null)
+  const [submitError, setSubmitError] = useState<unknown | null>(null)
 
   useEffect(() => {
     saveDiagnosisDraft(answers)
@@ -88,7 +87,7 @@ export function DiagnosisPage() {
       clearDiagnosisDraft()
       navigate('/recommendation?from=diagnosis')
     } catch (error) {
-      setSubmitError(getErrorMessage(error, '진단 결과 저장 중 오류가 발생했습니다. 다시 시도해 주세요.'))
+      setSubmitError(error)
     }
   }
 
@@ -152,7 +151,7 @@ export function DiagnosisPage() {
           </p>
           <p>강점: {summary.strengths.join(', ')}</p>
           <p>집중 성장 영역: {summary.growthArea}</p>
-          <ApiErrorMessage error={submitError} />
+          <ApiErrorMessage error={submitError} fallback="진단 결과 저장 중 오류가 발생했습니다. 다시 시도해 주세요." />
 
           <div className="diagnosis-actions">
             <button className="secondary-btn" onClick={goPrev} type="button">

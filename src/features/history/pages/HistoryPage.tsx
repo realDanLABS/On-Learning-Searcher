@@ -6,7 +6,6 @@ import {
   fetchEnrollmentHistory,
   fetchJourneyEvents,
 } from '../../../shared/api/learningApi'
-import { getErrorMessage } from '../../../shared/api/errorMessage'
 import { ApiErrorMessage } from '../../../shared/components/ApiErrorMessage'
 import { AppShell } from '../../../shared/layouts/AppShell'
 import { appendAuditLog, getAuditLogs, type AuditRecord } from '../../../shared/observability/audit'
@@ -30,7 +29,7 @@ export function HistoryPage() {
   const [auditLogs, setAuditLogs] = useState<AuditRecord[]>([])
   const [weeklySeries, setWeeklySeries] = useState<WeeklyConversionPoint[]>([])
   const [loading, setLoading] = useState(true)
-  const [loadError, setLoadError] = useState<string | null>(null)
+  const [loadError, setLoadError] = useState<unknown | null>(null)
   const role = getUserRole()
   const canViewManagerSummary = role === 'manager' || role === 'admin'
   const handoff = getHandoffMessage(location.search, 'history')
@@ -45,7 +44,7 @@ export function HistoryPage() {
       setAuditLogs(getAuditLogs().slice(0, 12))
       setWeeklySeries(getWeeklyConversionSeries(7))
     } catch (error) {
-      setLoadError(getErrorMessage(error, '이력 데이터를 불러오지 못했습니다. 다시 시도해 주세요.'))
+      setLoadError(error)
     } finally {
       setLoading(false)
     }
@@ -77,7 +76,7 @@ export function HistoryPage() {
       {loadError && (
         <section className="hero-card">
           <h2>이력 데이터 오류</h2>
-          <ApiErrorMessage error={loadError} />
+          <ApiErrorMessage error={loadError} fallback="이력 데이터를 불러오지 못했습니다. 다시 시도해 주세요." />
           <button className="primary-btn" onClick={() => void loadData()} type="button">
             다시 시도
           </button>

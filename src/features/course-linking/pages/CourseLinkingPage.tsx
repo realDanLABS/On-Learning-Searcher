@@ -5,7 +5,6 @@ import {
   fetchSelectedCourse,
   submitEnrollment,
 } from '../../../shared/api/learningApi'
-import { getErrorMessage } from '../../../shared/api/errorMessage'
 import { ApiErrorMessage } from '../../../shared/components/ApiErrorMessage'
 import { runtimeConfig } from '../../../shared/config/runtime'
 import { AppShell } from '../../../shared/layouts/AppShell'
@@ -24,7 +23,7 @@ export function CourseLinkingPage() {
   const location = useLocation()
   const [course, setCourse] = useState<RecommendedCourse | null>(null)
   const [loading, setLoading] = useState(true)
-  const [loadError, setLoadError] = useState<string | null>(null)
+  const [loadError, setLoadError] = useState<unknown | null>(null)
   const [submitting, setSubmitting] = useState(false)
   const [callbackNotice, setCallbackNotice] = useState<string | null>(null)
   const [callbackFailed, setCallbackFailed] = useState(false)
@@ -38,7 +37,7 @@ export function CourseLinkingPage() {
       setLoading(true)
       setCourse(await fetchSelectedCourse())
     } catch (error) {
-      setLoadError(getErrorMessage(error, '선택 과정 정보를 불러오지 못했습니다.'))
+      setLoadError(error)
     } finally {
       setLoading(false)
     }
@@ -72,7 +71,7 @@ export function CourseLinkingPage() {
         setCallbackFailed(true)
         setCallbackNotice('외부 신청 결과가 실패로 반환되었습니다. 신청 정보를 다시 확인해 주세요.')
       } catch (error) {
-        setLoadError(getErrorMessage(error, '복귀 결과 처리 중 오류가 발생했습니다. 다시 시도해 주세요.'))
+        setLoadError(error)
       }
     }
 
@@ -101,7 +100,7 @@ export function CourseLinkingPage() {
       await submitEnrollment(record)
       navigate('/history')
     } catch (error) {
-      setLoadError(getErrorMessage(error, '신청 처리 중 오류가 발생했습니다. 다시 시도해 주세요.'))
+      setLoadError(error)
     } finally {
       setSubmitting(false)
     }
@@ -137,7 +136,7 @@ export function CourseLinkingPage() {
       {loadError && (
         <section className="hero-card">
           <h2>오류</h2>
-          <ApiErrorMessage error={loadError} />
+          <ApiErrorMessage error={loadError} fallback="요청 처리 중 오류가 발생했습니다. 다시 시도해 주세요." />
           <button className="secondary-btn" onClick={() => void loadCourse()} type="button">
             다시 시도
           </button>

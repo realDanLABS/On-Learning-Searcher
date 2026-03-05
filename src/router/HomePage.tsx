@@ -9,7 +9,6 @@ import {
 } from '../shared/api/learningApi'
 import { syncAuthSession } from '../shared/api/authApi'
 import { saveProfile } from '../shared/api/profileApi'
-import { getErrorMessage } from '../shared/api/errorMessage'
 import { consumeSessionExpiredNotice } from '../shared/auth/sessionSignals'
 import { runtimeConfig } from '../shared/config/runtime'
 import { AppShell } from '../shared/layouts/AppShell'
@@ -75,7 +74,7 @@ export function HomePage() {
   const [stage, setStage] = useState<JourneyStage>('start')
   const [role, setRole] = useState<UserRole>('employee')
   const [loading, setLoading] = useState(true)
-  const [loadError, setLoadError] = useState<string | null>(null)
+  const [loadError, setLoadError] = useState<unknown | null>(null)
   const [apiErrorMode, setApiErrorMode] = useState(false)
   const [funnel, setFunnel] = useState<FunnelSnapshot>({
     diagnosisCompleted: 0,
@@ -89,7 +88,7 @@ export function HomePage() {
   const [employeeId, setEmployeeId] = useState('')
   const [name, setName] = useState('')
   const [organization, setOrganization] = useState('')
-  const [onboardingError, setOnboardingError] = useState<string | null>(null)
+  const [onboardingError, setOnboardingError] = useState<unknown | null>(null)
   const [profileSaving, setProfileSaving] = useState(false)
   const [profileReady, setProfileReady] = useState(false)
   const [sessionNotice, setSessionNotice] = useState<string | null>(null)
@@ -125,7 +124,7 @@ export function HomePage() {
           setProfileReady(true)
         }
       } catch (error) {
-        setLoadError(getErrorMessage(error, '홈 데이터를 불러오지 못했습니다. 다시 시도해 주세요.'))
+        setLoadError(error)
       } finally {
         setLoading(false)
       }
@@ -284,7 +283,7 @@ export function HomePage() {
       setOnboardingError(null)
       return true
     } catch (error) {
-      setOnboardingError(getErrorMessage(error, '프로필 저장 중 오류가 발생했습니다. 다시 시도해 주세요.'))
+      setOnboardingError(error)
       return false
     } finally {
       setProfileSaving(false)
@@ -407,7 +406,7 @@ export function HomePage() {
         <h2>학습 여정 시작</h2>
         {gateNotice && <p className="error-text">{gateNotice}</p>}
         {sessionNotice && <p className="error-text">{sessionNotice}</p>}
-        <ApiErrorMessage error={loadError} />
+        <ApiErrorMessage error={loadError} fallback="홈 데이터를 불러오지 못했습니다. 다시 시도해 주세요." />
         {loading && <p className="hint-text">로딩 중...</p>}
         <p>
           1) 역량 진단을 완료하면 2) 맞춤 과정 추천이 생성되고, 3) 바로 교육 신청까지
@@ -460,7 +459,7 @@ export function HomePage() {
             </button>
           )}
         </div>
-        <ApiErrorMessage error={onboardingError} />
+        <ApiErrorMessage error={onboardingError} fallback="프로필 저장 중 오류가 발생했습니다. 다시 시도해 주세요." />
         {!profileReady && (
           <p className="hint-text">진단 시작 전 기본 프로필을 먼저 저장해 주세요.</p>
         )}
