@@ -2,6 +2,7 @@ import { Link, NavLink } from 'react-router-dom'
 import type { ReactNode } from 'react'
 
 import { featureRoutes } from '../../router/routeConfig'
+import { JourneyProgressPanel } from '../components/JourneyProgressPanel'
 
 type AppShellProps = {
   title: string
@@ -38,6 +39,7 @@ export function AppShell({ title, description, children }: AppShellProps) {
       </nav>
 
       <main className="content">{children}</main>
+      <JourneyProgressPanel />
     </div>
   )
 }
