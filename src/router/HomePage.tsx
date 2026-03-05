@@ -125,6 +125,7 @@ export function HomePage() {
     authenticated,
     hasProfile: profileReady,
     stage,
+    hasDiagnosisDraft: diagnosisDraft,
   })
   const canStartNext = blockers.length === 0 && nextAction.enabled
   const canGoDiagnosis = authenticated && profileReady

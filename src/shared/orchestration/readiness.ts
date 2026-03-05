@@ -42,6 +42,7 @@ export function getHomePrimaryAction(params: {
   authenticated: boolean
   hasProfile: boolean
   stage: JourneyStage
+  hasDiagnosisDraft: boolean
 }): HomePrimaryAction {
   if (!params.authenticated) {
     return { kind: 'login', label: '1) 로그인 진행' }
@@ -50,6 +51,9 @@ export function getHomePrimaryAction(params: {
     return { kind: 'save-profile', label: '2) 프로필 저장 진행' }
   }
   if (params.stage === 'start') {
+    if (params.hasDiagnosisDraft) {
+      return { kind: 'navigate', label: '3) 미완료 진단 이어하기', to: '/diagnosis' }
+    }
     return { kind: 'navigate', label: '3) 역량 진단 시작', to: '/diagnosis' }
   }
   if (params.stage === 'diagnosis_done') {

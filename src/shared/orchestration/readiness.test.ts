@@ -25,15 +25,44 @@ describe('journey readiness', () => {
 
   it('returns home primary action by readiness and stage', () => {
     expect(
-      getHomePrimaryAction({ authenticated: false, hasProfile: false, stage: 'start' }).kind,
+      getHomePrimaryAction({
+        authenticated: false,
+        hasProfile: false,
+        stage: 'start',
+        hasDiagnosisDraft: false,
+      }).kind,
     ).toBe('login')
     expect(
-      getHomePrimaryAction({ authenticated: true, hasProfile: false, stage: 'start' }).kind,
+      getHomePrimaryAction({
+        authenticated: true,
+        hasProfile: false,
+        stage: 'start',
+        hasDiagnosisDraft: false,
+      }).kind,
     ).toBe('save-profile')
-    const next = getHomePrimaryAction({ authenticated: true, hasProfile: true, stage: 'course_selected' })
+    const next = getHomePrimaryAction({
+      authenticated: true,
+      hasProfile: true,
+      stage: 'course_selected',
+      hasDiagnosisDraft: false,
+    })
     expect(next.kind).toBe('navigate')
     if (next.kind === 'navigate') {
       expect(next.to).toBe('/course-linking')
+    }
+  })
+
+  it('returns resume action when diagnosis draft exists on start stage', () => {
+    const next = getHomePrimaryAction({
+      authenticated: true,
+      hasProfile: true,
+      stage: 'start',
+      hasDiagnosisDraft: true,
+    })
+    expect(next.kind).toBe('navigate')
+    if (next.kind === 'navigate') {
+      expect(next.to).toBe('/diagnosis')
+      expect(next.label).toContain('이어하기')
     }
   })
 })
