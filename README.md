@@ -45,6 +45,9 @@ bash scripts/sync-worktrees-from-main.sh
 
 # 릴리즈 전 전체 품질 점검 (lint + test + e2e + build + worktree status)
 npm run release:check
+
+# 원격 운영 스모크 점검 (.env 기반 필수값 + /health)
+npm run remote:smoke
 ```
 
 ## 폴더 구조

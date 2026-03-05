@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "release:check": "bash scripts/release-check.sh",
+    "remote:smoke": "bash scripts/remote-smoke.sh",
     "test": "vitest run",
     "test:e2e": "playwright test",
     "test:e2e:headed": "playwright test --headed"

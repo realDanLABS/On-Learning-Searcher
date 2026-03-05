@@ -34,3 +34,5 @@
 - [ ] Security review sign-off
 - [ ] UAT sign-off from HR/L&D stakeholders
 - [x] Rollback runbook prepared
+- [x] One-command release quality check (`npm run release:check`)
+- [x] Remote env/API smoke check script (`npm run remote:smoke`)

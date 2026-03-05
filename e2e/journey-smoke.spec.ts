@@ -83,6 +83,10 @@ test('home-only guided journey reaches history without manual URL jump', async (
   await page.getByRole('button', { name: '신청 완료 처리' }).click()
   await expect(page).toHaveURL(/\/history/)
   await expect(page.getByRole('heading', { name: '진단 결과 및 학습 이력' })).toBeVisible()
+
+  await page.getByRole('link', { name: 'AI 상담 이어가기' }).click()
+  await expect(page).toHaveURL(/\/chatbot/)
+  await expect(page.getByRole('heading', { name: 'AI 챗봇 상담' })).toBeVisible()
 })
 
 test('ecampus callback success auto-redirects to history', async ({ page }) => {
