@@ -266,3 +266,44 @@ select {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.chat-log {
+  display: grid;
+  gap: 10px;
+}
+
+.chat-bubble {
+  max-width: 85%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+.chat-bubble.bot {
+  background: var(--surface-muted);
+  color: var(--text);
+  justify-self: start;
+}
+
+.chat-bubble.user {
+  background: var(--primary);
+  color: #fff;
+  justify-self: end;
+}
+
+@media (max-width: 768px) {
+  .journey-actions,
+  .diagnosis-actions,
+  .answer-options {
+    width: 100%;
+  }
+
+  .journey-actions > * {
+    width: 100%;
+  }
+
+  .history-table {
+    display: block;
+    overflow-x: auto;
+  }
+}
