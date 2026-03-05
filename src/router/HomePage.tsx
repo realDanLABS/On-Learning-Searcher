@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { fetchDiagnosis, fetchJourneyStage } from '../shared/api/learningApi'
 import { AppShell } from '../shared/layouts/AppShell'
 import { getFunnelSnapshot, type FunnelSnapshot } from '../shared/observability/funnel'
+import { getUserRole, setUserRole, type UserRole } from '../shared/state/session'
 import {
   clearJourneyData,
   type DiagnosisPayload,
@@ -13,6 +14,7 @@ import {
 export function HomePage() {
   const [diagnosis, setDiagnosis] = useState<DiagnosisPayload | null>(null)
   const [stage, setStage] = useState<JourneyStage>('start')
+  const [role, setRole] = useState<UserRole>('employee')
   const [funnel, setFunnel] = useState<FunnelSnapshot>({
     diagnosisCompleted: 0,
     courseSelected: 0,
@@ -26,6 +28,7 @@ export function HomePage() {
       setDiagnosis(await fetchDiagnosis())
       setStage(await fetchJourneyStage())
       setFunnel(getFunnelSnapshot())
+      setRole(getUserRole())
     }
     void run()
   }, [])
@@ -41,6 +44,11 @@ export function HomePage() {
   const resetJourney = () => {
     clearJourneyData()
     window.location.reload()
+  }
+
+  const changeRole = (nextRole: UserRole) => {
+    setUserRole(nextRole)
+    setRole(nextRole)
   }
 
   return (
@@ -66,6 +74,18 @@ export function HomePage() {
           </button>
         </div>
         <p className="hint-text">현재 단계: {stage}</p>
+        <p className="hint-text">현재 역할: {role}</p>
+        <div className="journey-actions">
+          <button className="secondary-btn" onClick={() => changeRole('employee')} type="button">
+            Employee
+          </button>
+          <button className="secondary-btn" onClick={() => changeRole('manager')} type="button">
+            Manager
+          </button>
+          <button className="secondary-btn" onClick={() => changeRole('admin')} type="button">
+            Admin
+          </button>
+        </div>
       </section>
 
       <section className="feature-grid">

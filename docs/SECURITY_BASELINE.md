@@ -7,6 +7,10 @@
 ## Authentication
 - Integrate SSO (OIDC/SAML) before production.
 - Enforce role checks for manager/admin summary views.
+- Minimum role policy:
+  - employee: diagnosis/recommendation/enrollment/history (personal)
+  - manager: team summary + manager dashboard blocks
+  - admin: all views + operations configuration
 
 ## Network
 - Use HTTPS only.

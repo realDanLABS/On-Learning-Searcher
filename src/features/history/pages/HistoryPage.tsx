@@ -7,6 +7,7 @@ import {
   fetchJourneyEvents,
 } from '../../../shared/api/learningApi'
 import { AppShell } from '../../../shared/layouts/AppShell'
+import { getUserRole } from '../../../shared/state/session'
 import type {
   DiagnosisPayload,
   EnrollmentRecord,
@@ -17,6 +18,8 @@ export function HistoryPage() {
   const [diagnosis, setDiagnosis] = useState<DiagnosisPayload | null>(null)
   const [enrollments, setEnrollments] = useState<EnrollmentRecord[]>([])
   const [events, setEvents] = useState<JourneyEvent[]>([])
+  const role = getUserRole()
+  const canViewManagerSummary = role === 'manager' || role === 'admin'
 
   useEffect(() => {
     const run = async () => {
@@ -82,11 +85,18 @@ export function HistoryPage() {
         )}
       </section>
 
-      <section className="hero-card">
-        <h2>관리자 요약</h2>
-        <p>신청 완료 과정 수: {managerSummary.completed}</p>
-        <p>신청 대비 완료율: {managerSummary.completionRate}%</p>
-      </section>
+      {canViewManagerSummary ? (
+        <section className="hero-card">
+          <h2>관리자 요약</h2>
+          <p>신청 완료 과정 수: {managerSummary.completed}</p>
+          <p>신청 대비 완료율: {managerSummary.completionRate}%</p>
+        </section>
+      ) : (
+        <section className="hero-card">
+          <h2>관리자 요약</h2>
+          <p>현재 역할에서는 관리자 요약 지표를 볼 수 없습니다.</p>
+        </section>
+      )}
 
       <section className="hero-card">
         <h2>학습 여정 타임라인</h2>
