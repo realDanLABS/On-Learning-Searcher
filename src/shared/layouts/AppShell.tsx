@@ -15,6 +15,7 @@ import { clearAuthentication, isAuthenticated } from '../state/auth'
 import { appendAuditLog } from '../observability/audit'
 import { maskEmployeeId } from '../security/privacy'
 import { clearDiagnosisDraft } from '../../features/diagnosis/draftStorage'
+import { clearPendingNextPath } from '../orchestration/intent'
 
 type AppShellProps = {
   title: string
@@ -33,6 +34,7 @@ export function AppShell({ title, description, children }: AppShellProps) {
     clearAuthentication()
     clearJourneyData()
     clearDiagnosisDraft()
+    clearPendingNextPath()
     clearUserProfile()
     clearUserRole()
     if (runtimeConfig.apiMode === 'remote' && runtimeConfig.ssoLogoutUrl) {

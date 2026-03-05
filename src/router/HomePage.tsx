@@ -39,7 +39,9 @@ import {
 import { getUserRole, setUserRole, type UserRole } from '../shared/state/session'
 import {
   clearJourneyData,
+  getDiagnosisPayload,
   getJourneyStage,
+  subscribeJourneyUpdates,
   type DiagnosisPayload,
   type JourneyStage,
 } from '../shared/state/learningFlow'
@@ -109,6 +111,16 @@ export function HomePage() {
       }
     }
     void run()
+  }, [])
+
+  useEffect(() => {
+    const sync = () => {
+      setStage(getJourneyStage())
+      setDiagnosis(getDiagnosisPayload())
+      setFunnel(getFunnelSnapshot())
+      setDiagnosisDraft(hasDiagnosisDraft())
+    }
+    return subscribeJourneyUpdates(sync)
   }, [])
 
   useEffect(() => {
