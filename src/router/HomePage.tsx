@@ -14,7 +14,7 @@ import { runtimeConfig } from '../shared/config/runtime'
 import { AppShell } from '../shared/layouts/AppShell'
 import { getFunnelSnapshot, type FunnelSnapshot } from '../shared/observability/funnel'
 import { appendAuditLog } from '../shared/observability/audit'
-import { canAccessRoute, getRouteAccessDecision } from '../shared/orchestration/access'
+import { canAccessRoute } from '../shared/orchestration/access'
 import { getGateNoticeFromSearch } from '../shared/orchestration/gateNotice'
 import { getNextActionStatus } from '../shared/orchestration/nextAction'
 import {
@@ -22,6 +22,7 @@ import {
   getJourneyChecklist,
   getJourneyStartBlockers,
 } from '../shared/orchestration/readiness'
+import { resolveBestReachablePath } from '../shared/orchestration/smartPath'
 import { isAuthenticated, setAuthenticated } from '../shared/state/auth'
 import {
   clearUserProfile,
@@ -262,46 +263,19 @@ export function HomePage() {
       role: getUserRole(),
       stage: getJourneyStage() ?? context.stage,
     }
-    const routeContext = {
+    const nextPath = resolveBestReachablePath({
+      preferredPath,
+      gateNextPath,
+      context: {
       authenticated: liveContext.authenticated,
       hasProfile: liveContext.hasProfile,
       role: liveContext.role,
       stage: liveContext.stage,
-    }
-    const navigatePreferred = (targetPath: string | null | undefined) => {
-      if (!targetPath) return false
-      const targetRoute = featureRoutes.find((route) => route.path === targetPath)
-      if (!targetRoute) {
-        navigate(targetPath)
-        return true
-      }
-      const decision = getRouteAccessDecision(targetRoute, routeContext)
-      if (decision.allowed) {
-        navigate(targetPath)
-        return true
-      }
-      if (decision.nextPath) {
-        navigate(decision.nextPath)
-        return true
-      }
-      return false
-    }
-
-    if (navigatePreferred(preferredPath)) {
-      return
-    }
-    if (navigatePreferred(gateNextPath)) {
-      return
-    }
-    const next = getNextActionStatus({
-      authenticated: liveContext.authenticated,
-      hasProfile: liveContext.hasProfile,
-      role: liveContext.role,
-      stage: liveContext.stage,
+      },
       hasDiagnosisDraft: hasDiagnosisDraft(),
     })
-    if (next.enabled) {
-      navigate(next.to)
+    if (nextPath) {
+      navigate(nextPath)
     }
   }
 
