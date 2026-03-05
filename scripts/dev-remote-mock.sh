@@ -20,7 +20,7 @@ echo "[dev-remote-mock] app dev server: http://localhost:${APP_PORT}"
 
 VITE_API_MODE=remote \
 VITE_API_BASE_URL="http://localhost:${API_PORT}" \
-VITE_SSO_LOGIN_URL="http://localhost:${API_PORT}/auth/callback?status=success&employeeId=E1001&name=Demo%20User&organization=Learning%20Team&role=employee" \
+VITE_SSO_LOGIN_URL="http://localhost:${APP_PORT}/auth/callback?status=success&employeeId=E1001&name=Demo%20User&organization=Learning%20Team&role=employee" \
 VITE_SSO_LOGOUT_URL="http://localhost:${APP_PORT}" \
 VITE_SSO_CALLBACK_URL="/auth/callback" \
 VITE_ECAMPUS_COURSE_APPLY_URL="http://localhost:${API_PORT}/ecampus/apply" \

@@ -69,7 +69,7 @@ const coursePool: CourseCatalogItem[] = [
 
 export async function fetchDiagnosis(): Promise<DiagnosisPayload | null> {
   if (isRemoteMode()) {
-    return requestJson<DiagnosisPayload | null>('/diagnosis')
+    return requestJson<DiagnosisPayload | null>('/diagnosis', undefined, isDiagnosisPayloadOrNull)
   }
   return withApiGuard(() => getDiagnosisPayload())
 }
@@ -95,7 +95,7 @@ export async function fetchRecommendedCourses(
 ): Promise<RecommendedCourse[]> {
   if (isRemoteMode()) {
     const query = new URLSearchParams({ level: levelFilter }).toString()
-    return requestJson<RecommendedCourse[]>(`/recommendations?${query}`)
+    return requestJson<RecommendedCourse[]>(`/recommendations?${query}`, undefined, isRecommendedCourseArray)
   }
 
   return withApiGuard(() => {
@@ -140,7 +140,7 @@ export async function selectRecommendedCourse(course: RecommendedCourse): Promis
 
 export async function fetchSelectedCourse(): Promise<RecommendedCourse | null> {
   if (isRemoteMode()) {
-    return requestJson<RecommendedCourse | null>('/selected-course')
+    return requestJson<RecommendedCourse | null>('/selected-course', undefined, isRecommendedCourseOrNull)
   }
   return withApiGuard(() => getSelectedCourse())
 }
@@ -165,21 +165,21 @@ export async function submitEnrollment(record: EnrollmentRecord): Promise<void> 
 
 export async function fetchEnrollmentHistory(): Promise<EnrollmentRecord[]> {
   if (isRemoteMode()) {
-    return requestJson<EnrollmentRecord[]>('/enrollments')
+    return requestJson<EnrollmentRecord[]>('/enrollments', undefined, isEnrollmentRecordArray)
   }
   return withApiGuard(() => getEnrollmentRecords())
 }
 
 export async function fetchJourneyEvents(): Promise<JourneyEvent[]> {
   if (isRemoteMode()) {
-    return requestJson<JourneyEvent[]>('/journey/events')
+    return requestJson<JourneyEvent[]>('/journey/events', undefined, isJourneyEventArray)
   }
   return withApiGuard(() => getJourneyEvents())
 }
 
 export async function fetchJourneyStage(): Promise<JourneyStage> {
   if (isRemoteMode()) {
-    const stage = await requestJson<JourneyStage>('/journey/stage')
+    const stage = await requestJson<JourneyStage>('/journey/stage', undefined, isJourneyStage)
     setRemoteJourneyStageSnapshot(stage)
     return stage
   }
@@ -234,14 +234,18 @@ function calculateFitScore(course: CourseCatalogItem, diagnosis: DiagnosisPayloa
   return Math.min(99, 40 + gapBonus + levelBonus + strategyBonus + roleBonus)
 }
 
-async function requestJson<T>(path: string, init?: RequestInit): Promise<T> {
+async function requestJson<T>(
+  path: string,
+  init?: RequestInit,
+  validate?: (value: unknown) => value is T,
+): Promise<T> {
   const maxAttempts = 1 + Math.max(0, runtimeConfig.apiRetryCount)
   const method = (init?.method || 'GET').toUpperCase()
   let attempt = 0
 
   while (attempt < maxAttempts) {
     try {
-      return await requestJsonOnce<T>(path, init)
+      return await requestJsonOnce<T>(path, init, validate)
     } catch (error) {
       attempt += 1
       const retryable = isRetryableApiError(error) && method === 'GET' && attempt < maxAttempts
@@ -260,7 +264,11 @@ async function requestJson<T>(path: string, init?: RequestInit): Promise<T> {
   throw new ApiError('unknown', 'API retry exhausted')
 }
 
-async function requestJsonOnce<T>(path: string, init?: RequestInit): Promise<T> {
+async function requestJsonOnce<T>(
+  path: string,
+  init?: RequestInit,
+  validate?: (value: unknown) => value is T,
+): Promise<T> {
   if (isForcedApiErrorMode()) {
     throw new ApiError('service_unavailable', 'API is temporarily unavailable')
   }
@@ -298,7 +306,14 @@ async function requestJsonOnce<T>(path: string, init?: RequestInit): Promise<T> 
 
     const payload = (await response.json()) as T | { data: T }
     if (payload && typeof payload === 'object' && 'data' in payload) {
-      return payload.data
+      const data = payload.data
+      if (validate && !validate(data)) {
+        throw new ApiError('server', `Invalid API payload: ${path}`, 502)
+      }
+      return data
+    }
+    if (validate && !validate(payload)) {
+      throw new ApiError('server', `Invalid API payload: ${path}`, 502)
     }
     return payload as T
   } catch (error) {
@@ -315,4 +330,80 @@ async function requestJsonOnce<T>(path: string, init?: RequestInit): Promise<T> 
 function isRetryableApiError(error: unknown) {
   if (!(error instanceof ApiError)) return false
   return error.code === 'network' || error.code === 'timeout' || error.code === 'server'
+}
+
+function isObject(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null
+}
+
+function isDiagnosisPayloadOrNull(value: unknown): value is DiagnosisPayload | null {
+  if (value === null) return true
+  if (!isObject(value)) return false
+  return (
+    typeof value.userId === 'string' &&
+    typeof value.diagnosedAt === 'string' &&
+    typeof value.totalScore === 'number' &&
+    typeof value.maxScore === 'number' &&
+    Array.isArray(value.topGaps)
+  )
+}
+
+function isRecommendedCourse(value: unknown): value is RecommendedCourse {
+  if (!isObject(value)) return false
+  return (
+    typeof value.courseId === 'string' &&
+    typeof value.courseTitle === 'string' &&
+    (value.level === '입문' || value.level === '중급' || value.level === '심화') &&
+    typeof value.durationHours === 'number' &&
+    Array.isArray(value.reasonTags)
+  )
+}
+
+function isRecommendedCourseArray(value: unknown): value is RecommendedCourse[] {
+  return Array.isArray(value) && value.every((item) => isRecommendedCourse(item))
+}
+
+function isRecommendedCourseOrNull(value: unknown): value is RecommendedCourse | null {
+  return value === null || isRecommendedCourse(value)
+}
+
+function isEnrollmentRecord(value: unknown): value is EnrollmentRecord {
+  if (!isObject(value)) return false
+  return (
+    typeof value.courseId === 'string' &&
+    typeof value.courseTitle === 'string' &&
+    typeof value.enrollmentRequestedAt === 'string' &&
+    (value.enrollmentStatus === 'requested' ||
+      value.enrollmentStatus === 'enrolled' ||
+      value.enrollmentStatus === 'failed')
+  )
+}
+
+function isEnrollmentRecordArray(value: unknown): value is EnrollmentRecord[] {
+  return Array.isArray(value) && value.every((item) => isEnrollmentRecord(item))
+}
+
+function isJourneyEvent(value: unknown): value is JourneyEvent {
+  if (!isObject(value)) return false
+  return (
+    typeof value.id === 'string' &&
+    typeof value.at === 'string' &&
+    typeof value.label === 'string' &&
+    (value.type === 'diagnosis_completed' ||
+      value.type === 'course_selected' ||
+      value.type === 'enrollment_completed')
+  )
+}
+
+function isJourneyEventArray(value: unknown): value is JourneyEvent[] {
+  return Array.isArray(value) && value.every((item) => isJourneyEvent(item))
+}
+
+function isJourneyStage(value: unknown): value is JourneyStage {
+  return (
+    value === 'start' ||
+    value === 'diagnosis_done' ||
+    value === 'course_selected' ||
+    value === 'enrollment_done'
+  )
 }

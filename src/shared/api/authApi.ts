@@ -20,7 +20,7 @@ export async function syncAuthSession() {
       role: undefined,
     } satisfies AuthSessionPayload
   }
-  const session = await requestJson<AuthSessionPayload>('/auth/session')
+  const session = await requestJson<AuthSessionPayload>('/auth/session', isAuthSessionPayload)
   applyAuthSession(session)
   return session
 }
@@ -53,7 +53,7 @@ export async function completeAuthCallback(search: string) {
   }
 
   const query = search ? `?${new URLSearchParams(search).toString()}` : ''
-  const session = await requestJson<AuthSessionPayload>(`/auth/callback${query}`)
+  const session = await requestJson<AuthSessionPayload>(`/auth/callback${query}`, isAuthSessionPayload)
   applyAuthSession(session)
   return session
 }
@@ -83,13 +83,13 @@ function isRemoteMode() {
   return runtimeConfig.apiMode === 'remote'
 }
 
-async function requestJson<T>(path: string): Promise<T> {
+async function requestJson<T>(path: string, validate?: (value: unknown) => value is T): Promise<T> {
   const maxAttempts = 1 + Math.max(0, runtimeConfig.apiRetryCount)
   let attempt = 0
 
   while (attempt < maxAttempts) {
     try {
-      return await requestJsonOnce<T>(path)
+      return await requestJsonOnce<T>(path, validate)
     } catch (error) {
       attempt += 1
       const retryable = isRetryableApiError(error) && attempt < maxAttempts
@@ -108,7 +108,7 @@ async function requestJson<T>(path: string): Promise<T> {
   throw new ApiError('unknown', 'API retry exhausted')
 }
 
-async function requestJsonOnce<T>(path: string): Promise<T> {
+async function requestJsonOnce<T>(path: string, validate?: (value: unknown) => value is T): Promise<T> {
   if (!runtimeConfig.apiBaseUrl) {
     throw new ApiError('misconfigured', 'VITE_API_BASE_URL is required when VITE_API_MODE=remote')
   }
@@ -131,7 +131,14 @@ async function requestJsonOnce<T>(path: string): Promise<T> {
 
     const payload = (await response.json()) as T | { data: T }
     if (payload && typeof payload === 'object' && 'data' in payload) {
-      return payload.data
+      const data = payload.data
+      if (validate && !validate(data)) {
+        throw new ApiError('server', `Invalid API payload: ${path}`, 502)
+      }
+      return data
+    }
+    if (validate && !validate(payload)) {
+      throw new ApiError('server', `Invalid API payload: ${path}`, 502)
     }
     return payload as T
   } catch (error) {
@@ -148,4 +155,28 @@ async function requestJsonOnce<T>(path: string): Promise<T> {
 function isRetryableApiError(error: unknown) {
   if (!(error instanceof ApiError)) return false
   return error.code === 'network' || error.code === 'timeout' || error.code === 'server'
+}
+
+function isObject(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null
+}
+
+function isRole(value: unknown): value is UserRole {
+  return value === 'employee' || value === 'manager' || value === 'admin'
+}
+
+function isProfile(value: unknown): value is UserProfile {
+  if (!isObject(value)) return false
+  return (
+    typeof value.employeeId === 'string' &&
+    typeof value.name === 'string' &&
+    typeof value.organization === 'string'
+  )
+}
+
+function isAuthSessionPayload(value: unknown): value is AuthSessionPayload {
+  if (!isObject(value) || typeof value.authenticated !== 'boolean') return false
+  if ('profile' in value && value.profile !== undefined && !isProfile(value.profile)) return false
+  if ('role' in value && value.role !== undefined && !isRole(value.role)) return false
+  return true
 }

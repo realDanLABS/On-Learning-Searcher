@@ -2,7 +2,7 @@
 import http from 'node:http'
 
 const PORT = Number(process.env.REMOTE_MOCK_PORT || 8787)
-const ALLOWED_ORIGIN = process.env.REMOTE_MOCK_ORIGIN || 'http://localhost:5173'
+const ALLOWED_ORIGIN = process.env.REMOTE_MOCK_ORIGIN || 'http://127.0.0.1:4173'
 
 /** @type {{authenticated: boolean, profile?: {employeeId: string, name: string, organization: string}, role?: 'employee'|'manager'|'admin'}} */
 let session = { authenticated: false }
@@ -82,7 +82,7 @@ function scoreCourse(course) {
 
 function setCors(req, res) {
   const origin = req.headers.origin
-  if (origin && /^https?:\/\/localhost(:\d+)?$/.test(origin)) {
+  if (origin && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin)
   } else {
     res.setHeader('Access-Control-Allow-Origin', ALLOWED_ORIGIN)

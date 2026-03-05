@@ -11,9 +11,11 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "release:check": "bash scripts/release-check.sh",
+    "release:check:full": "bash scripts/release-check.sh && bash scripts/test-e2e-remote-mock.sh",
     "remote:smoke": "bash scripts/remote-smoke.sh",
     "test": "vitest run",
     "test:e2e": "playwright test",
+    "test:e2e:remote": "bash scripts/test-e2e-remote-mock.sh",
     "test:e2e:headed": "playwright test --headed"
   },
   "dependencies": {

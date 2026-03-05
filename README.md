@@ -51,6 +51,12 @@ bash scripts/sync-worktrees-from-main.sh
 # 릴리즈 전 전체 품질 점검 (lint + test + e2e + build + worktree status)
 npm run release:check
 
+# 원격 계약 리허설 E2E (remote mock api + app + playwright)
+npm run test:e2e:remote
+
+# 최종 게이트 (기본 release check + remote rehearsal)
+npm run release:check:full
+
 # 원격 운영 스모크 점검 (.env 기반 필수값 + /health)
 npm run remote:smoke
 

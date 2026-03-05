@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import {
   fetchDiagnosis,
@@ -12,12 +12,24 @@ import {
 import { toApiError } from './apiError'
 import { clearJourneyData } from '../state/learningFlow'
 import { clearUserRole, setUserRole } from '../state/session'
+import { runtimeConfig } from '../config/runtime'
 
 describe('learningApi error mode', () => {
+  const originalApiMode = runtimeConfig.apiMode
+  const originalApiBaseUrl = runtimeConfig.apiBaseUrl
+
   beforeEach(() => {
     clearJourneyData()
     setForcedApiErrorMode(false)
     clearUserRole()
+    runtimeConfig.apiMode = 'mock'
+    runtimeConfig.apiBaseUrl = originalApiBaseUrl
+  })
+
+  afterEach(() => {
+    runtimeConfig.apiMode = originalApiMode
+    runtimeConfig.apiBaseUrl = originalApiBaseUrl
+    vi.restoreAllMocks()
   })
 
   it('throws when forced api error mode is enabled', async () => {
@@ -116,5 +128,17 @@ describe('learningApi error mode', () => {
     const courses = await fetchRecommendedCourses('all')
     const leadershipCourse = courses.find((course) => course.courseId === 'LDR-210')
     expect((leadershipCourse?.fitScore ?? 0) > 50).toBe(true)
+  })
+
+  it('rejects invalid remote recommendation payload', async () => {
+    runtimeConfig.apiMode = 'remote'
+    runtimeConfig.apiBaseUrl = 'https://api.invalid'
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: async () => ({ data: { invalid: true } }),
+    } as Response)
+
+    await expect(fetchRecommendedCourses('all')).rejects.toMatchObject({ code: 'server' })
   })
 })

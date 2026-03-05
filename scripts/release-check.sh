@@ -20,5 +20,10 @@ npm run build
 echo "[release-check] 5/5 worktree status snapshot"
 bash scripts/worktree-status.sh
 
+if [[ "${RELEASE_REMOTE_GATE:-0}" == "1" ]]; then
+  echo "[release-check] remote gate enabled -> running remote e2e rehearsal"
+  bash scripts/test-e2e-remote-mock.sh
+fi
+
 echo
 echo "[release-check] all checks passed"
