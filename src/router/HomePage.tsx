@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import {
   fetchDiagnosis,
@@ -15,6 +15,7 @@ import { AppShell } from '../shared/layouts/AppShell'
 import { getFunnelSnapshot, type FunnelSnapshot } from '../shared/observability/funnel'
 import { appendAuditLog } from '../shared/observability/audit'
 import { getNextJourneyAction } from '../shared/orchestration/journey'
+import { getJourneyStartBlockers } from '../shared/orchestration/readiness'
 import { isAuthenticated, setAuthenticated } from '../shared/state/auth'
 import {
   clearUserProfile,
@@ -29,6 +30,7 @@ import {
 } from '../shared/state/learningFlow'
 
 export function HomePage() {
+  const navigate = useNavigate()
   const [diagnosis, setDiagnosis] = useState<DiagnosisPayload | null>(null)
   const [stage, setStage] = useState<JourneyStage>('start')
   const [role, setRole] = useState<UserRole>('employee')
@@ -82,6 +84,11 @@ export function HomePage() {
     void run()
   }, [])
   const nextAction = getNextJourneyAction(stage)
+  const blockers = getJourneyStartBlockers({
+    authenticated,
+    hasProfile: profileReady,
+  })
+  const canStartNext = blockers.length === 0
 
   const resetJourney = () => {
     appendAuditLog('journey_reset', '사용자 수동 초기화')
@@ -165,15 +172,14 @@ export function HomePage() {
           <button className="primary-btn" onClick={submitOnboarding} type="button">
             {profileReady ? '프로필 수정 완료' : '프로필 저장'}
           </button>
-          <Link
-            className="primary-btn link-btn"
-            onClick={(event) => {
-              if (!authenticated || !profileReady) event.preventDefault()
-            }}
-            to={nextAction.to}
+          <button
+            className="primary-btn"
+            disabled={!canStartNext}
+            onClick={() => navigate(nextAction.to)}
+            type="button"
           >
             {nextAction.label}
-          </Link>
+          </button>
           <Link className="secondary-btn link-btn" to="/recommendation">
             추천 과정 보기
           </Link>
@@ -188,6 +194,7 @@ export function HomePage() {
         {!profileReady && (
           <p className="hint-text">진단 시작 전 기본 프로필을 먼저 저장해 주세요.</p>
         )}
+        {blockers.length > 0 && <p className="hint-text">진입 조건: {blockers.join(' / ')}</p>}
         <p className="hint-text">인증 상태: {authenticated ? '로그인됨' : '로그인 필요'}</p>
         <p className="hint-text">현재 단계: {stage}</p>
         <p className="hint-text">현재 역할: {role}</p>

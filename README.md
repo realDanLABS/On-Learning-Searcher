@@ -17,6 +17,9 @@ npm run dev
 - 기능별 `git worktree`를 사용합니다.
 - 한 기능은 한 브랜치(한 worktree)에서만 작업합니다.
 
+## 사용자 여정 (최종 기준)
+- `로그인` → `프로필 저장` → `역량 진단` → `추천 과정 선택` → `교육 신청` → `이력/감사로그 확인`
+
 ## 현재 Worktree 구성
 - `codex/foundation`
 - `codex/diagnosis`
