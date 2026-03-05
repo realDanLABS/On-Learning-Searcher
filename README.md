@@ -34,6 +34,15 @@ npm run dev
 
 상세 운영 방법은 [docs/WORKTREE_GUIDE.md](docs/WORKTREE_GUIDE.md)를 확인하세요.
 
+## Worktree 운영 명령
+```bash
+# 전체 워크트리 상태 확인
+bash scripts/worktree-status.sh
+
+# main 기준 전체 워크트리 fast-forward 동기화
+bash scripts/sync-worktrees-from-main.sh
+```
+
 ## 폴더 구조
 ```text
 src/
@@ -65,3 +74,4 @@ src/
 - Dispatch: [ORCHESTRATION/DISPATCH_MESSAGES.md](ORCHESTRATION/DISPATCH_MESSAGES.md)
 - Integration contract: [ORCHESTRATION/INTEGRATION_CONTRACT.md](ORCHESTRATION/INTEGRATION_CONTRACT.md)
 - Execution board: [ORCHESTRATION/EXECUTION_BOARD.md](ORCHESTRATION/EXECUTION_BOARD.md)
+- Orchestrator lock: [ORCHESTRATION/ORCHESTRATOR_LOCK.md](ORCHESTRATION/ORCHESTRATOR_LOCK.md)

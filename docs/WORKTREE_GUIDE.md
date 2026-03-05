@@ -6,7 +6,7 @@
 
 ## 2) 현재 프로젝트의 Worktree 구성
 - 메인 저장소: `On_Learning_Searcher` (`main` 브랜치)
-- 작업 폴더: `../OnLearning_worktrees/`
+- 작업 폴더: `worktrees/`
   - `foundation` -> `codex/foundation`
   - `diagnosis` -> `codex/diagnosis`
   - `recommendation` -> `codex/recommendation`
@@ -18,7 +18,7 @@
 ## 3) 매일 작업 루틴
 1. 작업할 기능 폴더로 이동
 ```bash
-cd "../OnLearning_worktrees/diagnosis"
+cd "/Users/daniel/내 작업/내 프로젝트/Vibe Coding/On_Learning_Searcher/worktrees/diagnosis"
 ```
 2. 코드 수정 후 커밋
 ```bash
@@ -44,8 +44,14 @@ git push -u origin codex/diagnosis
 # 모든 worktree 확인
 git worktree list
 
+# 프로젝트의 모든 worktree git 상태 한 번에 확인
+bash scripts/worktree-status.sh
+
+# main 변경사항을 각 worktree에 fast-forward 동기화
+bash scripts/sync-worktrees-from-main.sh
+
 # worktree 제거 (폴더만 제거, 브랜치 유지)
-git worktree remove "../OnLearning_worktrees/chatbot"
+git worktree remove "worktrees/chatbot"
 
 # 브랜치까지 삭제 (이미 main에 머지됐을 때만)
 git branch -d codex/chatbot
