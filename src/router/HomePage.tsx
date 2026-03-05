@@ -255,7 +255,7 @@ export function HomePage() {
     authenticated: boolean
     hasProfile: boolean
     stage: JourneyStage
-  }) => {
+  }, preferredPath?: string | null) => {
     const liveContext = {
       authenticated: isAuthenticated() || context.authenticated,
       hasProfile: hasUserProfile() || context.hasProfile,
@@ -268,21 +268,30 @@ export function HomePage() {
       role: liveContext.role,
       stage: liveContext.stage,
     }
-    if (gateNextPath) {
-      const gateRoute = featureRoutes.find((route) => route.path === gateNextPath)
-      if (!gateRoute) {
-        navigate(gateNextPath)
-        return
+    const navigatePreferred = (targetPath: string | null | undefined) => {
+      if (!targetPath) return false
+      const targetRoute = featureRoutes.find((route) => route.path === targetPath)
+      if (!targetRoute) {
+        navigate(targetPath)
+        return true
       }
-      const decision = getRouteAccessDecision(gateRoute, routeContext)
+      const decision = getRouteAccessDecision(targetRoute, routeContext)
       if (decision.allowed) {
-        navigate(gateNextPath)
-        return
+        navigate(targetPath)
+        return true
       }
       if (decision.nextPath) {
         navigate(decision.nextPath)
-        return
+        return true
       }
+      return false
+    }
+
+    if (navigatePreferred(preferredPath)) {
+      return
+    }
+    if (navigatePreferred(gateNextPath)) {
+      return
     }
     const next = getNextActionStatus({
       authenticated: liveContext.authenticated,
@@ -319,7 +328,7 @@ export function HomePage() {
       authenticated,
       hasProfile: profileReady,
       stage,
-    })
+    }, primaryAction.kind === 'navigate' ? primaryAction.to : null)
   }
 
   return (
@@ -366,7 +375,20 @@ export function HomePage() {
             </button>
           )}
           {canResumeDiagnosis && (
-            <button className="secondary-btn" onClick={() => navigate('/diagnosis')} type="button">
+            <button
+              className="secondary-btn"
+              onClick={() =>
+                moveToBestNextStep(
+                  {
+                    authenticated,
+                    hasProfile: profileReady,
+                    stage,
+                  },
+                  '/diagnosis',
+                )
+              }
+              type="button"
+            >
               미완료 진단 이어하기
             </button>
           )}
@@ -455,26 +477,44 @@ export function HomePage() {
         <article className="feature-card">
           <h3>2단계: 역량 진단</h3>
           <p>설문 완료 후 개인 역량 갭을 계산합니다.</p>
-          <button
-            className="primary-btn"
-            disabled={!canGoDiagnosis}
-            onClick={() => navigate('/diagnosis')}
-            type="button"
-          >
-            진단 시작
+            <button
+              className="primary-btn"
+              disabled={!canGoDiagnosis}
+              onClick={() =>
+                moveToBestNextStep(
+                  {
+                    authenticated,
+                    hasProfile: profileReady,
+                    stage,
+                  },
+                  '/diagnosis',
+                )
+              }
+              type="button"
+            >
+              진단 시작
           </button>
         </article>
 
         <article className="feature-card">
           <h3>3단계: 맞춤 추천</h3>
           <p>진단 결과 기반 추천과정과 추천 이유를 확인합니다.</p>
-          <button
-            className="primary-btn"
-            disabled={!canGoRecommendation}
-            onClick={() => navigate('/recommendation')}
-            type="button"
-          >
-            추천 확인
+            <button
+              className="primary-btn"
+              disabled={!canGoRecommendation}
+              onClick={() =>
+                moveToBestNextStep(
+                  {
+                    authenticated,
+                    hasProfile: profileReady,
+                    stage,
+                  },
+                  '/recommendation',
+                )
+              }
+              type="button"
+            >
+              추천 확인
           </button>
         </article>
 
@@ -485,7 +525,16 @@ export function HomePage() {
             <button
               className="primary-btn"
               disabled={!canGoEnrollment}
-              onClick={() => navigate('/course-linking')}
+              onClick={() =>
+                moveToBestNextStep(
+                  {
+                    authenticated,
+                    hasProfile: profileReady,
+                    stage,
+                  },
+                  '/course-linking',
+                )
+              }
               type="button"
             >
               신청 진행
@@ -493,7 +542,16 @@ export function HomePage() {
             <button
               className="secondary-btn"
               disabled={!canGoHistory}
-              onClick={() => navigate('/history')}
+              onClick={() =>
+                moveToBestNextStep(
+                  {
+                    authenticated,
+                    hasProfile: profileReady,
+                    stage,
+                  },
+                  '/history',
+                )
+              }
               type="button"
             >
               이력 보기
