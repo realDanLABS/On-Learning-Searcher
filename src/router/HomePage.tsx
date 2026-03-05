@@ -9,6 +9,11 @@ import {
 } from '../shared/api/learningApi'
 import { AppShell } from '../shared/layouts/AppShell'
 import { getFunnelSnapshot, type FunnelSnapshot } from '../shared/observability/funnel'
+import {
+  clearUserProfile,
+  getUserProfile,
+  saveUserProfile,
+} from '../shared/state/profile'
 import { getUserRole, setUserRole, type UserRole } from '../shared/state/session'
 import {
   clearJourneyData,
@@ -30,6 +35,11 @@ export function HomePage() {
     conversionToSelection: 0,
     conversionToEnrollment: 0,
   })
+  const [employeeId, setEmployeeId] = useState('')
+  const [name, setName] = useState('')
+  const [organization, setOrganization] = useState('')
+  const [onboardingError, setOnboardingError] = useState<string | null>(null)
+  const [profileReady, setProfileReady] = useState(false)
 
   useEffect(() => {
     const run = async () => {
@@ -41,6 +51,13 @@ export function HomePage() {
         setFunnel(getFunnelSnapshot())
         setRole(getUserRole())
         setApiErrorMode(isForcedApiErrorMode())
+        const profile = getUserProfile()
+        if (profile) {
+          setEmployeeId(profile.employeeId)
+          setName(profile.name)
+          setOrganization(profile.organization)
+          setProfileReady(true)
+        }
       } catch {
         setLoadError('홈 데이터를 불러오지 못했습니다. 다시 시도해 주세요.')
       } finally {
@@ -60,6 +77,7 @@ export function HomePage() {
 
   const resetJourney = () => {
     clearJourneyData()
+    clearUserProfile()
     window.location.reload()
   }
 
@@ -73,6 +91,20 @@ export function HomePage() {
     setForcedApiErrorMode(next)
     setApiErrorMode(next)
     window.location.reload()
+  }
+
+  const submitOnboarding = () => {
+    if (!employeeId.trim() || !name.trim() || !organization.trim()) {
+      setOnboardingError('사번, 이름, 소속을 모두 입력해 주세요.')
+      return
+    }
+    saveUserProfile({
+      employeeId: employeeId.trim(),
+      name: name.trim(),
+      organization: organization.trim(),
+    })
+    setProfileReady(true)
+    setOnboardingError(null)
   }
 
   return (
@@ -89,7 +121,16 @@ export function HomePage() {
           연결됩니다.
         </p>
         <div className="journey-actions">
-          <Link className="primary-btn link-btn" to={nextAction.to}>
+          <button className="primary-btn" onClick={submitOnboarding} type="button">
+            {profileReady ? '프로필 수정 완료' : '프로필 저장'}
+          </button>
+          <Link
+            className="primary-btn link-btn"
+            onClick={(event) => {
+              if (!profileReady) event.preventDefault()
+            }}
+            to={nextAction.to}
+          >
             {nextAction.label}
           </Link>
           <Link className="secondary-btn link-btn" to="/recommendation">
@@ -102,8 +143,26 @@ export function HomePage() {
             API 오류 모드: {apiErrorMode ? 'ON' : 'OFF'}
           </button>
         </div>
+        {onboardingError && <p className="error-text">{onboardingError}</p>}
+        {!profileReady && (
+          <p className="hint-text">진단 시작 전 기본 프로필을 먼저 저장해 주세요.</p>
+        )}
         <p className="hint-text">현재 단계: {stage}</p>
         <p className="hint-text">현재 역할: {role}</p>
+        <div className="onboarding-grid">
+          <label>
+            사번
+            <input value={employeeId} onChange={(e) => setEmployeeId(e.target.value)} />
+          </label>
+          <label>
+            이름
+            <input value={name} onChange={(e) => setName(e.target.value)} />
+          </label>
+          <label>
+            소속
+            <input value={organization} onChange={(e) => setOrganization(e.target.value)} />
+          </label>
+        </div>
         <div className="journey-actions">
           <button className="secondary-btn" onClick={() => changeRole('employee')} type="button">
             Employee

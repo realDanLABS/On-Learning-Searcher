@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 
 import { submitDiagnosis } from '../../../shared/api/learningApi'
 import { AppShell } from '../../../shared/layouts/AppShell'
+import { getUserProfile } from '../../../shared/state/profile'
 import { type AnswerMap, buildSummary } from '../diagnosisResult'
 import { diagnosisQuestions } from '../questions'
 
@@ -81,10 +82,11 @@ export function DiagnosisPage() {
   }
 
   const moveToRecommendation = async () => {
+    const profile = getUserProfile()
     try {
       setSubmitError(null)
       await submitDiagnosis({
-        userId: 'employee-demo',
+        userId: profile?.employeeId ?? 'employee-demo',
         diagnosedAt: new Date().toISOString(),
         totalScore: summary.totalScore,
         maxScore: summary.maxScore,

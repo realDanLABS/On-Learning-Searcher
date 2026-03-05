@@ -10,11 +10,13 @@ import {
   selectRecommendedCourse,
 } from './learningApi'
 import { clearJourneyData } from '../state/learningFlow'
+import { clearUserRole, setUserRole } from '../state/session'
 
 describe('learningApi error mode', () => {
   beforeEach(() => {
     clearJourneyData()
     setForcedApiErrorMode(false)
+    clearUserRole()
   })
 
   it('throws when forced api error mode is enabled', async () => {
@@ -86,5 +88,26 @@ describe('learningApi error mode', () => {
       enrollmentStatus: 'enrolled',
     })
     expect(await fetchJourneyStage()).toBe('enrollment_done')
+  })
+
+  it('applies role bonus for leadership when user is manager', async () => {
+    setUserRole('manager')
+    await submitDiagnosis({
+      userId: 'u4',
+      diagnosedAt: '2026-03-06T00:00:00.000Z',
+      totalScore: 10,
+      maxScore: 20,
+      categoryScores: {
+        digital: 2,
+        leadership: 2,
+        collaboration: 3,
+        problemSolving: 3,
+      },
+      topGaps: ['leadership', 'digital'],
+    })
+
+    const courses = await fetchRecommendedCourses('all')
+    const leadershipCourse = courses.find((course) => course.courseId === 'LDR-210')
+    expect((leadershipCourse?.fitScore ?? 0) > 50).toBe(true)
   })
 })

@@ -12,6 +12,7 @@ import {
   type EnrollmentRecord,
   type RecommendedCourse,
 } from '../state/learningFlow'
+import { getUserRole } from '../state/session'
 
 const KEY_FORCE_API_ERROR = 'on_learning_force_api_error'
 
@@ -156,6 +157,13 @@ function calculateFitScore(course: CourseCatalogItem, diagnosis: DiagnosisPayloa
       : course.recommendedBy === 'role-fit'
         ? 6
         : 3
+  const role = getUserRole()
+  const roleBonus =
+    role === 'manager' && course.reasonTags.includes('leadership')
+      ? 8
+      : role === 'admin' && course.reasonTags.includes('problemSolving')
+        ? 8
+        : 0
 
-  return Math.min(99, 40 + gapBonus + levelBonus + strategyBonus)
+  return Math.min(99, 40 + gapBonus + levelBonus + strategyBonus + roleBonus)
 }

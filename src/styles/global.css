@@ -86,6 +86,20 @@ a {
   gap: 8px;
 }
 
+.profile-banner {
+  margin-top: 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: #f8fbff;
+}
+
+.profile-banner p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
 .feature-link {
   font-size: 14px;
   border-radius: 999px;
@@ -253,6 +267,27 @@ select {
   border-radius: 8px;
   padding: 8px 10px;
   background: var(--surface);
+}
+
+input {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: var(--surface);
+}
+
+.onboarding-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.onboarding-grid label {
+  font-size: 13px;
+  color: var(--text-muted);
 }
 
 .history-table {

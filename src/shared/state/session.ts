@@ -11,3 +11,7 @@ export function getUserRole(): UserRole {
 export function setUserRole(role: UserRole) {
   localStorage.setItem(KEY_ROLE, role)
 }
+
+export function clearUserRole() {
+  localStorage.removeItem(KEY_ROLE)
+}

@@ -14,7 +14,14 @@ export function AppRouter() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/diagnosis" element={<DiagnosisPage />} />
+        <Route
+          path="/diagnosis"
+          element={
+            <StageGuard minStage="start">
+              <DiagnosisPage />
+            </StageGuard>
+          }
+        />
         <Route
           path="/recommendation"
           element={
@@ -39,7 +46,14 @@ export function AppRouter() {
             </StageGuard>
           }
         />
-        <Route path="/chatbot" element={<ChatbotPage />} />
+        <Route
+          path="/chatbot"
+          element={
+            <StageGuard minStage="start">
+              <ChatbotPage />
+            </StageGuard>
+          }
+        />
         <Route path="/responsive" element={<ResponsivePage />} />
         <Route path="*" element={<Navigate replace to="/" />} />
       </Routes>
