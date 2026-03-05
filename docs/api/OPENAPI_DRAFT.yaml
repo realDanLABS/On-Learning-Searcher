@@ -1,0 +1,45 @@
+openapi: 3.0.3
+info:
+  title: On Learning Searcher API
+  version: 0.1.0
+paths:
+  /diagnosis:
+    post:
+      summary: Submit diagnosis result
+      responses:
+        '200':
+          description: Saved
+    get:
+      summary: Get latest diagnosis
+      responses:
+        '200':
+          description: Diagnosis payload
+  /recommendations:
+    get:
+      summary: Get recommended courses from diagnosis context
+      parameters:
+        - in: query
+          name: level
+          schema:
+            type: string
+            enum: [all, 입문, 중급, 심화]
+      responses:
+        '200':
+          description: Course list
+  /enrollments:
+    post:
+      summary: Submit enrollment result
+      responses:
+        '200':
+          description: Saved
+    get:
+      summary: Get enrollment history
+      responses:
+        '200':
+          description: Enrollment list
+  /journey/events:
+    get:
+      summary: Get journey events timeline
+      responses:
+        '200':
+          description: Timeline events

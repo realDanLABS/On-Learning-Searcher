@@ -1,16 +1,37 @@
+import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-import { AppShell } from '../../../shared/layouts/AppShell'
 import {
-  getDiagnosisPayload,
-  getEnrollmentRecords,
-  getJourneyEvents,
+  fetchDiagnosis,
+  fetchEnrollmentHistory,
+  fetchJourneyEvents,
+} from '../../../shared/api/learningApi'
+import { AppShell } from '../../../shared/layouts/AppShell'
+import type {
+  DiagnosisPayload,
+  EnrollmentRecord,
+  JourneyEvent,
 } from '../../../shared/state/learningFlow'
 
 export function HistoryPage() {
-  const diagnosis = getDiagnosisPayload()
-  const enrollments = getEnrollmentRecords()
-  const events = getJourneyEvents()
+  const [diagnosis, setDiagnosis] = useState<DiagnosisPayload | null>(null)
+  const [enrollments, setEnrollments] = useState<EnrollmentRecord[]>([])
+  const [events, setEvents] = useState<JourneyEvent[]>([])
+
+  useEffect(() => {
+    const run = async () => {
+      setDiagnosis(await fetchDiagnosis())
+      setEnrollments(await fetchEnrollmentHistory())
+      setEvents(await fetchJourneyEvents())
+    }
+    void run()
+  }, [])
+
+  const managerSummary = useMemo(() => {
+    const completed = enrollments.filter((item) => item.enrollmentStatus === 'enrolled').length
+    const completionRate = enrollments.length === 0 ? 0 : Math.round((completed / enrollments.length) * 100)
+    return { completed, completionRate }
+  }, [enrollments])
 
   return (
     <AppShell
@@ -59,6 +80,12 @@ export function HistoryPage() {
             </tbody>
           </table>
         )}
+      </section>
+
+      <section className="hero-card">
+        <h2>관리자 요약</h2>
+        <p>신청 완료 과정 수: {managerSummary.completed}</p>
+        <p>신청 대비 완료율: {managerSummary.completionRate}%</p>
       </section>
 
       <section className="hero-card">

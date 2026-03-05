@@ -1,65 +1,30 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
-import { AppShell } from '../../../shared/layouts/AppShell'
 import {
-  getDiagnosisPayload,
-  saveSelectedCourse,
-  type RecommendedCourse,
-} from '../../../shared/state/learningFlow'
-
-const mockCourses: RecommendedCourse[] = [
-  {
-    courseId: 'DIG-101',
-    courseTitle: '디지털 생산성 툴 실무',
-    level: '입문',
-    durationHours: 6,
-    reasonTags: ['digital', 'skill-gap'],
-    recommendedBy: 'skill-gap',
-  },
-  {
-    courseId: 'LDR-210',
-    courseTitle: '현업 리더십 커뮤니케이션',
-    level: '중급',
-    durationHours: 8,
-    reasonTags: ['leadership', 'role-fit'],
-    recommendedBy: 'role-fit',
-  },
-  {
-    courseId: 'COL-180',
-    courseTitle: '부서간 협업 문제 해결 워크숍',
-    level: '중급',
-    durationHours: 5,
-    reasonTags: ['collaboration', 'skill-gap'],
-    recommendedBy: 'skill-gap',
-  },
-  {
-    courseId: 'PS-300',
-    courseTitle: '문제해결 사고법 고급 과정',
-    level: '심화',
-    durationHours: 10,
-    reasonTags: ['problemSolving', 'history-based'],
-    recommendedBy: 'history-based',
-  },
-]
+  fetchDiagnosis,
+  fetchRecommendedCourses,
+  selectRecommendedCourse,
+} from '../../../shared/api/learningApi'
+import { AppShell } from '../../../shared/layouts/AppShell'
+import type { DiagnosisPayload, RecommendedCourse } from '../../../shared/state/learningFlow'
 
 export function RecommendationPage() {
-  const diagnosis = getDiagnosisPayload()
+  const [diagnosis, setDiagnosis] = useState<DiagnosisPayload | null>(null)
+  const [courses, setCourses] = useState<RecommendedCourse[]>([])
   const navigate = useNavigate()
   const [levelFilter, setLevelFilter] = useState<'all' | '입문' | '중급' | '심화'>('all')
 
-  const filtered = useMemo(() => {
-    const base = mockCourses.filter((course) => {
-      if (!diagnosis) return true
-      return diagnosis.topGaps.some((gap) => course.reasonTags.includes(gap))
-    })
+  useEffect(() => {
+    const run = async () => {
+      setDiagnosis(await fetchDiagnosis())
+      setCourses(await fetchRecommendedCourses(levelFilter))
+    }
+    void run()
+  }, [levelFilter])
 
-    if (levelFilter === 'all') return base
-    return base.filter((course) => course.level === levelFilter)
-  }, [diagnosis, levelFilter])
-
-  const moveToEnrollment = (course: RecommendedCourse) => {
-    saveSelectedCourse(course)
+  const moveToEnrollment = async (course: RecommendedCourse) => {
+    await selectRecommendedCourse(course)
     navigate('/course-linking')
   }
 
@@ -95,8 +60,8 @@ export function RecommendationPage() {
       )}
 
       <section className="feature-grid">
-        {filtered.length > 0 ? (
-          filtered.map((course) => (
+        {courses.length > 0 ? (
+          courses.map((course) => (
             <article className="feature-card" key={course.courseId}>
               <h3>{course.courseTitle}</h3>
               <p>
@@ -109,7 +74,7 @@ export function RecommendationPage() {
                   </span>
                 ))}
               </div>
-              <button className="primary-btn" onClick={() => moveToEnrollment(course)} type="button">
+              <button className="primary-btn" onClick={() => void moveToEnrollment(course)} type="button">
                 신청하기
               </button>
             </article>

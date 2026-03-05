@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import { submitDiagnosis } from '../../../shared/api/learningApi'
 import { AppShell } from '../../../shared/layouts/AppShell'
-import { saveDiagnosisPayload } from '../../../shared/state/learningFlow'
 import { type AnswerMap, buildSummary } from '../diagnosisResult'
 import { diagnosisQuestions } from '../questions'
 
@@ -79,8 +79,8 @@ export function DiagnosisPage() {
     localStorage.removeItem(STORAGE_KEY)
   }
 
-  const moveToRecommendation = () => {
-    saveDiagnosisPayload({
+  const moveToRecommendation = async () => {
+    await submitDiagnosis({
       userId: 'employee-demo',
       diagnosedAt: new Date().toISOString(),
       totalScore: summary.totalScore,

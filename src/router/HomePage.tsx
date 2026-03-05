@@ -1,15 +1,25 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
+import { fetchDiagnosis, fetchJourneyStage } from '../shared/api/learningApi'
 import { AppShell } from '../shared/layouts/AppShell'
 import {
   clearJourneyData,
-  getDiagnosisPayload,
-  getJourneyStage,
+  type DiagnosisPayload,
+  type JourneyStage,
 } from '../shared/state/learningFlow'
 
 export function HomePage() {
-  const diagnosis = getDiagnosisPayload()
-  const stage = getJourneyStage()
+  const [diagnosis, setDiagnosis] = useState<DiagnosisPayload | null>(null)
+  const [stage, setStage] = useState<JourneyStage>('start')
+
+  useEffect(() => {
+    const run = async () => {
+      setDiagnosis(await fetchDiagnosis())
+      setStage(await fetchJourneyStage())
+    }
+    void run()
+  }, [])
   const nextAction =
     stage === 'start'
       ? { to: '/diagnosis', label: '역량 진단 시작' }

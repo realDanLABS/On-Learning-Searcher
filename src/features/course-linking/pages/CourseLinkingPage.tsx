@@ -1,17 +1,25 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-import { AppShell } from '../../../shared/layouts/AppShell'
 import {
-  appendEnrollment,
-  getSelectedCourse,
-  type EnrollmentRecord,
-} from '../../../shared/state/learningFlow'
+  fetchSelectedCourse,
+  submitEnrollment,
+} from '../../../shared/api/learningApi'
+import { AppShell } from '../../../shared/layouts/AppShell'
+import type { EnrollmentRecord, RecommendedCourse } from '../../../shared/state/learningFlow'
 
 export function CourseLinkingPage() {
-  const course = getSelectedCourse()
+  const [course, setCourse] = useState<RecommendedCourse | null>(null)
   const hasCourse = Boolean(course)
 
-  const requestEnrollment = () => {
+  useEffect(() => {
+    const run = async () => {
+      setCourse(await fetchSelectedCourse())
+    }
+    void run()
+  }, [])
+
+  const requestEnrollment = async () => {
     if (!course) return
 
     const record: EnrollmentRecord = {
@@ -20,7 +28,7 @@ export function CourseLinkingPage() {
       enrollmentRequestedAt: new Date().toISOString(),
       enrollmentStatus: 'enrolled',
     }
-    appendEnrollment(record)
+    await submitEnrollment(record)
   }
 
   return (
@@ -48,7 +56,7 @@ export function CourseLinkingPage() {
             <a className="secondary-btn link-btn" href="https://example.com" rel="noreferrer" target="_blank">
               이캠퍼스 신청 페이지 열기
             </a>
-            <button className="primary-btn" onClick={requestEnrollment} type="button">
+            <button className="primary-btn" onClick={() => void requestEnrollment()} type="button">
               신청 완료 처리
             </button>
             <Link className="primary-btn link-btn" to="/history">
