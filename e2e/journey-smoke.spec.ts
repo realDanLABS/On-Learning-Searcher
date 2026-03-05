@@ -43,3 +43,11 @@ test('ecampus callback success auto-redirects to history', async ({ page }) => {
   await expect(page).toHaveURL(/\/history\?from=enrollment/)
   await expect(page.getByRole('heading', { name: '진단 결과 및 학습 이력' })).toBeVisible()
 })
+
+test('ecampus callback failed shows recovery actions', async ({ page }) => {
+  await prepareUntilCourseLinking(page)
+  await page.goto('/course-linking?enrollment=failed&courseId=DIG-101')
+  await expect(page.getByText('외부 신청 결과가 실패로 반환되었습니다. 신청 정보를 다시 확인해 주세요.')).toBeVisible()
+  await expect(page.getByRole('button', { name: '복귀 결과 다시 확인' })).toBeVisible()
+  await expect(page.getByRole('link', { name: '추천 페이지로 돌아가기' })).toBeVisible()
+})

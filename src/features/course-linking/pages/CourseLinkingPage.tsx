@@ -20,6 +20,7 @@ export function CourseLinkingPage() {
   const [loadError, setLoadError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
   const [callbackNotice, setCallbackNotice] = useState<string | null>(null)
+  const [callbackFailed, setCallbackFailed] = useState(false)
   const hasCourse = Boolean(course)
   const callbackHandled = useRef(false)
   const handoff = getHandoffMessage(location.search, 'course-linking')
@@ -61,6 +62,7 @@ export function CourseLinkingPage() {
           navigate('/history?from=enrollment', { replace: true })
           return
         }
+        setCallbackFailed(true)
         setCallbackNotice('외부 신청 결과가 실패로 반환되었습니다. 신청 정보를 다시 확인해 주세요.')
       } catch (error) {
         setLoadError(getErrorMessage(error, '복귀 결과 처리 중 오류가 발생했습니다. 다시 시도해 주세요.'))
@@ -79,6 +81,8 @@ export function CourseLinkingPage() {
   const requestEnrollment = async () => {
     if (!course) return
 
+    setCallbackFailed(false)
+    setCallbackNotice(null)
     const record: EnrollmentRecord = {
       courseId: course.courseId,
       courseTitle: course.courseTitle,
@@ -94,6 +98,13 @@ export function CourseLinkingPage() {
     } finally {
       setSubmitting(false)
     }
+  }
+
+  const resetFailedCallback = () => {
+    callbackHandled.current = false
+    setCallbackFailed(false)
+    setCallbackNotice(null)
+    navigate('/course-linking?from=recommendation', { replace: true })
   }
 
   return (
@@ -139,6 +150,16 @@ export function CourseLinkingPage() {
           <p>과정코드: {course.courseId}</p>
           <p>추천근거: {course.reasonTags.join(', ')}</p>
           {callbackNotice && <p className="error-text">{callbackNotice}</p>}
+          {callbackFailed && (
+            <div className="journey-actions">
+              <button className="secondary-btn" onClick={resetFailedCallback} type="button">
+                복귀 결과 다시 확인
+              </button>
+              <Link className="secondary-btn link-btn" to="/recommendation?from=diagnosis">
+                추천 페이지로 돌아가기
+              </Link>
+            </div>
+          )}
 
           <div className="journey-actions">
             <a
