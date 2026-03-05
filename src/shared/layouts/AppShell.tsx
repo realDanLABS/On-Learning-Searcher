@@ -38,6 +38,7 @@ export function AppShell({ title, description, children }: AppShellProps) {
     stage,
     hasDiagnosisDraft: hasDiagnosisDraft(),
   })
+  const isCurrentStepAction = nextAction.enabled && location.pathname === nextAction.to
   const onLogout = () => {
     appendAuditLog('logout', `로그아웃: role=${role}`)
     clearAuthentication()
@@ -69,10 +70,19 @@ export function AppShell({ title, description, children }: AppShellProps) {
           <p>{description}</p>
         </div>
         <div className="header-actions">
-          {nextAction.enabled ? (
+          {nextAction.enabled && !isCurrentStepAction ? (
             <Link className="primary-btn link-btn header-next-link" to={nextAction.to}>
               다음 단계 진행: {nextAction.label}
             </Link>
+          ) : isCurrentStepAction ? (
+            <button
+              className="primary-btn header-next-link"
+              disabled
+              title="현재 단계에서 필요한 선택/입력을 완료해 주세요."
+              type="button"
+            >
+              현재 단계 진행 중
+            </button>
           ) : (
             <button className="primary-btn header-next-link" disabled title={nextAction.reason} type="button">
               다음 단계 잠금

@@ -179,6 +179,12 @@ test('global header CTA moves user to the next journey step', async ({ page }) =
   await expect(page).toHaveURL(/\/diagnosis/)
 })
 
+test('global header CTA is disabled when user is already on the current step page', async ({ page }) => {
+  await prepareDiagnosisDone(page)
+  await expect(page).toHaveURL(/\/recommendation/)
+  await expect(page.getByRole('button', { name: '현재 단계 진행 중' })).toBeDisabled()
+})
+
 test('direct diagnosis access redirects with auth next path', async ({ page }) => {
   await page.goto('/diagnosis')
   await expect(page).toHaveURL(/\/\?gate=auth-required&next=%2Fdiagnosis/)
