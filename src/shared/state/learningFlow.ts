@@ -57,6 +57,8 @@ const JOURNEY_UPDATED_EVENT = 'on-learning:journey-updated'
 const RETENTION_DAYS = 180
 
 export function saveDiagnosisPayload(payload: DiagnosisPayload) {
+  // New diagnosis should start a fresh active journey loop.
+  localStorage.removeItem(KEY_SELECTED_COURSE)
   localStorage.setItem(KEY_DIAGNOSIS, JSON.stringify(payload))
   appendJourneyEvent({
     id: `diag-${payload.diagnosedAt}`,
@@ -161,7 +163,7 @@ export function getJourneyEvents(): JourneyEvent[] {
 export function getJourneyStage(): JourneyStage {
   const hasDiagnosis = Boolean(getDiagnosisPayload())
   const hasSelectedCourse = Boolean(getSelectedCourse())
-  const hasSuccessfulEnrollment = getEnrollmentRecords().some(
+  const hasSuccessfulEnrollment = hasSelectedCourse && getEnrollmentRecords().some(
     (item) => item.enrollmentStatus === 'enrolled',
   )
 

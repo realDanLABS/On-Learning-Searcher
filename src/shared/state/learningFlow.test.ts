@@ -139,6 +139,55 @@ describe('learningFlow journey lifecycle', () => {
     expect(getJourneyStage()).toBe('course_selected')
   })
 
+  it('resets active selection when a new diagnosis is submitted', () => {
+    saveDiagnosisPayload({
+      userId: 'u4',
+      diagnosedAt: '2026-03-05T03:00:00.000Z',
+      totalScore: 8,
+      maxScore: 10,
+      categoryScores: {
+        digital: 2,
+        leadership: 2,
+        collaboration: 2,
+        problemSolving: 2,
+      },
+      topGaps: ['digital', 'leadership'],
+    })
+
+    saveSelectedCourse({
+      courseId: 'DIG-101',
+      courseTitle: '디지털 생산성 툴 실무',
+      level: '입문',
+      durationHours: 6,
+      reasonTags: ['digital', 'skill-gap'],
+      recommendedBy: 'skill-gap',
+    })
+
+    appendEnrollment({
+      courseId: 'DIG-101',
+      courseTitle: '디지털 생산성 툴 실무',
+      enrollmentRequestedAt: '2026-03-05T03:10:00.000Z',
+      enrollmentStatus: 'enrolled',
+    })
+    expect(getJourneyStage()).toBe('enrollment_done')
+
+    saveDiagnosisPayload({
+      userId: 'u4',
+      diagnosedAt: '2026-03-06T03:00:00.000Z',
+      totalScore: 7,
+      maxScore: 10,
+      categoryScores: {
+        digital: 2,
+        leadership: 2,
+        collaboration: 1,
+        problemSolving: 2,
+      },
+      topGaps: ['collaboration', 'digital'],
+    })
+
+    expect(getJourneyStage()).toBe('diagnosis_done')
+  })
+
   it('removes corrupted diagnosis/selected-course payloads', () => {
     localStorage.setItem('on_learning_diagnosis_payload_v1', '{broken')
     localStorage.setItem('on_learning_selected_course_v1', '{broken')
