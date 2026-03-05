@@ -196,6 +196,15 @@ test('direct diagnosis access redirects with profile next path when only logged 
   await expect(page).toHaveURL(/\/\?gate=profile-required&next=%2Fdiagnosis/)
 })
 
+test('auth callback resumes pending next intent to reachable step', async ({ page }) => {
+  await page.goto('/')
+  await page.evaluate(() => {
+    sessionStorage.setItem('on_learning_pending_next_path_v1', '/recommendation')
+  })
+  await page.goto('/auth/callback?status=success&employeeId=E10088&name=이수민&organization=교육문화팀&role=employee')
+  await expect(page).toHaveURL(/\/diagnosis/)
+})
+
 test('home primary action auto-advances to diagnosis after profile save', async ({ page }) => {
   await page.goto('/')
   await page.evaluate(() => {

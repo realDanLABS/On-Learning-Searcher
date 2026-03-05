@@ -4,6 +4,13 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { completeAuthCallback } from '../../../shared/api/authApi'
 import { ApiErrorMessage } from '../../../shared/components/ApiErrorMessage'
 import { AppShell } from '../../../shared/layouts/AppShell'
+import { consumePendingNextPath } from '../../../shared/orchestration/intent'
+import { resolveBestReachablePath } from '../../../shared/orchestration/smartPath'
+import { hasDiagnosisDraft } from '../../diagnosis/draftStorage'
+import { isAuthenticated } from '../../../shared/state/auth'
+import { getJourneyStage } from '../../../shared/state/learningFlow'
+import { hasUserProfile } from '../../../shared/state/profile'
+import { getUserRole } from '../../../shared/state/session'
 
 export function AuthCallbackPage() {
   const navigate = useNavigate()
@@ -16,7 +23,19 @@ export function AuthCallbackPage() {
         setError(null)
         const session = await completeAuthCallback(location.search)
         if (session.authenticated) {
-          navigate('/', { replace: true })
+          const pendingPath = consumePendingNextPath()
+          const nextPath = resolveBestReachablePath({
+            preferredPath: pendingPath,
+            context: {
+              authenticated: isAuthenticated(),
+              hasProfile: hasUserProfile(),
+              role: getUserRole(),
+              stage: getJourneyStage(),
+            },
+            hasDiagnosisDraft: hasDiagnosisDraft(),
+          })
+
+          navigate(nextPath ?? '/', { replace: true })
           return
         }
         setError('로그인에 실패했습니다. 다시 시도해 주세요.')

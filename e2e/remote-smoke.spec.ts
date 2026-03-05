@@ -4,9 +4,6 @@ test('remote mode full journey works from auth callback to history', async ({ pa
   await page.goto(
     '/auth/callback?status=success&employeeId=E1001&name=Remote%20Tester&organization=Learning%20Team&role=employee',
   )
-  await expect(page).toHaveURL('/')
-
-  await page.getByRole('button', { name: /바로 시작/ }).click()
   await expect(page).toHaveURL(/\/diagnosis/)
 
   const diagnosisCard = page.locator('.diagnosis-question-card')
