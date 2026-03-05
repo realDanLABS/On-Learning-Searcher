@@ -1,7 +1,7 @@
 import { runtimeConfig } from '../config/runtime'
 import { reportError } from '../observability/errorTracking'
 import { type UserProfile, saveUserProfile } from '../state/profile'
-import { ApiError, toApiErrorFromStatus } from './apiError'
+import { ApiError, toApiErrorFromResponse } from './apiError'
 
 export async function saveProfile(profile: UserProfile): Promise<UserProfile> {
   if (!isRemoteMode()) {
@@ -78,7 +78,7 @@ async function requestJsonOnce<T>(
     })
 
     if (!response.ok) {
-      throw toApiErrorFromStatus(response.status, `API request failed: ${response.status}`)
+      throw await toApiErrorFromResponse(response, `API request failed: ${response.status}`)
     }
 
     const payload = (await response.json()) as T | { data: T }

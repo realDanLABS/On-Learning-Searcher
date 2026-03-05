@@ -3,7 +3,7 @@ import { clearJourneyData } from '../state/learningFlow'
 import { clearUserProfile, saveUserProfile, type UserProfile } from '../state/profile'
 import { clearUserRole, setUserRole, type UserRole } from '../state/session'
 import { clearAuthentication, isAuthenticated, setAuthenticated } from '../state/auth'
-import { ApiError, toApiErrorFromStatus } from './apiError'
+import { ApiError, toApiErrorFromResponse } from './apiError'
 import { reportError } from '../observability/errorTracking'
 
 export type AuthSessionPayload = {
@@ -123,7 +123,7 @@ async function requestJsonOnce<T>(path: string, validate?: (value: unknown) => v
     })
 
     if (!response.ok) {
-      throw toApiErrorFromStatus(response.status, `API request failed: ${response.status}`)
+      throw await toApiErrorFromResponse(response, `API request failed: ${response.status}`)
     }
 
     const payload = (await response.json()) as T | { data: T }

@@ -7,6 +7,7 @@ import {
   selectRecommendedCourse,
 } from '../../../shared/api/learningApi'
 import { getErrorMessage } from '../../../shared/api/errorMessage'
+import { ApiErrorMessage } from '../../../shared/components/ApiErrorMessage'
 import { SkillGapPanel } from '../../../shared/components/SkillGapPanel'
 import { AppShell } from '../../../shared/layouts/AppShell'
 import { getHandoffMessage } from '../../../shared/orchestration/handoff'
@@ -67,7 +68,7 @@ export function RecommendationPage() {
       {loadError && (
         <section className="hero-card">
           <h2>추천 데이터 오류</h2>
-          <p className="error-text">{loadError}</p>
+          <ApiErrorMessage error={loadError} />
           <button className="primary-btn" onClick={() => void loadData()} type="button">
             다시 시도
           </button>
@@ -76,7 +77,7 @@ export function RecommendationPage() {
 
       {actionError && (
         <section className="hero-card">
-          <p className="error-text">{actionError}</p>
+          <ApiErrorMessage error={actionError} />
         </section>
       )}
 

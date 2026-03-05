@@ -99,6 +99,23 @@ function sendJson(req, res, statusCode, body) {
   res.end(JSON.stringify(body))
 }
 
+function sendError(req, res, statusCode, code, message) {
+  const traceId = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
+  setCors(req, res)
+  res.setHeader('x-trace-id', traceId)
+  res.statusCode = statusCode
+  res.setHeader('Content-Type', 'application/json; charset=utf-8')
+  res.end(
+    JSON.stringify({
+      error: {
+        code,
+        message,
+        traceId,
+      },
+    }),
+  )
+}
+
 function sendHtml(req, res, statusCode, body) {
   setCors(req, res)
   res.statusCode = statusCode
@@ -133,7 +150,7 @@ function readJson(req) {
 
 const server = http.createServer(async (req, res) => {
   if (!req.url || !req.method) {
-    sendJson(req, res, 400, { error: 'Bad request' })
+    sendError(req, res, 400, 'BAD_REQUEST', 'Bad request')
     return
   }
 
@@ -197,14 +214,14 @@ const server = http.createServer(async (req, res) => {
     if (req.method === 'PUT' && url.pathname === '/profile') {
       const payload = await readJson(req)
       if (!payload || typeof payload !== 'object') {
-        sendJson(req, res, 400, { error: 'Invalid profile payload' })
+        sendError(req, res, 400, 'BAD_REQUEST', 'Invalid profile payload')
         return
       }
       const employeeId = typeof payload.employeeId === 'string' ? payload.employeeId : ''
       const name = typeof payload.name === 'string' ? payload.name : ''
       const organization = typeof payload.organization === 'string' ? payload.organization : ''
       if (!employeeId || !name || !organization) {
-        sendJson(req, res, 400, { error: 'Missing profile fields' })
+        sendError(req, res, 400, 'BAD_REQUEST', 'Missing profile fields')
         return
       }
 
@@ -322,10 +339,10 @@ const server = http.createServer(async (req, res) => {
       return
     }
 
-    sendJson(req, res, 404, { error: 'Not found' })
+    sendError(req, res, 404, 'NOT_FOUND', 'Not found')
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unexpected server error'
-    sendJson(req, res, 500, { error: message })
+    sendError(req, res, 500, 'SERVER', message)
   }
 })
 

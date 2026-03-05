@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 
 import { submitDiagnosis } from '../../../shared/api/learningApi'
 import { getErrorMessage } from '../../../shared/api/errorMessage'
+import { ApiErrorMessage } from '../../../shared/components/ApiErrorMessage'
 import { AppShell } from '../../../shared/layouts/AppShell'
 import { getUserProfile } from '../../../shared/state/profile'
 import { type AnswerMap, buildSummary } from '../diagnosisResult'
@@ -151,7 +152,7 @@ export function DiagnosisPage() {
           </p>
           <p>강점: {summary.strengths.join(', ')}</p>
           <p>집중 성장 영역: {summary.growthArea}</p>
-          {submitError && <p className="error-text">{submitError}</p>}
+          <ApiErrorMessage error={submitError} />
 
           <div className="diagnosis-actions">
             <button className="secondary-btn" onClick={goPrev} type="button">

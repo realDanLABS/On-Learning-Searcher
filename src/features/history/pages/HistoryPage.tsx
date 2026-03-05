@@ -7,6 +7,7 @@ import {
   fetchJourneyEvents,
 } from '../../../shared/api/learningApi'
 import { getErrorMessage } from '../../../shared/api/errorMessage'
+import { ApiErrorMessage } from '../../../shared/components/ApiErrorMessage'
 import { AppShell } from '../../../shared/layouts/AppShell'
 import { appendAuditLog, getAuditLogs, type AuditRecord } from '../../../shared/observability/audit'
 import { getWeeklyConversionSeries, type WeeklyConversionPoint } from '../../../shared/observability/funnel'
@@ -76,7 +77,7 @@ export function HistoryPage() {
       {loadError && (
         <section className="hero-card">
           <h2>이력 데이터 오류</h2>
-          <p className="error-text">{loadError}</p>
+          <ApiErrorMessage error={loadError} />
           <button className="primary-btn" onClick={() => void loadData()} type="button">
             다시 시도
           </button>

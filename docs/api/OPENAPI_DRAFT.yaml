@@ -2,6 +2,21 @@ openapi: 3.0.3
 info:
   title: On Learning Searcher API
   version: 0.1.0
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: BAD_REQUEST
+            message:
+              type: string
+            traceId:
+              type: string
 paths:
   /health:
     get:

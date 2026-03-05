@@ -1,6 +1,6 @@
 import { runtimeConfig } from '../config/runtime'
 import { emitSessionExpiredNotice } from '../auth/sessionSignals'
-import { ApiError, toApiErrorFromStatus } from './apiError'
+import { ApiError, toApiErrorFromResponse } from './apiError'
 import { appendAuditLog } from '../observability/audit'
 import { reportError } from '../observability/errorTracking'
 import {
@@ -291,11 +291,8 @@ async function requestJsonOnce<T>(
     })
 
     if (!response.ok) {
-      if (response.status === 401) {
-        emitSessionExpiredNotice()
-        throw new ApiError('unauthorized', 'Authentication required', 401)
-      }
-      throw toApiErrorFromStatus(response.status, `API request failed: ${response.status}`)
+      if (response.status === 401) emitSessionExpiredNotice()
+      throw await toApiErrorFromResponse(response, `API request failed: ${response.status}`)
     }
 
     if (response.status === 204) {

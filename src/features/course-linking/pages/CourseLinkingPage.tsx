@@ -6,6 +6,7 @@ import {
   submitEnrollment,
 } from '../../../shared/api/learningApi'
 import { getErrorMessage } from '../../../shared/api/errorMessage'
+import { ApiErrorMessage } from '../../../shared/components/ApiErrorMessage'
 import { runtimeConfig } from '../../../shared/config/runtime'
 import { AppShell } from '../../../shared/layouts/AppShell'
 import { getHandoffMessage } from '../../../shared/orchestration/handoff'
@@ -136,7 +137,7 @@ export function CourseLinkingPage() {
       {loadError && (
         <section className="hero-card">
           <h2>오류</h2>
-          <p className="error-text">{loadError}</p>
+          <ApiErrorMessage error={loadError} />
           <button className="secondary-btn" onClick={() => void loadCourse()} type="button">
             다시 시도
           </button>
@@ -175,7 +176,7 @@ export function CourseLinkingPage() {
           <h2>{course.courseTitle}</h2>
           <p>과정코드: {course.courseId}</p>
           <p>추천근거: {course.reasonTags.join(', ')}</p>
-          {callbackNotice && <p className="error-text">{callbackNotice}</p>}
+          <ApiErrorMessage error={callbackNotice} />
           {callbackFailed && (
             <div className="journey-actions">
               <button className="secondary-btn" onClick={resetFailedCallback} type="button">

@@ -13,6 +13,7 @@ import { getErrorMessage } from '../shared/api/errorMessage'
 import { consumeSessionExpiredNotice } from '../shared/auth/sessionSignals'
 import { runtimeConfig } from '../shared/config/runtime'
 import { AppShell } from '../shared/layouts/AppShell'
+import { ApiErrorMessage } from '../shared/components/ApiErrorMessage'
 import { getFunnelSnapshot, type FunnelSnapshot } from '../shared/observability/funnel'
 import { appendAuditLog } from '../shared/observability/audit'
 import { canAccessRoute, getRouteAccessDecision, type RouteGate } from '../shared/orchestration/access'
@@ -406,7 +407,7 @@ export function HomePage() {
         <h2>학습 여정 시작</h2>
         {gateNotice && <p className="error-text">{gateNotice}</p>}
         {sessionNotice && <p className="error-text">{sessionNotice}</p>}
-        {loadError && <p className="error-text">{loadError}</p>}
+        <ApiErrorMessage error={loadError} />
         {loading && <p className="hint-text">로딩 중...</p>}
         <p>
           1) 역량 진단을 완료하면 2) 맞춤 과정 추천이 생성되고, 3) 바로 교육 신청까지
@@ -459,7 +460,7 @@ export function HomePage() {
             </button>
           )}
         </div>
-        {onboardingError && <p className="error-text">{onboardingError}</p>}
+        <ApiErrorMessage error={onboardingError} />
         {!profileReady && (
           <p className="hint-text">진단 시작 전 기본 프로필을 먼저 저장해 주세요.</p>
         )}
