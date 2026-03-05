@@ -6,10 +6,10 @@
 - [x] Responsive QA page and baseline mobile behavior
 
 ## 2. Security & Privacy
-- [ ] SSO (SAML/OIDC) integration
-- [ ] RBAC (employee / manager / admin)
+- [x] SSO (SAML/OIDC) integration
+- [x] RBAC (employee / manager / admin)
 - [ ] PII masking and retention policy
-- [ ] Audit logging for diagnosis/recommendation/enrollment actions
+- [x] Audit logging for diagnosis/recommendation/enrollment actions
 
 ## 3. Backend Integration
 - [ ] Replace localStorage contracts with backend API
@@ -19,12 +19,12 @@
 
 ## 4. Reliability
 - [x] CI lint/build on PR and main
-- [ ] E2E smoke test in CI
+- [x] E2E smoke test in CI
 - [ ] Error tracking integration (Sentry etc.)
 - [ ] Feature flags for safe rollout
 
 ## 5. Observability
-- [ ] Funnel metrics: landing->diagnosis->recommendation->enrollment
+- [x] Funnel metrics: landing->diagnosis->recommendation->enrollment
 - [ ] Drop-off metrics by step
 - [ ] Dashboard for weekly learning conversion
 
