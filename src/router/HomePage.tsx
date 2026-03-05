@@ -14,6 +14,7 @@ import { runtimeConfig } from '../shared/config/runtime'
 import { AppShell } from '../shared/layouts/AppShell'
 import { getFunnelSnapshot, type FunnelSnapshot } from '../shared/observability/funnel'
 import { appendAuditLog } from '../shared/observability/audit'
+import { canAccessRoute } from '../shared/orchestration/access'
 import { getNextJourneyAction } from '../shared/orchestration/journey'
 import { getJourneyChecklist, getJourneyStartBlockers } from '../shared/orchestration/readiness'
 import { isAuthenticated, setAuthenticated } from '../shared/state/auth'
@@ -28,6 +29,7 @@ import {
   type DiagnosisPayload,
   type JourneyStage,
 } from '../shared/state/learningFlow'
+import { featureRoutes } from './routeConfig'
 
 export function HomePage() {
   const navigate = useNavigate()
@@ -96,6 +98,24 @@ export function HomePage() {
     stage,
   })
   const canStartNext = blockers.length === 0
+  const historyRoute = featureRoutes.find((route) => route.path === '/history')
+  const courseLinkingRoute = featureRoutes.find((route) => route.path === '/course-linking')
+  const canOpenHistory =
+    historyRoute &&
+    canAccessRoute(historyRoute, {
+      authenticated,
+      hasProfile: profileReady,
+      role,
+      stage,
+    })
+  const canOpenCourseLinking =
+    courseLinkingRoute &&
+    canAccessRoute(courseLinkingRoute, {
+      authenticated,
+      hasProfile: profileReady,
+      role,
+      stage,
+    })
 
   const resetJourney = () => {
     appendAuditLog('journey_reset', '사용자 수동 초기화')
@@ -155,6 +175,7 @@ export function HomePage() {
     }
     setAuthenticated(true)
     setAuthenticatedState(true)
+    setOnboardingError(null)
     appendAuditLog('login', 'mock 로그인 완료')
   }
 
@@ -187,9 +208,9 @@ export function HomePage() {
           >
             {nextAction.label}
           </button>
-          <Link className="secondary-btn link-btn" to="/recommendation">
-            추천 과정 보기
-          </Link>
+          <button className="secondary-btn" onClick={() => navigate(nextAction.to)} type="button">
+            현재 단계 이어서 진행
+          </button>
           <button className="secondary-btn" onClick={resetJourney} type="button">
             데모 데이터 초기화
           </button>
@@ -251,13 +272,17 @@ export function HomePage() {
           ) : (
             <p>아직 진단 결과가 없습니다. 먼저 진단을 시작해 주세요.</p>
           )}
-          <Link to="/history">학습 이력 확인</Link>
+          {canOpenHistory ? <Link to="/history">학습 이력 확인</Link> : <span>이력은 진단 완료 후 확인 가능합니다.</span>}
         </article>
 
         <article className="feature-card">
           <h3>추천 학습 흐름</h3>
           <p>진단 결과의 역량 갭을 기준으로 추천 과정과 신청 버튼을 제공합니다.</p>
-          <Link to="/course-linking">신청 연동 페이지</Link>
+          {canOpenCourseLinking ? (
+            <Link to="/course-linking">신청 연동 페이지</Link>
+          ) : (
+            <span>추천 과정 선택 후 신청 연동이 활성화됩니다.</span>
+          )}
         </article>
 
         <article className="feature-card">
