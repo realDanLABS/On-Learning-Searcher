@@ -23,5 +23,17 @@ describe('next action status', () => {
     })
     expect(result.enabled).toBe(false)
   })
-})
 
+  it('prefers diagnosis resume action when draft exists at start stage', () => {
+    const result = getNextActionStatus({
+      authenticated: true,
+      hasProfile: true,
+      role: 'employee',
+      stage: 'start',
+      hasDiagnosisDraft: true,
+    })
+    expect(result.enabled).toBe(true)
+    expect(result.to).toBe('/diagnosis')
+    expect(result.label).toBe('미완료 진단 이어하기')
+  })
+})

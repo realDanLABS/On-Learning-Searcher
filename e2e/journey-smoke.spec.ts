@@ -85,3 +85,21 @@ test('home primary CTA resumes unfinished diagnosis draft', async ({ page }) => 
   await expect(page).toHaveURL(/\/diagnosis/)
   await expect(page.getByText('2 / 10 답변 완료')).toBeVisible()
 })
+
+test('chatbot next action resumes unfinished diagnosis draft', async ({ page }) => {
+  await prepareLoggedInProfile(page)
+  await page.getByRole('button', { name: '진단 시작' }).first().click()
+  await expect(page).toHaveURL(/\/diagnosis/)
+
+  await page.getByRole('button', { name: '예' }).click()
+  await page.getByRole('button', { name: '다음' }).click()
+
+  await page.goto('/chatbot')
+  const actionBarLink = page
+    .getByLabel('단계 이동 액션')
+    .getByRole('link', { name: '다음 단계: 미완료 진단 이어하기' })
+  await expect(actionBarLink).toBeVisible()
+  await actionBarLink.click()
+  await expect(page).toHaveURL(/\/diagnosis/)
+  await expect(page.getByText('1 / 10 답변 완료')).toBeVisible()
+})

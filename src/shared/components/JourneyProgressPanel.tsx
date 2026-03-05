@@ -11,6 +11,7 @@ import {
 } from '../state/learningFlow'
 import { hasUserProfile } from '../state/profile'
 import { getUserRole } from '../state/session'
+import { hasDiagnosisDraft } from '../../features/diagnosis/draftStorage'
 
 const stages: Array<{ key: JourneyStage; label: string }> = stageOrder.map((key) => ({
   key,
@@ -38,6 +39,7 @@ export function JourneyProgressPanel() {
     hasProfile: hasUserProfile(),
     role: getUserRole(),
     stage,
+    hasDiagnosisDraft: hasDiagnosisDraft(),
   })
 
   return (

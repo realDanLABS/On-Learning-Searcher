@@ -10,6 +10,7 @@ export type NextActionContext = {
   hasProfile: boolean
   role: UserRole
   stage: JourneyStage
+  hasDiagnosisDraft?: boolean
 }
 
 export type NextActionStatus = {
@@ -21,20 +22,23 @@ export type NextActionStatus = {
 
 export function getNextActionStatus(context: NextActionContext): NextActionStatus {
   const base = getNextJourneyAction(context.stage)
-  const route = featureRoutes.find((item) => item.path === base.to)
+  const adjustedBase =
+    context.stage === 'start' && context.hasDiagnosisDraft
+      ? { to: '/diagnosis', label: '미완료 진단 이어하기' }
+      : base
+  const route = featureRoutes.find((item) => item.path === adjustedBase.to)
   if (!route) {
-    return { ...base, enabled: true }
+    return { ...adjustedBase, enabled: true }
   }
 
   if (!isFeatureEnabled(route.featureKey)) {
-    return { ...base, enabled: false, reason: '현재 단계 기능이 비활성화되어 있습니다.' }
+    return { ...adjustedBase, enabled: false, reason: '현재 단계 기능이 비활성화되어 있습니다.' }
   }
 
   const allowed = canAccessRoute(route, context)
   if (!allowed) {
-    return { ...base, enabled: false, reason: '현재 단계 조건을 먼저 충족해야 합니다.' }
+    return { ...adjustedBase, enabled: false, reason: '현재 단계 조건을 먼저 충족해야 합니다.' }
   }
 
-  return { ...base, enabled: true }
+  return { ...adjustedBase, enabled: true }
 }
-

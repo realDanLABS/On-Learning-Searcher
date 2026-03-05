@@ -11,6 +11,7 @@ import {
 } from '../../../shared/state/learningFlow'
 import { hasUserProfile } from '../../../shared/state/profile'
 import { getUserRole } from '../../../shared/state/session'
+import { hasDiagnosisDraft } from '../../diagnosis/draftStorage'
 
 type ChatMessage = {
   id: string
@@ -29,6 +30,7 @@ export function ChatbotPage() {
     hasProfile: hasUserProfile(),
     role: getUserRole(),
     stage: journeyStage,
+    hasDiagnosisDraft: hasDiagnosisDraft(),
   })
 
   const [messages, setMessages] = useState<ChatMessage[]>([

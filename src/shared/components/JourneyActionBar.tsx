@@ -6,6 +6,7 @@ import { isAuthenticated } from '../state/auth'
 import { getJourneyStage } from '../state/learningFlow'
 import { hasUserProfile } from '../state/profile'
 import { getUserRole } from '../state/session'
+import { hasDiagnosisDraft } from '../../features/diagnosis/draftStorage'
 
 export function JourneyActionBar() {
   const stage = getJourneyStage()
@@ -15,6 +16,7 @@ export function JourneyActionBar() {
     hasProfile: hasUserProfile(),
     role: getUserRole(),
     stage,
+    hasDiagnosisDraft: hasDiagnosisDraft(),
   })
 
   return (
@@ -39,4 +41,3 @@ export function JourneyActionBar() {
     </section>
   )
 }
-

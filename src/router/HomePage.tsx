@@ -112,6 +112,7 @@ export function HomePage() {
     hasProfile: profileReady,
     role,
     stage,
+    hasDiagnosisDraft: diagnosisDraft,
   })
   const blockers = getJourneyStartBlockers({
     authenticated,
