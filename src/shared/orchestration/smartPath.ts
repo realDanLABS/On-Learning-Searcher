@@ -13,7 +13,8 @@ export type SmartPathInput = {
 function resolveCandidate(path: string | null | undefined, context: RouteAccessContext): string | null {
   const safePath = sanitizeInternalPath(path)
   if (!safePath) return null
-  const route = featureRoutes.find((item) => item.path === safePath)
+  const routePathname = safePath.split('?')[0]?.split('#')[0] ?? safePath
+  const route = featureRoutes.find((item) => item.path === routePathname)
   if (!route) return safePath
   const decision = getRouteAccessDecision(route, context)
   if (decision.allowed) return safePath

@@ -54,4 +54,30 @@ describe('resolveBestReachablePath', () => {
     })
     expect(result).toBe('/diagnosis')
   })
+
+  it('keeps query when preferred route is reachable', () => {
+    const result = resolveBestReachablePath({
+      preferredPath: '/course-linking?from=recommendation',
+      context: {
+        authenticated: true,
+        hasProfile: true,
+        role: 'employee',
+        stage: 'course_selected',
+      },
+    })
+    expect(result).toBe('/course-linking?from=recommendation')
+  })
+
+  it('does not bypass route lock when preferred path has query', () => {
+    const result = resolveBestReachablePath({
+      preferredPath: '/course-linking?from=recommendation',
+      context: {
+        authenticated: true,
+        hasProfile: true,
+        role: 'employee',
+        stage: 'start',
+      },
+    })
+    expect(result).toBe('/recommendation')
+  })
 })

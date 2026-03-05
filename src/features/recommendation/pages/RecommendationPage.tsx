@@ -165,7 +165,11 @@ export function RecommendationPage() {
             <h2>다음 단계 안내</h2>
             <p>과정 선택 후 신청 연동에서 등록을 완료하면 이력 대시보드와 챗봇 상담으로 이어집니다.</p>
             <div className="journey-actions">
-              <button className="secondary-btn" onClick={() => guidedNavigate('/course-linking')} type="button">
+              <button
+                className="secondary-btn"
+                onClick={() => guidedNavigate('/course-linking?from=recommendation')}
+                type="button"
+              >
                 신청 연동 바로가기
               </button>
               <Link className="secondary-btn link-btn" to="/chatbot">
@@ -194,7 +198,11 @@ export function RecommendationPage() {
             </li>
           </ul>
           <div className="journey-actions">
-            <button className="primary-btn" onClick={() => guidedNavigate('/course-linking')} type="button">
+            <button
+              className="primary-btn"
+              onClick={() => guidedNavigate('/course-linking?from=recommendation')}
+              type="button"
+            >
               신청 연동으로 이동
             </button>
             <button className="secondary-btn" onClick={() => guidedNavigate('/history')} type="button">
