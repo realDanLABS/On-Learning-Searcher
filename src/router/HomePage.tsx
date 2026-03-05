@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-import { fetchDiagnosis, fetchJourneyStage } from '../shared/api/learningApi'
+import {
+  fetchDiagnosis,
+  fetchJourneyStage,
+  isForcedApiErrorMode,
+  setForcedApiErrorMode,
+} from '../shared/api/learningApi'
 import { AppShell } from '../shared/layouts/AppShell'
 import { getFunnelSnapshot, type FunnelSnapshot } from '../shared/observability/funnel'
 import { getUserRole, setUserRole, type UserRole } from '../shared/state/session'
@@ -15,6 +20,9 @@ export function HomePage() {
   const [diagnosis, setDiagnosis] = useState<DiagnosisPayload | null>(null)
   const [stage, setStage] = useState<JourneyStage>('start')
   const [role, setRole] = useState<UserRole>('employee')
+  const [loading, setLoading] = useState(true)
+  const [loadError, setLoadError] = useState<string | null>(null)
+  const [apiErrorMode, setApiErrorMode] = useState(false)
   const [funnel, setFunnel] = useState<FunnelSnapshot>({
     diagnosisCompleted: 0,
     courseSelected: 0,
@@ -25,10 +33,19 @@ export function HomePage() {
 
   useEffect(() => {
     const run = async () => {
-      setDiagnosis(await fetchDiagnosis())
-      setStage(await fetchJourneyStage())
-      setFunnel(getFunnelSnapshot())
-      setRole(getUserRole())
+      try {
+        setLoadError(null)
+        setLoading(true)
+        setDiagnosis(await fetchDiagnosis())
+        setStage(await fetchJourneyStage())
+        setFunnel(getFunnelSnapshot())
+        setRole(getUserRole())
+        setApiErrorMode(isForcedApiErrorMode())
+      } catch {
+        setLoadError('홈 데이터를 불러오지 못했습니다. 다시 시도해 주세요.')
+      } finally {
+        setLoading(false)
+      }
     }
     void run()
   }, [])
@@ -51,6 +68,13 @@ export function HomePage() {
     setRole(nextRole)
   }
 
+  const toggleApiErrorMode = () => {
+    const next = !apiErrorMode
+    setForcedApiErrorMode(next)
+    setApiErrorMode(next)
+    window.location.reload()
+  }
+
   return (
     <AppShell
       title="온러닝서처"
@@ -58,6 +82,8 @@ export function HomePage() {
     >
       <section className="hero-card">
         <h2>학습 여정 시작</h2>
+        {loadError && <p className="error-text">{loadError}</p>}
+        {loading && <p className="hint-text">로딩 중...</p>}
         <p>
           1) 역량 진단을 완료하면 2) 맞춤 과정 추천이 생성되고, 3) 바로 교육 신청까지
           연결됩니다.
@@ -71,6 +97,9 @@ export function HomePage() {
           </Link>
           <button className="secondary-btn" onClick={resetJourney} type="button">
             데모 데이터 초기화
+          </button>
+          <button className="secondary-btn" onClick={toggleApiErrorMode} type="button">
+            API 오류 모드: {apiErrorMode ? 'ON' : 'OFF'}
           </button>
         </div>
         <p className="hint-text">현재 단계: {stage}</p>

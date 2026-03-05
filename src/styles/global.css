@@ -378,6 +378,11 @@ a {
   font-size: 13px;
 }
 
+.error-text {
+  color: #b42318;
+  font-size: 14px;
+}
+
 .timeline-list {
   list-style: none;
   margin: 0;

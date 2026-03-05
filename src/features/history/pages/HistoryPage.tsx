@@ -18,16 +18,27 @@ export function HistoryPage() {
   const [diagnosis, setDiagnosis] = useState<DiagnosisPayload | null>(null)
   const [enrollments, setEnrollments] = useState<EnrollmentRecord[]>([])
   const [events, setEvents] = useState<JourneyEvent[]>([])
+  const [loading, setLoading] = useState(true)
+  const [loadError, setLoadError] = useState<string | null>(null)
   const role = getUserRole()
   const canViewManagerSummary = role === 'manager' || role === 'admin'
 
-  useEffect(() => {
-    const run = async () => {
+  const loadData = async () => {
+    try {
+      setLoadError(null)
+      setLoading(true)
       setDiagnosis(await fetchDiagnosis())
       setEnrollments(await fetchEnrollmentHistory())
       setEvents(await fetchJourneyEvents())
+    } catch {
+      setLoadError('이력 데이터를 불러오지 못했습니다. 다시 시도해 주세요.')
+    } finally {
+      setLoading(false)
     }
-    void run()
+  }
+
+  useEffect(() => {
+    void loadData()
   }, [])
 
   const managerSummary = useMemo(() => {
@@ -41,6 +52,22 @@ export function HistoryPage() {
       title="진단 결과 및 학습 이력"
       description="진단 결과와 신청 이력을 한 곳에서 추적합니다."
     >
+      {loadError && (
+        <section className="hero-card">
+          <h2>이력 데이터 오류</h2>
+          <p className="error-text">{loadError}</p>
+          <button className="primary-btn" onClick={() => void loadData()} type="button">
+            다시 시도
+          </button>
+        </section>
+      )}
+
+      {loading && (
+        <section className="hero-card">
+          <p className="hint-text">이력 데이터를 불러오는 중입니다...</p>
+        </section>
+      )}
+
       <section className="hero-card">
         <h2>진단 스냅샷</h2>
         {diagnosis ? (

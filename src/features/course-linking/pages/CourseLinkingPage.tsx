@@ -10,13 +10,24 @@ import type { EnrollmentRecord, RecommendedCourse } from '../../../shared/state/
 
 export function CourseLinkingPage() {
   const [course, setCourse] = useState<RecommendedCourse | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [loadError, setLoadError] = useState<string | null>(null)
   const hasCourse = Boolean(course)
 
-  useEffect(() => {
-    const run = async () => {
+  const loadCourse = async () => {
+    try {
+      setLoadError(null)
+      setLoading(true)
       setCourse(await fetchSelectedCourse())
+    } catch {
+      setLoadError('선택 과정 정보를 불러오지 못했습니다.')
+    } finally {
+      setLoading(false)
     }
-    void run()
+  }
+
+  useEffect(() => {
+    void loadCourse()
   }, [])
 
   const requestEnrollment = async () => {
@@ -28,7 +39,11 @@ export function CourseLinkingPage() {
       enrollmentRequestedAt: new Date().toISOString(),
       enrollmentStatus: 'enrolled',
     }
-    await submitEnrollment(record)
+    try {
+      await submitEnrollment(record)
+    } catch {
+      setLoadError('신청 처리 중 오류가 발생했습니다. 다시 시도해 주세요.')
+    }
   }
 
   return (
@@ -36,6 +51,22 @@ export function CourseLinkingPage() {
       title="교육 신청 연동"
       description="추천 과정을 선택하면 신청 후 이력 페이지에서 상태를 확인할 수 있습니다."
     >
+      {loadError && (
+        <section className="hero-card">
+          <h2>오류</h2>
+          <p className="error-text">{loadError}</p>
+          <button className="secondary-btn" onClick={() => void loadCourse()} type="button">
+            다시 시도
+          </button>
+        </section>
+      )}
+
+      {loading && (
+        <section className="hero-card">
+          <p className="hint-text">과정 정보를 불러오는 중입니다...</p>
+        </section>
+      )}
+
       {!hasCourse && (
         <section className="hero-card">
           <h2>선택된 과정이 없습니다</h2>

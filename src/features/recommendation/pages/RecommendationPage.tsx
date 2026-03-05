@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 import {
@@ -12,16 +12,27 @@ import type { DiagnosisPayload, RecommendedCourse } from '../../../shared/state/
 export function RecommendationPage() {
   const [diagnosis, setDiagnosis] = useState<DiagnosisPayload | null>(null)
   const [courses, setCourses] = useState<RecommendedCourse[]>([])
+  const [loading, setLoading] = useState(true)
+  const [loadError, setLoadError] = useState<string | null>(null)
   const navigate = useNavigate()
   const [levelFilter, setLevelFilter] = useState<'all' | '입문' | '중급' | '심화'>('all')
 
-  useEffect(() => {
-    const run = async () => {
+  const loadData = useCallback(async () => {
+    try {
+      setLoadError(null)
+      setLoading(true)
       setDiagnosis(await fetchDiagnosis())
       setCourses(await fetchRecommendedCourses(levelFilter))
+    } catch {
+      setLoadError('추천 데이터를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.')
+    } finally {
+      setLoading(false)
     }
-    void run()
   }, [levelFilter])
+
+  useEffect(() => {
+    void loadData()
+  }, [loadData])
 
   const moveToEnrollment = async (course: RecommendedCourse) => {
     await selectRecommendedCourse(course)
@@ -33,6 +44,22 @@ export function RecommendationPage() {
       title="맞춤 교육 추천"
       description="진단 결과 기반으로 추천 이유를 포함한 과정을 제안합니다."
     >
+      {loadError && (
+        <section className="hero-card">
+          <h2>추천 데이터 오류</h2>
+          <p className="error-text">{loadError}</p>
+          <button className="primary-btn" onClick={() => void loadData()} type="button">
+            다시 시도
+          </button>
+        </section>
+      )}
+
+      {loading && (
+        <section className="hero-card">
+          <p className="hint-text">추천 데이터를 불러오는 중입니다...</p>
+        </section>
+      )}
+
       {!diagnosis && (
         <section className="hero-card">
           <h2>진단 결과가 필요합니다</h2>
