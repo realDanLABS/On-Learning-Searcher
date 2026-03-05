@@ -21,6 +21,7 @@ export function DiagnosisPage() {
       return {}
     }
   })
+  const [submitError, setSubmitError] = useState<string | null>(null)
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(answers))
@@ -80,15 +81,20 @@ export function DiagnosisPage() {
   }
 
   const moveToRecommendation = async () => {
-    await submitDiagnosis({
-      userId: 'employee-demo',
-      diagnosedAt: new Date().toISOString(),
-      totalScore: summary.totalScore,
-      maxScore: summary.maxScore,
-      categoryScores,
-      topGaps,
-    })
-    navigate('/recommendation')
+    try {
+      setSubmitError(null)
+      await submitDiagnosis({
+        userId: 'employee-demo',
+        diagnosedAt: new Date().toISOString(),
+        totalScore: summary.totalScore,
+        maxScore: summary.maxScore,
+        categoryScores,
+        topGaps,
+      })
+      navigate('/recommendation')
+    } catch {
+      setSubmitError('진단 결과 저장 중 오류가 발생했습니다. 다시 시도해 주세요.')
+    }
   }
 
   const canGoNext = isFinished || answers[currentQuestion.id] !== undefined
@@ -151,6 +157,7 @@ export function DiagnosisPage() {
           </p>
           <p>강점: {summary.strengths.join(', ')}</p>
           <p>집중 성장 영역: {summary.growthArea}</p>
+          {submitError && <p className="error-text">{submitError}</p>}
 
           <div className="diagnosis-actions">
             <button className="secondary-btn" onClick={goPrev} type="button">

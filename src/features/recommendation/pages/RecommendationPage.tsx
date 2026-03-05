@@ -14,6 +14,7 @@ export function RecommendationPage() {
   const [courses, setCourses] = useState<RecommendedCourse[]>([])
   const [loading, setLoading] = useState(true)
   const [loadError, setLoadError] = useState<string | null>(null)
+  const [actionError, setActionError] = useState<string | null>(null)
   const navigate = useNavigate()
   const [levelFilter, setLevelFilter] = useState<'all' | '입문' | '중급' | '심화'>('all')
 
@@ -35,8 +36,13 @@ export function RecommendationPage() {
   }, [loadData])
 
   const moveToEnrollment = async (course: RecommendedCourse) => {
-    await selectRecommendedCourse(course)
-    navigate('/course-linking')
+    try {
+      setActionError(null)
+      await selectRecommendedCourse(course)
+      navigate('/course-linking')
+    } catch {
+      setActionError('과정 선택 처리 중 오류가 발생했습니다. 다시 시도해 주세요.')
+    }
   }
 
   return (
@@ -51,6 +57,12 @@ export function RecommendationPage() {
           <button className="primary-btn" onClick={() => void loadData()} type="button">
             다시 시도
           </button>
+        </section>
+      )}
+
+      {actionError && (
+        <section className="hero-card">
+          <p className="error-text">{actionError}</p>
         </section>
       )}
 
