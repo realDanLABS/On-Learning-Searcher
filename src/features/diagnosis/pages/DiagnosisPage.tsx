@@ -1,135 +1,168 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { AppShell } from '../../../shared/layouts/AppShell'
 import { saveDiagnosisPayload } from '../../../shared/state/learningFlow'
+import { type AnswerMap, buildSummary } from '../diagnosisResult'
+import { diagnosisQuestions } from '../questions'
 
-type Question = {
-  id: string
-  text: string
-  category: 'digital' | 'leadership' | 'collaboration' | 'problemSolving'
-}
-
-const questions: Question[] = [
-  { id: 'q1', text: '디지털 도구를 빠르게 익혀 업무에 적용한다.', category: 'digital' },
-  { id: 'q2', text: '데이터 기반으로 업무 우선순위를 정한다.', category: 'digital' },
-  { id: 'q3', text: '팀 목표를 명확히 전달하고 실행을 이끈다.', category: 'leadership' },
-  { id: 'q4', text: '협업 시 상대 부서 입장을 반영해 조율한다.', category: 'collaboration' },
-  { id: 'q5', text: '문제 원인을 구조적으로 분석해 해결안을 만든다.', category: 'problemSolving' },
-]
+const STORAGE_KEY = 'on-learning-diagnosis-answers-v1'
 
 export function DiagnosisPage() {
   const navigate = useNavigate()
-  const [index, setIndex] = useState(0)
-  const [answers, setAnswers] = useState<Record<string, number>>({})
+  const [step, setStep] = useState(0)
+  const [answers, setAnswers] = useState<AnswerMap>(() => {
+    const raw = localStorage.getItem(STORAGE_KEY)
+    if (!raw) return {}
+    try {
+      return JSON.parse(raw) as AnswerMap
+    } catch {
+      localStorage.removeItem(STORAGE_KEY)
+      return {}
+    }
+  })
 
-  const current = questions[index]
-  const done = index >= questions.length
-
-  const progress = Math.round((Object.keys(answers).length / questions.length) * 100)
-
-  const categoryScores = useMemo(() => {
-    return questions.reduce(
-      (acc, q) => {
-        acc[q.category] += answers[q.id] ?? 0
-        return acc
-      },
-      { digital: 0, leadership: 0, collaboration: 0, problemSolving: 0 },
-    )
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(answers))
   }, [answers])
 
-  const totalScore = Object.values(answers).reduce((sum, val) => sum + val, 0)
+  const currentQuestion = diagnosisQuestions[step]
+  const isFinished = step >= diagnosisQuestions.length
+
+  const answeredCount = useMemo(
+    () => Object.keys(answers).filter((key) => answers[key] !== undefined).length,
+    [answers],
+  )
+
+  const progress = Math.round((answeredCount / diagnosisQuestions.length) * 100)
+  const summary = useMemo(() => buildSummary(answers), [answers])
+
+  const categoryScores = useMemo(
+    () =>
+      diagnosisQuestions.reduce(
+        (acc, q) => {
+          const key = q.category === 'problem-solving' ? 'problemSolving' : q.category
+          acc[key] += answers[q.id] ?? 0
+          return acc
+        },
+        { digital: 0, leadership: 0, collaboration: 0, problemSolving: 0 },
+      ),
+    [answers],
+  )
 
   const topGaps = useMemo(() => {
-    const pairs = Object.entries(categoryScores).sort((a, b) => a[1] - b[1])
-    return pairs.slice(0, 2).map(([key]) => key)
+    return Object.entries(categoryScores)
+      .sort((a, b) => a[1] - b[1])
+      .slice(0, 2)
+      .map(([key]) => key)
   }, [categoryScores])
 
-  const choose = (value: number) => {
-    setAnswers((prev) => ({ ...prev, [current.id]: value }))
+  const selectAnswer = (value: number) => {
+    setAnswers((prev) => ({ ...prev, [currentQuestion.id]: value }))
   }
 
-  const next = () => {
-    if (!done) setIndex((prev) => prev + 1)
+  const goNext = () => {
+    if (step < diagnosisQuestions.length) {
+      setStep((prev) => prev + 1)
+    }
   }
 
-  const prev = () => {
-    if (index > 0) setIndex((prev) => prev - 1)
+  const goPrev = () => {
+    if (step > 0) {
+      setStep((prev) => prev - 1)
+    }
   }
 
-  const goRecommendation = () => {
+  const resetDiagnosis = () => {
+    setStep(0)
+    setAnswers({})
+    localStorage.removeItem(STORAGE_KEY)
+  }
+
+  const moveToRecommendation = () => {
     saveDiagnosisPayload({
       userId: 'employee-demo',
       diagnosedAt: new Date().toISOString(),
-      totalScore,
-      maxScore: questions.length * 2,
+      totalScore: summary.totalScore,
+      maxScore: summary.maxScore,
       categoryScores,
       topGaps,
     })
     navigate('/recommendation')
   }
 
+  const canGoNext = isFinished || answers[currentQuestion.id] !== undefined
+
   return (
     <AppShell
       title="AI 역량 진단"
-      description="질문 응답 결과를 기반으로 추천 과정 페이지로 연결됩니다."
+      description="10문항 기준의 MVP 진단 플로우입니다. 응답은 브라우저에 임시 저장됩니다."
     >
       <section className="hero-card diagnosis-progress-card">
         <div className="progress-row">
           <strong>진행률 {progress}%</strong>
           <span>
-            {Object.keys(answers).length}/{questions.length}
+            {answeredCount} / {diagnosisQuestions.length} 답변 완료
           </span>
         </div>
-        <div className="progress-track">
+        <div className="progress-track" role="progressbar" aria-valuenow={progress}>
           <div className="progress-fill" style={{ width: `${progress}%` }} />
         </div>
       </section>
 
-      {!done && (
-        <section className="hero-card">
+      {!isFinished && (
+        <section className="hero-card diagnosis-question-card">
           <p className="question-step">
-            문항 {index + 1}/{questions.length}
+            문항 {step + 1} / {diagnosisQuestions.length}
           </p>
-          <h2>{current.text}</h2>
+          <h2>{currentQuestion.title}</h2>
           <div className="answer-options">
-            <button className="answer-btn" onClick={() => choose(0)} type="button">
-              아니오
-            </button>
-            <button className="answer-btn" onClick={() => choose(1)} type="button">
-              보통
-            </button>
-            <button className="answer-btn" onClick={() => choose(2)} type="button">
-              예
-            </button>
+            {currentQuestion.options.map((option) => {
+              const isActive = answers[currentQuestion.id] === option.value
+              return (
+                <button
+                  className={isActive ? 'answer-btn active' : 'answer-btn'}
+                  key={option.label}
+                  onClick={() => selectAnswer(option.value)}
+                  type="button"
+                >
+                  {option.label}
+                </button>
+              )
+            })}
           </div>
 
           <div className="diagnosis-actions">
-            <button className="secondary-btn" disabled={index === 0} onClick={prev} type="button">
+            <button className="secondary-btn" disabled={step === 0} onClick={goPrev} type="button">
               이전
             </button>
-            <button
-              className="primary-btn"
-              disabled={answers[current.id] === undefined}
-              onClick={next}
-              type="button"
-            >
-              {index === questions.length - 1 ? '결과 보기' : '다음'}
+            <button className="primary-btn" disabled={!canGoNext} onClick={goNext} type="button">
+              {step === diagnosisQuestions.length - 1 ? '결과 보기' : '다음'}
             </button>
           </div>
         </section>
       )}
 
-      {done && (
-        <section className="hero-card">
-          <h2>진단 결과</h2>
+      {isFinished && (
+        <section className="hero-card diagnosis-result-card">
+          <h2>진단 결과 요약</h2>
           <p>
-            총점 {totalScore}/{questions.length * 2}
+            총점 {summary.totalScore} / {summary.maxScore} | 수준: {summary.level}
           </p>
-          <p>보완 우선 역량: {topGaps.join(', ')}</p>
-          <button className="primary-btn" onClick={goRecommendation} type="button">
-            추천 과정 보기
-          </button>
+          <p>강점: {summary.strengths.join(', ')}</p>
+          <p>집중 성장 영역: {summary.growthArea}</p>
+
+          <div className="diagnosis-actions">
+            <button className="secondary-btn" onClick={goPrev} type="button">
+              마지막 문항으로
+            </button>
+            <button className="primary-btn" onClick={moveToRecommendation} type="button">
+              추천 과정 보기
+            </button>
+            <button className="secondary-btn" onClick={resetDiagnosis} type="button">
+              처음부터 다시
+            </button>
+          </div>
         </section>
       )}
     </AppShell>
