@@ -6,7 +6,7 @@ import { featureRoutes } from '../../router/routeConfig'
 import { JourneyActionBar } from '../components/JourneyActionBar'
 import { JourneyFlowGuide } from '../components/JourneyFlowGuide'
 import { JourneyProgressPanel } from '../components/JourneyProgressPanel'
-import { canAccessRoute } from '../orchestration/access'
+import { getRouteAccessDecision } from '../orchestration/access'
 import { isFeatureEnabled } from '../orchestration/features'
 import { clearJourneyData, getJourneyStage } from '../state/learningFlow'
 import { clearUserProfile, getUserProfile } from '../state/profile'
@@ -40,6 +40,13 @@ export function AppShell({ title, description, children }: AppShellProps) {
     window.location.href = '/'
   }
 
+  const buildGateRedirect = (gate: string, nextPath?: string | null) => {
+    const params = new URLSearchParams()
+    params.set('gate', gate)
+    if (nextPath) params.set('next', nextPath)
+    return `/?${params.toString()}`
+  }
+
   return (
     <div className="app-shell">
       <header className="app-header">
@@ -70,18 +77,36 @@ export function AppShell({ title, description, children }: AppShellProps) {
       <nav className="feature-nav" aria-label="주요 기능 이동">
         {featureRoutes.map((route) => {
           const featureEnabled = isFeatureEnabled(route.featureKey)
-          const allowed = canAccessRoute(route, {
+          const decision = getRouteAccessDecision(route, {
             authenticated,
             hasProfile: Boolean(profile),
             role,
             stage,
           })
 
-          if (!featureEnabled || !allowed) {
+          if (!featureEnabled) {
             return (
-              <span className="feature-link locked" key={route.path} title="현재 단계에서는 이동할 수 없습니다.">
-                {route.label} {!featureEnabled ? '(비활성)' : '(잠금)'}
-              </span>
+              <Link
+                className="feature-link locked"
+                key={route.path}
+                to={buildGateRedirect('feature-disabled')}
+                title="운영 정책상 비활성화된 기능입니다."
+              >
+                {route.label} (비활성)
+              </Link>
+            )
+          }
+
+          if (!decision.allowed) {
+            return (
+              <Link
+                className="feature-link locked"
+                key={route.path}
+                to={buildGateRedirect(decision.gate ?? 'stage-locked', decision.nextPath)}
+                title="현재 단계에서는 이동할 수 없습니다. 안내 페이지로 이동합니다."
+              >
+                {route.label} (잠금)
+              </Link>
             )
           }
 

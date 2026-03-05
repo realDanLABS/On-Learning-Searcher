@@ -125,7 +125,7 @@ a {
   color: #8a94aa;
   background: #f3f5fa;
   border-style: dashed;
-  cursor: not-allowed;
+  cursor: pointer;
 }
 
 .content {

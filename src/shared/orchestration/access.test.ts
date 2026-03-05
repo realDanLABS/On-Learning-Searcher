@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { canAccessRoute, type RouteAccessPolicy } from './access'
+import { canAccessRoute, getRouteAccessDecision, type RouteAccessPolicy } from './access'
 
 const basePolicy: RouteAccessPolicy = {
   minStage: 'start',
@@ -47,5 +47,22 @@ describe('route access policy', () => {
       ),
     ).toBe(false)
   })
-})
 
+  it('returns gate reason and next path for locked stage', () => {
+    expect(
+      getRouteAccessDecision(
+        { ...basePolicy, minStage: 'course_selected' },
+        {
+          authenticated: true,
+          hasProfile: true,
+          role: 'admin',
+          stage: 'diagnosis_done',
+        },
+      ),
+    ).toEqual({
+      allowed: false,
+      gate: 'stage-locked',
+      nextPath: '/recommendation',
+    })
+  })
+})

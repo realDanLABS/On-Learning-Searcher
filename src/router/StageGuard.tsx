@@ -1,11 +1,8 @@
 import type { ReactElement } from 'react'
 import { Navigate } from 'react-router-dom'
 
-import { canAccessRoute, type RouteAccessPolicy } from '../shared/orchestration/access'
+import { getRouteAccessDecision, type RouteAccessPolicy } from '../shared/orchestration/access'
 import { isFeatureEnabled } from '../shared/orchestration/features'
-import {
-  getRedirectForStage,
-} from '../shared/orchestration/journey'
 import { getJourneyStage, type JourneyStage } from '../shared/state/learningFlow'
 import { isAuthenticated } from '../shared/state/auth'
 import { hasUserProfile } from '../shared/state/profile'
@@ -40,24 +37,25 @@ export function StageGuard({
     allowedRoles,
   }
   const current = getJourneyStage()
-  const allowed = canAccessRoute(policy, {
+  const decision = getRouteAccessDecision(policy, {
     authenticated: isAuthenticated(),
     hasProfile: hasUserProfile(),
     role: getUserRole(),
     stage: current,
   })
 
-  if (!allowed && requireAuth && !isAuthenticated()) {
+  if (!decision.allowed && decision.gate === 'auth-required') {
     return <Navigate replace to="/?gate=auth-required" />
   }
-  if (!allowed && requireProfile && !hasUserProfile()) {
+  if (!decision.allowed && decision.gate === 'profile-required') {
     return <Navigate replace to="/?gate=profile-required" />
   }
-  if (!allowed && allowedRoles && !allowedRoles.includes(getUserRole())) {
+  if (!decision.allowed && decision.gate === 'role-denied') {
     return <Navigate replace to="/?gate=role-denied" />
   }
-  if (!allowed) {
-    return <Navigate replace to={`/?gate=stage-locked&next=${encodeURIComponent(getRedirectForStage(minStage))}`} />
+  if (!decision.allowed) {
+    const next = decision.nextPath ? `&next=${encodeURIComponent(decision.nextPath)}` : ''
+    return <Navigate replace to={`/?gate=stage-locked${next}`} />
   }
 
   return children
