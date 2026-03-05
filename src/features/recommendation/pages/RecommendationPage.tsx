@@ -106,6 +106,7 @@ export function RecommendationPage() {
               <p>
                 난이도 {course.level} | {course.durationHours}시간
               </p>
+              {typeof course.fitScore === 'number' && <p>적합도 {course.fitScore}%</p>}
               <div className="tag-row">
                 {course.reasonTags.map((tag) => (
                   <span className="reason-tag" key={tag}>

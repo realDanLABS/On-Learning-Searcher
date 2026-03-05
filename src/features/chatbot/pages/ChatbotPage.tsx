@@ -2,7 +2,12 @@ import { useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import { AppShell } from '../../../shared/layouts/AppShell'
-import { getDiagnosisPayload, getEnrollmentRecords } from '../../../shared/state/learningFlow'
+import {
+  getDiagnosisPayload,
+  getEnrollmentRecords,
+  getJourneyStage,
+  type JourneyStage,
+} from '../../../shared/state/learningFlow'
 
 type ChatMessage = {
   id: string
@@ -12,9 +17,18 @@ type ChatMessage = {
 
 const promptOptions = ['내 부족 역량 알려줘', '추천 이유 설명해줘', '이번 달 학습계획 제안해줘']
 
+function getNextActionByStage(stage: JourneyStage) {
+  if (stage === 'start') return { to: '/diagnosis', label: '진단 시작하기' }
+  if (stage === 'diagnosis_done') return { to: '/recommendation', label: '추천 과정 확인하기' }
+  if (stage === 'course_selected') return { to: '/course-linking', label: '신청 연동 진행하기' }
+  return { to: '/history', label: '학습 이력 확인하기' }
+}
+
 export function ChatbotPage() {
   const diagnosis = getDiagnosisPayload()
   const enrollments = getEnrollmentRecords()
+  const journeyStage = getJourneyStage()
+  const nextAction = getNextActionByStage(journeyStage)
 
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -76,9 +90,10 @@ export function ChatbotPage() {
 
       <section className="hero-card">
         <h2>바로가기</h2>
+        <p className="hint-text">현재 여정 단계에 맞춰 다음 행동을 제안합니다.</p>
         <div className="journey-actions">
-          <Link className="primary-btn link-btn" to="/recommendation">
-            추천 과정 이동
+          <Link className="primary-btn link-btn" to={nextAction.to}>
+            {nextAction.label}
           </Link>
           <Link className="secondary-btn link-btn" to="/history">
             이력 페이지 이동

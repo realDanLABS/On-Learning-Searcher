@@ -21,6 +21,7 @@ export type RecommendedCourse = {
   durationHours: number
   reasonTags: string[]
   recommendedBy: 'skill-gap' | 'role-fit' | 'history-based'
+  fitScore?: number
 }
 
 export type EnrollmentRecord = {
