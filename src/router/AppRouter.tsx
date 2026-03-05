@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 
+import { AuthCallbackPage } from '../features/auth/pages/AuthCallbackPage'
 import { ChatbotPage } from '../features/chatbot/pages/ChatbotPage'
 import { CourseLinkingPage } from '../features/course-linking/pages/CourseLinkingPage'
 import { DiagnosisPage } from '../features/diagnosis/pages/DiagnosisPage'
@@ -32,6 +33,7 @@ export function AppRouter() {
       <SessionExpiredWatcher />
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/auth/callback" element={<AuthCallbackPage />} />
         <Route
           path="/diagnosis"
           element={

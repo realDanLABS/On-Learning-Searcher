@@ -7,6 +7,7 @@ import {
   isForcedApiErrorMode,
   setForcedApiErrorMode,
 } from '../shared/api/learningApi'
+import { syncAuthSession } from '../shared/api/authApi'
 import { getErrorMessage } from '../shared/api/errorMessage'
 import { consumeSessionExpiredNotice } from '../shared/auth/sessionSignals'
 import { runtimeConfig } from '../shared/config/runtime'
@@ -57,6 +58,7 @@ export function HomePage() {
       try {
         setLoadError(null)
         setLoading(true)
+        await syncAuthSession()
         setDiagnosis(await fetchDiagnosis())
         setStage(await fetchJourneyStage())
         setFunnel(getFunnelSnapshot())
@@ -118,7 +120,18 @@ export function HomePage() {
 
   const startLogin = () => {
     if (runtimeConfig.apiMode === 'remote' && runtimeConfig.ssoLoginUrl) {
-      window.location.href = runtimeConfig.ssoLoginUrl
+      try {
+        const callback = runtimeConfig.ssoCallbackUrl.startsWith('http')
+          ? runtimeConfig.ssoCallbackUrl
+          : `${window.location.origin}${runtimeConfig.ssoCallbackUrl}`
+        const login = new URL(runtimeConfig.ssoLoginUrl)
+        if (!login.searchParams.get('redirect_uri')) {
+          login.searchParams.set('redirect_uri', callback)
+        }
+        window.location.href = login.toString()
+      } catch {
+        window.location.href = runtimeConfig.ssoLoginUrl
+      }
       return
     }
     setAuthenticated(true)
