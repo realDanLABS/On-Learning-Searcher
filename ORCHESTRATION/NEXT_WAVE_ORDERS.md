@@ -1,29 +1,29 @@
 # Next Wave Orders (360Learning Benchmark Adaptation)
 
 ## foundation
-- Build enterprise dashboard shell (KPI cards, gap cards, recommendation preview)
-- Add reusable components: `KpiCard`, `GapChip`, `StatusPill`, `SectionHeader`
+- 운영 환경 토글 정리: debug UI 완전 분리 + 릴리즈 배너/버전 표기
+- 공통 Empty/Error/Loading 패턴 컴포넌트화
 
 ## diagnosis
-- Expand current stepper to category scoring blocks and sectioned progress
-- Add "skills gap summary" panel at result state
+- 질문 은행 확장(부문별 15~20문항) 및 문항 랜덤화 옵션
+- 진단 중도 이탈 분석 이벤트(문항 인덱스/체류시간) 추가
 
 ## recommendation
-- Implement recommendation reason chips (`skill_gap`, `role_fit`, `learning_time`)
-- Add enterprise filters and sorting
+- 추천 근거 설명 모달(점수/태그/우선순위 산식 요약) 추가
+- 즐겨찾기/보류 기능으로 후보 과정 큐 관리
 
 ## course-linking
-- Add enrollment deep-link contract and callback handling spec
-- Track outgoing click with metadata payload
+- 이캠퍼스 복귀 콜백 서명 검증(운영 보안 요구사항) 설계
+- 신청 실패 재시도 정책(재시도 횟수/지연/감사로그) 명세화
 
 ## history
-- Implement trend widgets: assessment score trend + completion impact
-- Add manager-share summary card
+- 부서/직무별 벤치마크 비교 위젯 추가
+- 월간 리포트 다운로드(PDF/CSV) 생성 경로 추가
 
 ## chatbot
-- Add quick prompts: "내 부족 역량", "추천 이유", "이번 달 학습계획"
-- Return links to recommendation and growth path sections
+- 컨텍스트 기반 답변 개선(최근 진단/신청 데이터 프롬프트 주입)
+- 상담 종료 시 다음 액션 자동 추천(진단 재시작/추천/이력)
 
 ## responsive
-- Validate all core pages for 4 breakpoints
-- Fix nav/card/table collapse behavior
+- 접근성 QA (키보드 포커스, ARIA, 색 대비) 완료
+- 모바일 테이블 카드화 및 긴 타임라인 접기 UX 보강
