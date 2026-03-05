@@ -15,10 +15,10 @@ describe('gate notice parser', () => {
     expect(result.nextPath).toBe('/recommendation')
   })
 
-  it('parses role-denied without next path', () => {
-    const result = getGateNoticeFromSearch('?gate=role-denied')
+  it('parses role-denied with next path', () => {
+    const result = getGateNoticeFromSearch('?gate=role-denied&next=%2Fresponsive')
     expect(result.message).toContain('권한')
-    expect(result.nextPath).toBe(null)
+    expect(result.nextPath).toBe('/responsive')
   })
 
   it('drops unsafe external next path', () => {

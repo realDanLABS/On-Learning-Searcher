@@ -196,6 +196,12 @@ test('direct diagnosis access redirects with profile next path when only logged 
   await expect(page).toHaveURL(/\/\?gate=profile-required&next=%2Fdiagnosis/)
 })
 
+test('direct responsive access redirects with role-denied next path', async ({ page }) => {
+  await prepareLoggedInProfile(page)
+  await page.goto('/responsive')
+  await expect(page).toHaveURL(/\/\?gate=role-denied&next=%2Fresponsive/)
+})
+
 test('auth callback resumes pending next intent to reachable step', async ({ page }) => {
   await page.goto('/')
   await page.evaluate(() => {

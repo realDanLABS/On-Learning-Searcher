@@ -140,11 +140,12 @@ export function AppShell({ title, description, children }: AppShellProps) {
           }
 
           if (!decision.allowed) {
+            const fallbackNextPath = decision.nextPath ?? route.path
             return (
               <Link
                 className="feature-link locked"
                 key={route.path}
-                to={buildGateRedirect(decision.gate ?? 'stage-locked', decision.nextPath)}
+                to={buildGateRedirect(decision.gate ?? 'stage-locked', fallbackNextPath)}
                 title="현재 단계에서는 이동할 수 없습니다. 안내 페이지로 이동합니다."
               >
                 {route.label} (잠금)

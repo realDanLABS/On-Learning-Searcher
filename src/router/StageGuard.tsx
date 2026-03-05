@@ -63,7 +63,7 @@ export function StageGuard({
     return <Navigate replace to={withNext('profile-required', requestedPath)} />
   }
   if (!decision.allowed && decision.gate === 'role-denied') {
-    return <Navigate replace to="/?gate=role-denied" />
+    return <Navigate replace to={withNext('role-denied', requestedPath)} />
   }
   if (!decision.allowed && decision.gate === 'stage-locked' && runtimeConfig.apiMode === 'remote') {
     // In remote mode, stage can be ahead on server-side. Let page-level loaders handle prerequisite UX.

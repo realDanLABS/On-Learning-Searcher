@@ -21,7 +21,7 @@ export function getGateNoticeFromSearch(search: string): GateNotice {
     return { message: '프로필 저장이 필요한 단계입니다. 사번/이름/소속을 먼저 저장해 주세요.', nextPath }
   }
   if (gate === 'role-denied') {
-    return { message: '현재 권한으로 접근할 수 없는 페이지입니다.', nextPath: null }
+    return { message: '현재 권한으로 접근할 수 없는 페이지입니다.', nextPath }
   }
   if (gate === 'feature-disabled') {
     return { message: '운영 정책에 의해 현재 기능이 비활성화되어 있습니다.', nextPath: null }
