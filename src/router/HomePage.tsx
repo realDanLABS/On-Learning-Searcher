@@ -26,11 +26,13 @@ import { isAuthenticated, setAuthenticated } from '../shared/state/auth'
 import {
   clearUserProfile,
   getUserProfile,
+  hasUserProfile,
   saveUserProfile,
 } from '../shared/state/profile'
 import { getUserRole, setUserRole, type UserRole } from '../shared/state/session'
 import {
   clearJourneyData,
+  getJourneyStage,
   type DiagnosisPayload,
   type JourneyStage,
 } from '../shared/state/learningFlow'
@@ -224,11 +226,17 @@ export function HomePage() {
     hasProfile: boolean
     stage: JourneyStage
   }) => {
+    const liveContext = {
+      authenticated: isAuthenticated() || context.authenticated,
+      hasProfile: hasUserProfile() || context.hasProfile,
+      role: getUserRole(),
+      stage: getJourneyStage() ?? context.stage,
+    }
     const routeContext = {
-      authenticated: context.authenticated,
-      hasProfile: context.hasProfile,
-      role,
-      stage: context.stage,
+      authenticated: liveContext.authenticated,
+      hasProfile: liveContext.hasProfile,
+      role: liveContext.role,
+      stage: liveContext.stage,
     }
     if (gateNextPath) {
       const gateRoute = featureRoutes.find((route) => route.path === gateNextPath)
@@ -247,10 +255,10 @@ export function HomePage() {
       }
     }
     const next = getNextActionStatus({
-      authenticated: context.authenticated,
-      hasProfile: context.hasProfile,
-      role,
-      stage: context.stage,
+      authenticated: liveContext.authenticated,
+      hasProfile: liveContext.hasProfile,
+      role: liveContext.role,
+      stage: liveContext.stage,
       hasDiagnosisDraft: hasDiagnosisDraft(),
     })
     if (next.enabled) {
@@ -338,7 +346,17 @@ export function HomePage() {
         )}
         {gateNextPath && (
           <div className="journey-actions">
-            <button className="secondary-btn" onClick={() => navigate(gateNextPath)} type="button">
+            <button
+              className="secondary-btn"
+              onClick={() =>
+                moveToBestNextStep({
+                  authenticated,
+                  hasProfile: profileReady,
+                  stage,
+                })
+              }
+              type="button"
+            >
               권장 페이지로 이동
             </button>
           </div>

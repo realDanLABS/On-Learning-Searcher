@@ -157,3 +157,10 @@ test('gated next recommendation falls back to diagnosis after onboarding', async
 
   await expect(page).toHaveURL(/\/diagnosis/)
 })
+
+test('recommended button resolves to reachable step when next is recommendation', async ({ page }) => {
+  await prepareLoggedInProfile(page)
+  await page.goto('/?gate=stage-locked&next=%2Frecommendation')
+  await page.getByRole('button', { name: '권장 페이지로 이동' }).click()
+  await expect(page).toHaveURL(/\/diagnosis/)
+})
