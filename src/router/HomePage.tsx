@@ -15,7 +15,7 @@ import { AppShell } from '../shared/layouts/AppShell'
 import { getFunnelSnapshot, type FunnelSnapshot } from '../shared/observability/funnel'
 import { appendAuditLog } from '../shared/observability/audit'
 import { getNextJourneyAction } from '../shared/orchestration/journey'
-import { getJourneyStartBlockers } from '../shared/orchestration/readiness'
+import { getJourneyChecklist, getJourneyStartBlockers } from '../shared/orchestration/readiness'
 import { isAuthenticated, setAuthenticated } from '../shared/state/auth'
 import {
   clearUserProfile,
@@ -87,6 +87,11 @@ export function HomePage() {
   const blockers = getJourneyStartBlockers({
     authenticated,
     hasProfile: profileReady,
+  })
+  const checklist = getJourneyChecklist({
+    authenticated,
+    hasProfile: profileReady,
+    stage,
   })
   const canStartNext = blockers.length === 0
 
@@ -199,6 +204,13 @@ export function HomePage() {
         <p className="hint-text">현재 단계: {stage}</p>
         <p className="hint-text">현재 역할: {role}</p>
         <p className="hint-text">API 모드: {runtimeConfig.apiMode}</p>
+        <ul className="checklist">
+          {checklist.map((item) => (
+            <li className={item.done ? 'done' : 'todo'} key={item.label}>
+              {item.done ? '완료' : '대기'} - {item.label}
+            </li>
+          ))}
+        </ul>
         <div className="onboarding-grid">
           <label>
             사번

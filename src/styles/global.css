@@ -258,6 +258,25 @@ a {
   font-size: 14px;
 }
 
+.checklist {
+  margin: 12px 0 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 4px;
+}
+
+.checklist li {
+  font-size: 13px;
+}
+
+.checklist li.done {
+  color: #1f6b3e;
+}
+
+.checklist li.todo {
+  color: var(--text-muted);
+}
+
 .tag-row {
   display: flex;
   flex-wrap: wrap;
