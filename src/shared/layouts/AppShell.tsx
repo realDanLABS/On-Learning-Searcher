@@ -1,8 +1,9 @@
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import type { ReactNode } from 'react'
 
 import { runtimeConfig } from '../config/runtime'
 import { featureRoutes } from '../../router/routeConfig'
+import { JourneyActionBar } from '../components/JourneyActionBar'
 import { JourneyProgressPanel } from '../components/JourneyProgressPanel'
 import { canAccessRoute } from '../orchestration/access'
 import { isFeatureEnabled } from '../orchestration/features'
@@ -20,6 +21,7 @@ type AppShellProps = {
 }
 
 export function AppShell({ title, description, children }: AppShellProps) {
+  const location = useLocation()
   const profile = getUserProfile()
   const authenticated = isAuthenticated()
   const role = getUserRole()
@@ -95,6 +97,7 @@ export function AppShell({ title, description, children }: AppShellProps) {
       </nav>
 
       <main className="content">{children}</main>
+      {location.pathname !== '/' && <JourneyActionBar />}
       <JourneyProgressPanel />
     </div>
   )

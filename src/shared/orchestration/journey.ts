@@ -1,6 +1,7 @@
 import type { JourneyStage } from '../state/learningFlow'
 
 export type NextJourneyAction = { to: string; label: string }
+export type PrevJourneyAction = { to: string; label: string } | null
 
 export const stageOrder: JourneyStage[] = ['start', 'diagnosis_done', 'course_selected', 'enrollment_done']
 
@@ -27,4 +28,11 @@ export function getStagePath(stage: JourneyStage) {
   if (stage === 'diagnosis_done') return '/recommendation'
   if (stage === 'course_selected') return '/course-linking'
   return '/history'
+}
+
+export function getPrevJourneyAction(stage: JourneyStage): PrevJourneyAction {
+  if (stage === 'start') return null
+  if (stage === 'diagnosis_done') return { to: '/diagnosis', label: '진단으로 돌아가기' }
+  if (stage === 'course_selected') return { to: '/recommendation', label: '추천으로 돌아가기' }
+  return { to: '/course-linking', label: '신청 단계로 돌아가기' }
 }
