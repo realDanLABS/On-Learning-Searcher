@@ -12,8 +12,10 @@ if [[ "$current_branch" != "$BASE_BRANCH" ]]; then
   exit 1
 fi
 
-# Keep base branch up-to-date first (safe no-op if no remote change)
-git pull --ff-only || true
+# Keep base branch up-to-date first only when upstream exists.
+if git rev-parse --abbrev-ref --symbolic-full-name '@{u}' >/dev/null 2>&1; then
+  git pull --ff-only || true
+fi
 
 echo "[sync] base branch: $BASE_BRANCH"
 
