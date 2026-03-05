@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { submitDiagnosis } from '../../../shared/api/learningApi'
+import { getErrorMessage } from '../../../shared/api/errorMessage'
 import { AppShell } from '../../../shared/layouts/AppShell'
 import { getUserProfile } from '../../../shared/state/profile'
 import { type AnswerMap, buildSummary } from '../diagnosisResult'
@@ -94,8 +95,8 @@ export function DiagnosisPage() {
         topGaps,
       })
       navigate('/recommendation')
-    } catch {
-      setSubmitError('진단 결과 저장 중 오류가 발생했습니다. 다시 시도해 주세요.')
+    } catch (error) {
+      setSubmitError(getErrorMessage(error, '진단 결과 저장 중 오류가 발생했습니다. 다시 시도해 주세요.'))
     }
   }
 

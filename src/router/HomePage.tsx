@@ -7,6 +7,7 @@ import {
   isForcedApiErrorMode,
   setForcedApiErrorMode,
 } from '../shared/api/learningApi'
+import { getErrorMessage } from '../shared/api/errorMessage'
 import { runtimeConfig } from '../shared/config/runtime'
 import { AppShell } from '../shared/layouts/AppShell'
 import { getFunnelSnapshot, type FunnelSnapshot } from '../shared/observability/funnel'
@@ -60,8 +61,8 @@ export function HomePage() {
           setOrganization(profile.organization)
           setProfileReady(true)
         }
-      } catch {
-        setLoadError('홈 데이터를 불러오지 못했습니다. 다시 시도해 주세요.')
+      } catch (error) {
+        setLoadError(getErrorMessage(error, '홈 데이터를 불러오지 못했습니다. 다시 시도해 주세요.'))
       } finally {
         setLoading(false)
       }

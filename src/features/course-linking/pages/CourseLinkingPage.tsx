@@ -5,6 +5,7 @@ import {
   fetchSelectedCourse,
   submitEnrollment,
 } from '../../../shared/api/learningApi'
+import { getErrorMessage } from '../../../shared/api/errorMessage'
 import { runtimeConfig } from '../../../shared/config/runtime'
 import { AppShell } from '../../../shared/layouts/AppShell'
 import type { EnrollmentRecord, RecommendedCourse } from '../../../shared/state/learningFlow'
@@ -22,8 +23,8 @@ export function CourseLinkingPage() {
       setLoadError(null)
       setLoading(true)
       setCourse(await fetchSelectedCourse())
-    } catch {
-      setLoadError('선택 과정 정보를 불러오지 못했습니다.')
+    } catch (error) {
+      setLoadError(getErrorMessage(error, '선택 과정 정보를 불러오지 못했습니다.'))
     } finally {
       setLoading(false)
     }
@@ -46,8 +47,8 @@ export function CourseLinkingPage() {
       setSubmitting(true)
       await submitEnrollment(record)
       navigate('/history')
-    } catch {
-      setLoadError('신청 처리 중 오류가 발생했습니다. 다시 시도해 주세요.')
+    } catch (error) {
+      setLoadError(getErrorMessage(error, '신청 처리 중 오류가 발생했습니다. 다시 시도해 주세요.'))
     } finally {
       setSubmitting(false)
     }

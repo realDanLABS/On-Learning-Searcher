@@ -6,6 +6,7 @@ import {
   fetchEnrollmentHistory,
   fetchJourneyEvents,
 } from '../../../shared/api/learningApi'
+import { getErrorMessage } from '../../../shared/api/errorMessage'
 import { AppShell } from '../../../shared/layouts/AppShell'
 import { getUserRole } from '../../../shared/state/session'
 import {
@@ -31,8 +32,8 @@ export function HistoryPage() {
       setDiagnosis(await fetchDiagnosis())
       setEnrollments(await fetchEnrollmentHistory())
       setEvents(await fetchJourneyEvents())
-    } catch {
-      setLoadError('이력 데이터를 불러오지 못했습니다. 다시 시도해 주세요.')
+    } catch (error) {
+      setLoadError(getErrorMessage(error, '이력 데이터를 불러오지 못했습니다. 다시 시도해 주세요.'))
     } finally {
       setLoading(false)
     }

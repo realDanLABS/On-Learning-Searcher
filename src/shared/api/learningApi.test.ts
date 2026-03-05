@@ -9,6 +9,7 @@ import {
   fetchJourneyStage,
   selectRecommendedCourse,
 } from './learningApi'
+import { toApiError } from './apiError'
 import { clearJourneyData } from '../state/learningFlow'
 import { clearUserRole, setUserRole } from '../state/session'
 
@@ -22,6 +23,12 @@ describe('learningApi error mode', () => {
   it('throws when forced api error mode is enabled', async () => {
     setForcedApiErrorMode(true)
     await expect(fetchDiagnosis()).rejects.toThrow('API is temporarily unavailable')
+  })
+
+  it('normalizes api error shape', () => {
+    const error = toApiError(new Error('oops'))
+    expect(error.code).toBe('unknown')
+    expect(error.message).toBe('oops')
   })
 
   it('works normally when error mode is disabled', async () => {

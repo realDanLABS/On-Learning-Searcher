@@ -6,6 +6,7 @@ import {
   fetchRecommendedCourses,
   selectRecommendedCourse,
 } from '../../../shared/api/learningApi'
+import { getErrorMessage } from '../../../shared/api/errorMessage'
 import { AppShell } from '../../../shared/layouts/AppShell'
 import type { DiagnosisPayload, RecommendedCourse } from '../../../shared/state/learningFlow'
 
@@ -24,8 +25,8 @@ export function RecommendationPage() {
       setLoading(true)
       setDiagnosis(await fetchDiagnosis())
       setCourses(await fetchRecommendedCourses(levelFilter))
-    } catch {
-      setLoadError('추천 데이터를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.')
+    } catch (error) {
+      setLoadError(getErrorMessage(error, '추천 데이터를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.'))
     } finally {
       setLoading(false)
     }
@@ -40,8 +41,8 @@ export function RecommendationPage() {
       setActionError(null)
       await selectRecommendedCourse(course)
       navigate('/course-linking')
-    } catch {
-      setActionError('과정 선택 처리 중 오류가 발생했습니다. 다시 시도해 주세요.')
+    } catch (error) {
+      setActionError(getErrorMessage(error, '과정 선택 처리 중 오류가 발생했습니다. 다시 시도해 주세요.'))
     }
   }
 

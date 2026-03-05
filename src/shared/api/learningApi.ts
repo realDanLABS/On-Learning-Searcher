@@ -1,4 +1,5 @@
 import { runtimeConfig } from '../config/runtime'
+import { ApiError } from './apiError'
 import {
   appendEnrollment,
   type CategoryScores,
@@ -184,7 +185,7 @@ function isRemoteMode() {
 async function withApiGuard<T>(fn: () => T): Promise<T> {
   await new Promise((resolve) => setTimeout(resolve, 80))
   if (isForcedApiErrorMode()) {
-    throw new Error('API is temporarily unavailable')
+    throw new ApiError('service_unavailable', 'API is temporarily unavailable')
   }
   return fn()
 }
@@ -218,10 +219,10 @@ function calculateFitScore(course: CourseCatalogItem, diagnosis: DiagnosisPayloa
 
 async function requestJson<T>(path: string, init?: RequestInit): Promise<T> {
   if (isForcedApiErrorMode()) {
-    throw new Error('API is temporarily unavailable')
+    throw new ApiError('service_unavailable', 'API is temporarily unavailable')
   }
   if (!runtimeConfig.apiBaseUrl) {
-    throw new Error('VITE_API_BASE_URL is required when VITE_API_MODE=remote')
+    throw new ApiError('misconfigured', 'VITE_API_BASE_URL is required when VITE_API_MODE=remote')
   }
 
   const controller = new AbortController()
@@ -239,7 +240,10 @@ async function requestJson<T>(path: string, init?: RequestInit): Promise<T> {
     })
 
     if (!response.ok) {
-      throw new Error(`API request failed: ${response.status}`)
+      if (response.status === 401) throw new ApiError('unauthorized', 'Authentication required', 401)
+      if (response.status === 403) throw new ApiError('forbidden', 'Access denied', 403)
+      if (response.status >= 500) throw new ApiError('server', 'Server error', response.status)
+      throw new ApiError('unknown', `API request failed: ${response.status}`, response.status)
     }
 
     if (response.status === 204) {
@@ -253,9 +257,10 @@ async function requestJson<T>(path: string, init?: RequestInit): Promise<T> {
     return payload as T
   } catch (error) {
     if (error instanceof Error && error.name === 'AbortError') {
-      throw new Error('API request timeout')
+      throw new ApiError('timeout', 'API request timeout')
     }
-    throw error
+    if (error instanceof ApiError) throw error
+    throw new ApiError('network', 'Network error')
   } finally {
     clearTimeout(timeout)
   }
