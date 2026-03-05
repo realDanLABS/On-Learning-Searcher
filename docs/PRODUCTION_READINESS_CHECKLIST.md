@@ -13,6 +13,7 @@
 
 ## 3. Backend Integration
 - [ ] Replace localStorage contracts with backend API
+- [x] Remote API contract rehearsal via local mock server (`npm run dev:remote-mock`)
 - [ ] Persist diagnosis payload and recommendation responses server-side
 - [ ] Enrollment status sync from e-campus API
 - [x] Retry/timeout/fallback policy for external APIs

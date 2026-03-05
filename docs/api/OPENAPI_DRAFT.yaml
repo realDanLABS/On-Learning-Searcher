@@ -3,6 +3,24 @@ info:
   title: On Learning Searcher API
   version: 0.1.0
 paths:
+  /health:
+    get:
+      summary: Service health check
+      responses:
+        '200':
+          description: Healthy
+  /auth/session:
+    get:
+      summary: Get current auth session
+      responses:
+        '200':
+          description: Auth session payload
+  /auth/callback:
+    get:
+      summary: Complete auth callback and return normalized session
+      responses:
+        '200':
+          description: Auth session payload
   /diagnosis:
     post:
       summary: Submit diagnosis result
@@ -26,6 +44,18 @@ paths:
       responses:
         '200':
           description: Course list
+  /recommendations/select:
+    post:
+      summary: Select one recommendation for enrollment linking
+      responses:
+        '200':
+          description: Saved
+  /selected-course:
+    get:
+      summary: Get current selected course
+      responses:
+        '200':
+          description: Selected course payload
   /enrollments:
     post:
       summary: Submit enrollment result
@@ -43,3 +73,9 @@ paths:
       responses:
         '200':
           description: Timeline events
+  /journey/stage:
+    get:
+      summary: Get current journey stage
+      responses:
+        '200':
+          description: One of start/diagnosis_done/course_selected/enrollment_done

@@ -8,6 +8,11 @@ npm install
 npm run dev
 ```
 
+원격 연동 리허설(백엔드 계약 테스트)은 아래 한 줄로 실행할 수 있습니다.
+```bash
+npm run dev:remote-mock
+```
+
 환경 변수는 `.env.example`을 참고해서 설정합니다.
 - `VITE_API_MODE=mock|remote` (`mock` 기본)
 - `VITE_API_MODE=remote`일 때 `VITE_API_BASE_URL` 필수
@@ -48,6 +53,9 @@ npm run release:check
 
 # 원격 운영 스모크 점검 (.env 기반 필수값 + /health)
 npm run remote:smoke
+
+# 원격 API 모의 서버 단독 실행 (포트: 8787)
+npm run api:remote-mock
 ```
 
 ## 폴더 구조

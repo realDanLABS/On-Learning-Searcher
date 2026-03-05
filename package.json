@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:remote-mock": "bash scripts/dev-remote-mock.sh",
+    "api:remote-mock": "node scripts/remote-mock-server.mjs",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",

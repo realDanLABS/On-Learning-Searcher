@@ -3,8 +3,10 @@
 ## Pre-release
 1. `npm run release:check`
 2. `bash scripts/sync-worktrees-from-main.sh`
-3. E2E demo path: Landing -> Diagnosis -> Recommendation -> Course Linking -> History
-4. e-campus callback contract:
+3. Remote rehearsal (API contract): `npm run dev:remote-mock`
+4. Remote env smoke (real endpoints): `npm run remote:smoke`
+5. E2E demo path: Landing -> Diagnosis -> Recommendation -> Course Linking -> History
+6. e-campus callback contract:
    - return URL target: `/course-linking`
    - required query: `enrollment=success|failed`
    - optional query: `courseId=<ID>`
