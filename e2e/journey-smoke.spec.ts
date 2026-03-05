@@ -44,6 +44,23 @@ async function prepareLoggedInOnly(page: import('@playwright/test').Page) {
   await page.getByRole('button', { name: '로그인' }).first().click()
 }
 
+async function prepareDiagnosisDone(page: import('@playwright/test').Page) {
+  await prepareLoggedInProfile(page)
+  await page.goto('/diagnosis')
+  await expect(page).toHaveURL(/\/diagnosis/)
+
+  const diagnosisCard = page.locator('.diagnosis-question-card')
+  for (let i = 0; i < 9; i += 1) {
+    await diagnosisCard.getByRole('button', { name: '예' }).click()
+    await diagnosisCard.getByRole('button', { name: '다음' }).click()
+  }
+
+  await diagnosisCard.getByRole('button', { name: '예' }).click()
+  await diagnosisCard.getByRole('button', { name: '결과 보기' }).click()
+  await page.getByRole('button', { name: '추천 과정 보기' }).click()
+  await expect(page).toHaveURL(/\/recommendation/)
+}
+
 test('landing to history e2e journey', async ({ page }) => {
   await prepareUntilCourseLinking(page)
 
@@ -300,4 +317,12 @@ test('chatbot quick intent provides safe guided navigation CTA', async ({ page }
   await page.getByRole('button', { name: '내 부족 역량 알려줘' }).click()
   await page.getByRole('link', { name: '추천 흐름으로 이동' }).last().click()
   await expect(page).toHaveURL(/\/diagnosis/)
+})
+
+test('chatbot guided CTA routes to recommendation after diagnosis completion', async ({ page }) => {
+  await prepareDiagnosisDone(page)
+  await page.goto('/chatbot')
+  await page.getByRole('button', { name: '내 부족 역량 알려줘' }).click()
+  await page.getByRole('link', { name: '추천 흐름으로 이동' }).last().click()
+  await expect(page).toHaveURL(/\/recommendation/)
 })
