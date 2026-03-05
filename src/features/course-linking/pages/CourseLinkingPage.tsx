@@ -9,7 +9,13 @@ import { getErrorMessage } from '../../../shared/api/errorMessage'
 import { runtimeConfig } from '../../../shared/config/runtime'
 import { AppShell } from '../../../shared/layouts/AppShell'
 import { getHandoffMessage } from '../../../shared/orchestration/handoff'
+import { resolveBestReachablePath } from '../../../shared/orchestration/smartPath'
+import { isAuthenticated } from '../../../shared/state/auth'
 import type { EnrollmentRecord, RecommendedCourse } from '../../../shared/state/learningFlow'
+import { getJourneyStage } from '../../../shared/state/learningFlow'
+import { hasUserProfile } from '../../../shared/state/profile'
+import { getUserRole } from '../../../shared/state/session'
+import { hasDiagnosisDraft } from '../../diagnosis/draftStorage'
 import { buildEcampusApplyUrl, parseEnrollmentCallback } from '../enrollmentCallback'
 
 export function CourseLinkingPage() {
@@ -107,6 +113,21 @@ export function CourseLinkingPage() {
     navigate('/course-linking?from=recommendation', { replace: true })
   }
 
+  const moveToRecommendedStep = () => {
+    const nextPath = resolveBestReachablePath({
+      preferredPath: '/recommendation',
+      gateNextPath: '/course-linking',
+      context: {
+        authenticated: isAuthenticated(),
+        hasProfile: hasUserProfile(),
+        role: getUserRole(),
+        stage: getJourneyStage(),
+      },
+      hasDiagnosisDraft: hasDiagnosisDraft(),
+    })
+    navigate(nextPath ?? '/recommendation')
+  }
+
   return (
     <AppShell
       title="교육 신청 연동"
@@ -138,9 +159,14 @@ export function CourseLinkingPage() {
         <section className="hero-card">
           <h2>선택된 과정이 없습니다</h2>
           <p>추천 페이지에서 과정을 선택하고 다시 들어와 주세요.</p>
-          <Link className="primary-btn link-btn" to="/recommendation">
-            추천 페이지로 이동
-          </Link>
+          <div className="journey-actions">
+            <button className="primary-btn" onClick={moveToRecommendedStep} type="button">
+              권장 단계로 이동
+            </button>
+            <Link className="secondary-btn link-btn" to="/recommendation">
+              추천 페이지로 이동
+            </Link>
+          </div>
         </section>
       )}
 

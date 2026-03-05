@@ -281,3 +281,15 @@ test('history reset returns to home and starts a fresh diagnosis loop', async ({
   await page.getByRole('button', { name: '바로 시작: 3) 역량 진단 시작' }).click()
   await expect(page).toHaveURL(/\/diagnosis/)
 })
+
+test('course-linking missing selection redirects safely to recommended predecessor step', async ({ page }) => {
+  await prepareUntilCourseLinking(page)
+  await page.evaluate(() => {
+    localStorage.removeItem('on_learning_selected_course_v1')
+  })
+  await page.reload()
+
+  await expect(page).toHaveURL(/\/\?gate=stage-locked&next=%2Frecommendation/)
+  await page.getByRole('button', { name: '권장 페이지로 이동' }).click()
+  await expect(page).toHaveURL(/\/recommendation/)
+})
