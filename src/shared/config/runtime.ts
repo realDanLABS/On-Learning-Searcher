@@ -15,6 +15,8 @@ export const runtimeConfig = {
   ssoCallbackUrl: import.meta.env.VITE_SSO_CALLBACK_URL || '/auth/callback',
   ecampusCourseApplyUrl: import.meta.env.VITE_ECAMPUS_COURSE_APPLY_URL || 'https://example.com',
   disabledFeatures: parseDisabledFeatures(import.meta.env.VITE_DISABLED_FEATURES || ''),
+  apiRetryCount: Number(import.meta.env.VITE_API_RETRY_COUNT || '1'),
+  errorReportUrl: import.meta.env.VITE_ERROR_REPORT_URL || '',
 }
 
 function parseDisabledFeatures(raw: string): FeatureKey[] {

@@ -2,6 +2,7 @@ import { runtimeConfig } from '../config/runtime'
 import { emitSessionExpiredNotice } from '../auth/sessionSignals'
 import { ApiError } from './apiError'
 import { appendAuditLog } from '../observability/audit'
+import { reportError } from '../observability/errorTracking'
 import {
   appendEnrollment,
   type CategoryScores,
@@ -226,6 +227,32 @@ function calculateFitScore(course: CourseCatalogItem, diagnosis: DiagnosisPayloa
 }
 
 async function requestJson<T>(path: string, init?: RequestInit): Promise<T> {
+  const maxAttempts = 1 + Math.max(0, runtimeConfig.apiRetryCount)
+  const method = (init?.method || 'GET').toUpperCase()
+  let attempt = 0
+
+  while (attempt < maxAttempts) {
+    try {
+      return await requestJsonOnce<T>(path, init)
+    } catch (error) {
+      attempt += 1
+      const retryable = isRetryableApiError(error) && method === 'GET' && attempt < maxAttempts
+      if (retryable) continue
+      if (error instanceof ApiError) {
+        void reportError({
+          at: new Date().toISOString(),
+          message: `${error.code}:${error.message}`,
+          source: `api:${path}`,
+        })
+      }
+      throw error
+    }
+  }
+
+  throw new ApiError('unknown', 'API retry exhausted')
+}
+
+async function requestJsonOnce<T>(path: string, init?: RequestInit): Promise<T> {
   if (isForcedApiErrorMode()) {
     throw new ApiError('service_unavailable', 'API is temporarily unavailable')
   }
@@ -275,4 +302,9 @@ async function requestJson<T>(path: string, init?: RequestInit): Promise<T> {
   } finally {
     clearTimeout(timeout)
   }
+}
+
+function isRetryableApiError(error: unknown) {
+  if (!(error instanceof ApiError)) return false
+  return error.code === 'network' || error.code === 'timeout' || error.code === 'server'
 }

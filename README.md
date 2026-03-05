@@ -13,6 +13,8 @@ npm run dev
 - `VITE_API_MODE=remote`일 때 `VITE_API_BASE_URL` 필수
 - `VITE_SSO_LOGIN_URL`, `VITE_SSO_LOGOUT_URL`, `VITE_SSO_CALLBACK_URL` (remote 권장)
 - `VITE_DISABLED_FEATURES=chatbot,responsive` 형태로 기능 임시 비활성화
+- `VITE_API_RETRY_COUNT` 원격 GET 요청 재시도 횟수
+- `VITE_ERROR_REPORT_URL` 전역 오류 리포트 수집 엔드포인트
 
 ## 시작 전 핵심
 - 기능별 `git worktree`를 사용합니다.

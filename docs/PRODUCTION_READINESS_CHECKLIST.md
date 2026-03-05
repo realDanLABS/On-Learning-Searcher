@@ -20,7 +20,7 @@
 ## 4. Reliability
 - [x] CI lint/build on PR and main
 - [x] E2E smoke test in CI
-- [ ] Error tracking integration (Sentry etc.)
+- [x] Error tracking integration (Sentry etc.)
 - [x] Feature flags for safe rollout
 
 ## 5. Observability

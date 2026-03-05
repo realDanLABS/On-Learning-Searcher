@@ -4,6 +4,7 @@ import { clearUserProfile, saveUserProfile, type UserProfile } from '../state/pr
 import { clearUserRole, setUserRole, type UserRole } from '../state/session'
 import { clearAuthentication, isAuthenticated, setAuthenticated } from '../state/auth'
 import { ApiError } from './apiError'
+import { reportError } from '../observability/errorTracking'
 
 export type AuthSessionPayload = {
   authenticated: boolean
@@ -83,6 +84,31 @@ function isRemoteMode() {
 }
 
 async function requestJson<T>(path: string): Promise<T> {
+  const maxAttempts = 1 + Math.max(0, runtimeConfig.apiRetryCount)
+  let attempt = 0
+
+  while (attempt < maxAttempts) {
+    try {
+      return await requestJsonOnce<T>(path)
+    } catch (error) {
+      attempt += 1
+      const retryable = isRetryableApiError(error) && attempt < maxAttempts
+      if (retryable) continue
+      if (error instanceof ApiError) {
+        void reportError({
+          at: new Date().toISOString(),
+          message: `${error.code}:${error.message}`,
+          source: `auth:${path}`,
+        })
+      }
+      throw error
+    }
+  }
+
+  throw new ApiError('unknown', 'API retry exhausted')
+}
+
+async function requestJsonOnce<T>(path: string): Promise<T> {
   if (!runtimeConfig.apiBaseUrl) {
     throw new ApiError('misconfigured', 'VITE_API_BASE_URL is required when VITE_API_MODE=remote')
   }
@@ -119,3 +145,7 @@ async function requestJson<T>(path: string): Promise<T> {
   }
 }
 
+function isRetryableApiError(error: unknown) {
+  if (!(error instanceof ApiError)) return false
+  return error.code === 'network' || error.code === 'timeout' || error.code === 'server'
+}
