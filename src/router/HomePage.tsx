@@ -7,6 +7,7 @@ import {
   isForcedApiErrorMode,
   setForcedApiErrorMode,
 } from '../shared/api/learningApi'
+import { runtimeConfig } from '../shared/config/runtime'
 import { AppShell } from '../shared/layouts/AppShell'
 import { getFunnelSnapshot, type FunnelSnapshot } from '../shared/observability/funnel'
 import {
@@ -149,6 +150,7 @@ export function HomePage() {
         )}
         <p className="hint-text">현재 단계: {stage}</p>
         <p className="hint-text">현재 역할: {role}</p>
+        <p className="hint-text">API 모드: {runtimeConfig.apiMode}</p>
         <div className="onboarding-grid">
           <label>
             사번

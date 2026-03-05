@@ -1,3 +1,4 @@
+import { runtimeConfig } from '../config/runtime'
 import {
   appendEnrollment,
   type CategoryScores,
@@ -10,6 +11,8 @@ import {
   saveSelectedCourse,
   type DiagnosisPayload,
   type EnrollmentRecord,
+  type JourneyEvent,
+  type JourneyStage,
   type RecommendedCourse,
 } from '../state/learningFlow'
 import { getUserRole } from '../state/session'
@@ -60,10 +63,20 @@ const coursePool: CourseCatalogItem[] = [
 ]
 
 export async function fetchDiagnosis(): Promise<DiagnosisPayload | null> {
+  if (isRemoteMode()) {
+    return requestJson<DiagnosisPayload | null>('/diagnosis')
+  }
   return withApiGuard(() => getDiagnosisPayload())
 }
 
 export async function submitDiagnosis(payload: DiagnosisPayload): Promise<void> {
+  if (isRemoteMode()) {
+    await requestJson('/diagnosis', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    })
+    return
+  }
   return withApiGuard(() => {
     saveDiagnosisPayload(payload)
   })
@@ -72,6 +85,11 @@ export async function submitDiagnosis(payload: DiagnosisPayload): Promise<void> 
 export async function fetchRecommendedCourses(
   levelFilter: 'all' | '입문' | '중급' | '심화',
 ): Promise<RecommendedCourse[]> {
+  if (isRemoteMode()) {
+    const query = new URLSearchParams({ level: levelFilter }).toString()
+    return requestJson<RecommendedCourse[]>(`/recommendations?${query}`)
+  }
+
   return withApiGuard(() => {
     const diagnosis = getDiagnosisPayload()
     const personalized = coursePool
@@ -97,30 +115,56 @@ export async function fetchRecommendedCourses(
 }
 
 export async function selectRecommendedCourse(course: RecommendedCourse): Promise<void> {
+  if (isRemoteMode()) {
+    await requestJson('/recommendations/select', {
+      method: 'POST',
+      body: JSON.stringify(course),
+    })
+    return
+  }
   return withApiGuard(() => {
     saveSelectedCourse(course)
   })
 }
 
 export async function fetchSelectedCourse(): Promise<RecommendedCourse | null> {
+  if (isRemoteMode()) {
+    return requestJson<RecommendedCourse | null>('/selected-course')
+  }
   return withApiGuard(() => getSelectedCourse())
 }
 
 export async function submitEnrollment(record: EnrollmentRecord): Promise<void> {
+  if (isRemoteMode()) {
+    await requestJson('/enrollments', {
+      method: 'POST',
+      body: JSON.stringify(record),
+    })
+    return
+  }
   return withApiGuard(() => {
     appendEnrollment(record)
   })
 }
 
 export async function fetchEnrollmentHistory(): Promise<EnrollmentRecord[]> {
+  if (isRemoteMode()) {
+    return requestJson<EnrollmentRecord[]>('/enrollments')
+  }
   return withApiGuard(() => getEnrollmentRecords())
 }
 
-export async function fetchJourneyEvents() {
+export async function fetchJourneyEvents(): Promise<JourneyEvent[]> {
+  if (isRemoteMode()) {
+    return requestJson<JourneyEvent[]>('/journey/events')
+  }
   return withApiGuard(() => getJourneyEvents())
 }
 
-export async function fetchJourneyStage() {
+export async function fetchJourneyStage(): Promise<JourneyStage> {
+  if (isRemoteMode()) {
+    return requestJson<JourneyStage>('/journey/stage')
+  }
   return withApiGuard(() => getJourneyStage())
 }
 
@@ -131,6 +175,10 @@ export function isForcedApiErrorMode() {
 export function setForcedApiErrorMode(enabled: boolean) {
   if (enabled) localStorage.setItem(KEY_FORCE_API_ERROR, '1')
   else localStorage.removeItem(KEY_FORCE_API_ERROR)
+}
+
+function isRemoteMode() {
+  return runtimeConfig.apiMode === 'remote'
 }
 
 async function withApiGuard<T>(fn: () => T): Promise<T> {
@@ -166,4 +214,49 @@ function calculateFitScore(course: CourseCatalogItem, diagnosis: DiagnosisPayloa
         : 0
 
   return Math.min(99, 40 + gapBonus + levelBonus + strategyBonus + roleBonus)
+}
+
+async function requestJson<T>(path: string, init?: RequestInit): Promise<T> {
+  if (isForcedApiErrorMode()) {
+    throw new Error('API is temporarily unavailable')
+  }
+  if (!runtimeConfig.apiBaseUrl) {
+    throw new Error('VITE_API_BASE_URL is required when VITE_API_MODE=remote')
+  }
+
+  const controller = new AbortController()
+  const timeout = window.setTimeout(() => controller.abort(), 6000)
+
+  try {
+    const response = await fetch(`${runtimeConfig.apiBaseUrl}${path}`, {
+      ...init,
+      headers: {
+        'Content-Type': 'application/json',
+        ...(init?.headers ?? {}),
+      },
+      credentials: 'include',
+      signal: controller.signal,
+    })
+
+    if (!response.ok) {
+      throw new Error(`API request failed: ${response.status}`)
+    }
+
+    if (response.status === 204) {
+      return undefined as T
+    }
+
+    const payload = (await response.json()) as T | { data: T }
+    if (payload && typeof payload === 'object' && 'data' in payload) {
+      return payload.data
+    }
+    return payload as T
+  } catch (error) {
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw new Error('API request timeout')
+    }
+    throw error
+  } finally {
+    clearTimeout(timeout)
+  }
 }

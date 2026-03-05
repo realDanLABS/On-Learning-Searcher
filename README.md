@@ -9,6 +9,8 @@ npm run dev
 ```
 
 환경 변수는 `.env.example`을 참고해서 설정합니다.
+- `VITE_API_MODE=mock|remote` (`mock` 기본)
+- `VITE_API_MODE=remote`일 때 `VITE_API_BASE_URL` 필수
 
 ## 시작 전 핵심
 - 기능별 `git worktree`를 사용합니다.
