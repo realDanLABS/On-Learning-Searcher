@@ -2,6 +2,7 @@ import { useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import { AppShell } from '../../../shared/layouts/AppShell'
+import { appendAuditLog } from '../../../shared/observability/audit'
 import { getNextActionStatus } from '../../../shared/orchestration/nextAction'
 import { resolveBestReachablePath } from '../../../shared/orchestration/smartPath'
 import { isAuthenticated } from '../../../shared/state/auth'
@@ -79,6 +80,7 @@ export function ChatbotPage() {
   }, [diagnosis, enrollments.length, nextAction.enabled, nextAction.to])
 
   const ask = (question: string) => {
+    appendAuditLog('chatbot_prompt', `질문 선택: ${question}`)
     const nextId = idRef.current
     idRef.current += 1
     const user: ChatMessage = {
@@ -117,7 +119,11 @@ export function ChatbotPage() {
           <div className={message.role === 'bot' ? 'chat-bubble bot' : 'chat-bubble user'} key={message.id}>
             <p>{message.text}</p>
             {message.role === 'bot' && message.actionTo && message.actionLabel && (
-              <Link className="secondary-btn link-btn" to={message.actionTo}>
+              <Link
+                className="secondary-btn link-btn"
+                onClick={() => appendAuditLog('chatbot_action', `챗봇 액션 이동: ${message.actionTo}`)}
+                to={message.actionTo}
+              >
                 {message.actionLabel}
               </Link>
             )}

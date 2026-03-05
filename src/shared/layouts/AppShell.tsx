@@ -71,7 +71,11 @@ export function AppShell({ title, description, children }: AppShellProps) {
         </div>
         <div className="header-actions">
           {nextAction.enabled && !isCurrentStepAction ? (
-            <Link className="primary-btn link-btn header-next-link" to={nextAction.to}>
+            <Link
+              className="primary-btn link-btn header-next-link"
+              onClick={() => appendAuditLog('header_next_action', `${location.pathname} -> ${nextAction.to}`)}
+              to={nextAction.to}
+            >
               다음 단계 진행: {nextAction.label}
             </Link>
           ) : isCurrentStepAction ? (

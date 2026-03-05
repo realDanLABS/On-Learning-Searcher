@@ -10,6 +10,9 @@ export type AuditAction =
   | 'enrollment_submitted'
   | 'session_expired'
   | 'journey_reset'
+  | 'header_next_action'
+  | 'chatbot_prompt'
+  | 'chatbot_action'
 
 export type AuditRecord = {
   id: string
