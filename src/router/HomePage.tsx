@@ -14,7 +14,7 @@ import { runtimeConfig } from '../shared/config/runtime'
 import { AppShell } from '../shared/layouts/AppShell'
 import { getFunnelSnapshot, type FunnelSnapshot } from '../shared/observability/funnel'
 import { appendAuditLog } from '../shared/observability/audit'
-import { canAccessRoute } from '../shared/orchestration/access'
+import { canAccessRoute, getRouteAccessDecision, type RouteGate } from '../shared/orchestration/access'
 import { getGateNoticeFromSearch } from '../shared/orchestration/gateNotice'
 import { getNextActionStatus } from '../shared/orchestration/nextAction'
 import {
@@ -157,55 +157,40 @@ export function HomePage() {
   const recommendationRoute = featureRoutes.find((route) => route.path === '/recommendation')
   const historyRoute = featureRoutes.find((route) => route.path === '/history')
   const courseLinkingRoute = featureRoutes.find((route) => route.path === '/course-linking')
-  const canGoDiagnosis =
-    diagnosisRoute &&
-    canAccessRoute(diagnosisRoute, {
-      authenticated,
-      hasProfile: profileReady,
-      role,
-      stage,
-    })
-  const canGoRecommendation =
-    recommendationRoute &&
-    canAccessRoute(recommendationRoute, {
-      authenticated,
-      hasProfile: profileReady,
-      role,
-      stage,
-    })
-  const canGoEnrollment =
-    courseLinkingRoute &&
-    canAccessRoute(courseLinkingRoute, {
-      authenticated,
-      hasProfile: profileReady,
-      role,
-      stage,
-    })
-  const canGoHistory =
-    historyRoute &&
-    canAccessRoute(historyRoute, {
-      authenticated,
-      hasProfile: profileReady,
-      role,
-      stage,
-    })
+  const routeContext = {
+    authenticated,
+    hasProfile: profileReady,
+    role,
+    stage,
+  }
+  const diagnosisDecision = diagnosisRoute ? getRouteAccessDecision(diagnosisRoute, routeContext) : null
+  const recommendationDecision = recommendationRoute
+    ? getRouteAccessDecision(recommendationRoute, routeContext)
+    : null
+  const courseLinkingDecision = courseLinkingRoute
+    ? getRouteAccessDecision(courseLinkingRoute, routeContext)
+    : null
+  const historyDecision = historyRoute ? getRouteAccessDecision(historyRoute, routeContext) : null
+
+  const canGoDiagnosis = Boolean(diagnosisDecision?.allowed)
+  const canGoRecommendation = Boolean(recommendationDecision?.allowed)
+  const canGoEnrollment = Boolean(courseLinkingDecision?.allowed)
+  const canGoHistory = Boolean(historyDecision?.allowed)
   const canResumeDiagnosis = Boolean(canGoDiagnosis) && stage === 'start' && diagnosisDraft
   const canOpenHistory =
     historyRoute &&
-    canAccessRoute(historyRoute, {
-      authenticated,
-      hasProfile: profileReady,
-      role,
-      stage,
-    })
+    canAccessRoute(historyRoute, routeContext)
   const canOpenCourseLinking =
     courseLinkingRoute &&
-    canAccessRoute(courseLinkingRoute, {
-      authenticated,
-      hasProfile: profileReady,
-      role,
-      stage,
-    })
+    canAccessRoute(courseLinkingRoute, routeContext)
+
+  const getGateHint = (gate: RouteGate | null | undefined) => {
+    if (gate === 'auth-required') return '로그인이 필요합니다.'
+    if (gate === 'profile-required') return '프로필 저장이 필요합니다.'
+    if (gate === 'role-denied') return '현재 권한으로는 접근할 수 없습니다.'
+    if (gate === 'stage-locked') return '선행 단계를 먼저 완료해 주세요.'
+    return '현재 단계에서는 접근할 수 없습니다.'
+  }
 
   const resetJourney = () => {
     appendAuditLog('journey_reset', '사용자 수동 초기화')
@@ -524,8 +509,8 @@ export function HomePage() {
         <article className="feature-card">
           <h3>3단계: 맞춤 추천</h3>
           <p>진단 결과 기반 추천과정과 추천 이유를 확인합니다.</p>
-            <button
-              className="primary-btn"
+          <button
+            className="primary-btn"
               disabled={!canGoRecommendation}
               onClick={() =>
                 moveToBestNextStep(
@@ -538,9 +523,30 @@ export function HomePage() {
                 )
               }
               type="button"
-            >
-              추천 확인
+          >
+            추천 확인
           </button>
+          {!canGoRecommendation && recommendationDecision && (
+            <div className="journey-actions">
+              <span className="hint-text">{getGateHint(recommendationDecision.gate)}</span>
+              <button
+                className="secondary-btn"
+                onClick={() =>
+                  moveToBestNextStep(
+                    {
+                      authenticated,
+                      hasProfile: profileReady,
+                      stage,
+                    },
+                    '/recommendation',
+                  )
+                }
+                type="button"
+              >
+                선행 단계로 이동
+              </button>
+            </div>
+          )}
         </article>
 
         <article className="feature-card">
@@ -582,6 +588,27 @@ export function HomePage() {
               이력 보기
             </button>
           </div>
+          {!canGoEnrollment && courseLinkingDecision && (
+            <div className="journey-actions">
+              <span className="hint-text">{getGateHint(courseLinkingDecision.gate)}</span>
+              <button
+                className="secondary-btn"
+                onClick={() =>
+                  moveToBestNextStep(
+                    {
+                      authenticated,
+                      hasProfile: profileReady,
+                      stage,
+                    },
+                    '/course-linking',
+                  )
+                }
+                type="button"
+              >
+                선행 단계로 이동
+              </button>
+            </div>
+          )}
         </article>
       </section>
 

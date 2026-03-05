@@ -224,3 +224,13 @@ test('unsafe external next parameter is ignored during onboarding flow', async (
 
   await expect(page).toHaveURL(/\/diagnosis/)
 })
+
+test('locked recommendation card offers predecessor navigation', async ({ page }) => {
+  await prepareLoggedInProfile(page)
+  await page.goto('/')
+
+  const recommendationCard = page.locator('.feature-card').filter({ hasText: '3단계: 맞춤 추천' })
+  await expect(recommendationCard.getByText('선행 단계를 먼저 완료해 주세요.')).toBeVisible()
+  await recommendationCard.getByRole('button', { name: '선행 단계로 이동' }).click()
+  await expect(page).toHaveURL(/\/diagnosis/)
+})
