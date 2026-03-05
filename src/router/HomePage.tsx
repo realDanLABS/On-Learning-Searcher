@@ -63,6 +63,8 @@ export function HomePage() {
   const [gateNotice, setGateNotice] = useState<string | null>(null)
   const [gateNextPath, setGateNextPath] = useState<string | null>(null)
   const [authenticated, setAuthenticatedState] = useState(false)
+  const debugEnabled =
+    runtimeConfig.debugTools || new URLSearchParams(location.search).get('debug') === '1'
 
   useEffect(() => {
     if (consumeSessionExpiredNotice()) {
@@ -250,12 +252,16 @@ export function HomePage() {
           >
             현재 단계 이어서 진행
           </button>
-          <button className="secondary-btn" onClick={resetJourney} type="button">
-            데모 데이터 초기화
-          </button>
-          <button className="secondary-btn" onClick={toggleApiErrorMode} type="button">
-            API 오류 모드: {apiErrorMode ? 'ON' : 'OFF'}
-          </button>
+          {debugEnabled && (
+            <button className="secondary-btn" onClick={resetJourney} type="button">
+              데모 데이터 초기화
+            </button>
+          )}
+          {debugEnabled && (
+            <button className="secondary-btn" onClick={toggleApiErrorMode} type="button">
+              API 오류 모드: {apiErrorMode ? 'ON' : 'OFF'}
+            </button>
+          )}
         </div>
         {onboardingError && <p className="error-text">{onboardingError}</p>}
         {!profileReady && (
@@ -272,7 +278,7 @@ export function HomePage() {
         )}
         <p className="hint-text">인증 상태: {authenticated ? '로그인됨' : '로그인 필요'}</p>
         <p className="hint-text">현재 단계: {stage}</p>
-        <p className="hint-text">현재 역할: {role}</p>
+        {debugEnabled && <p className="hint-text">현재 역할: {role}</p>}
         <p className="hint-text">API 모드: {runtimeConfig.apiMode}</p>
         <ul className="checklist">
           {checklist.map((item) => (
@@ -295,17 +301,19 @@ export function HomePage() {
             <input value={organization} onChange={(e) => setOrganization(e.target.value)} />
           </label>
         </div>
-        <div className="journey-actions">
-          <button className="secondary-btn" onClick={() => changeRole('employee')} type="button">
-            Employee
-          </button>
-          <button className="secondary-btn" onClick={() => changeRole('manager')} type="button">
-            Manager
-          </button>
-          <button className="secondary-btn" onClick={() => changeRole('admin')} type="button">
-            Admin
-          </button>
-        </div>
+        {debugEnabled && (
+          <div className="journey-actions">
+            <button className="secondary-btn" onClick={() => changeRole('employee')} type="button">
+              Employee
+            </button>
+            <button className="secondary-btn" onClick={() => changeRole('manager')} type="button">
+              Manager
+            </button>
+            <button className="secondary-btn" onClick={() => changeRole('admin')} type="button">
+              Admin
+            </button>
+          </div>
+        )}
       </section>
 
       <section className="feature-grid">

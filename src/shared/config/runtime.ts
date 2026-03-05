@@ -17,6 +17,7 @@ export const runtimeConfig = {
   disabledFeatures: parseDisabledFeatures(import.meta.env.VITE_DISABLED_FEATURES || ''),
   apiRetryCount: Number(import.meta.env.VITE_API_RETRY_COUNT || '1'),
   errorReportUrl: import.meta.env.VITE_ERROR_REPORT_URL || '',
+  debugTools: import.meta.env.VITE_DEBUG_TOOLS === '1',
 }
 
 function parseDisabledFeatures(raw: string): FeatureKey[] {
