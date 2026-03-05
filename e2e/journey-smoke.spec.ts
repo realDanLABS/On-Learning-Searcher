@@ -54,6 +54,37 @@ test('landing to history e2e journey', async ({ page }) => {
   await expect(page.getByRole('heading', { name: '신청/수강 이력' })).toBeVisible()
 })
 
+test('home-only guided journey reaches history without manual URL jump', async ({ page }) => {
+  await page.goto('/')
+
+  await page.getByRole('button', { name: /1\) 로그인 진행$/ }).click()
+  await expect(page.getByText('인증 상태: 로그인됨')).toBeVisible()
+
+  await page.getByLabel('사번').fill('E10999')
+  await page.getByLabel('이름').fill('오케스트레이터')
+  await page.getByLabel('소속').fill('교육문화팀')
+  await page.getByRole('button', { name: /2\) 프로필 저장 진행$/ }).click()
+  await expect(page).toHaveURL(/\/diagnosis/)
+
+  const diagnosisCard = page.locator('.diagnosis-question-card')
+  for (let i = 0; i < 9; i += 1) {
+    await diagnosisCard.getByRole('button', { name: '예' }).click()
+    await diagnosisCard.getByRole('button', { name: '다음' }).click()
+  }
+
+  await diagnosisCard.getByRole('button', { name: '예' }).click()
+  await diagnosisCard.getByRole('button', { name: '결과 보기' }).click()
+  await page.getByRole('button', { name: '추천 과정 보기' }).click()
+  await expect(page).toHaveURL(/\/recommendation/)
+
+  await page.getByRole('button', { name: '신청하기' }).first().click()
+  await expect(page).toHaveURL(/\/course-linking/)
+
+  await page.getByRole('button', { name: '신청 완료 처리' }).click()
+  await expect(page).toHaveURL(/\/history/)
+  await expect(page.getByRole('heading', { name: '진단 결과 및 학습 이력' })).toBeVisible()
+})
+
 test('ecampus callback success auto-redirects to history', async ({ page }) => {
   await prepareUntilCourseLinking(page)
   await page.goto('/course-linking?enrollment=success&courseId=DIG-101')
