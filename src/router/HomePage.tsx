@@ -15,6 +15,7 @@ import { AppShell } from '../shared/layouts/AppShell'
 import { getFunnelSnapshot, type FunnelSnapshot } from '../shared/observability/funnel'
 import { appendAuditLog } from '../shared/observability/audit'
 import { canAccessRoute } from '../shared/orchestration/access'
+import { getGateNoticeFromSearch } from '../shared/orchestration/gateNotice'
 import { getNextActionStatus } from '../shared/orchestration/nextAction'
 import {
   getHomePrimaryAction,
@@ -60,6 +61,7 @@ export function HomePage() {
   const [profileReady, setProfileReady] = useState(false)
   const [sessionNotice, setSessionNotice] = useState<string | null>(null)
   const [gateNotice, setGateNotice] = useState<string | null>(null)
+  const [gateNextPath, setGateNextPath] = useState<string | null>(null)
   const [authenticated, setAuthenticatedState] = useState(false)
 
   useEffect(() => {
@@ -95,33 +97,9 @@ export function HomePage() {
   }, [])
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search)
-    const gate = params.get('gate')
-    if (!gate) {
-      setGateNotice(null)
-      return
-    }
-    if (gate === 'auth-required') {
-      setGateNotice('로그인이 필요한 단계입니다. 로그인 후 다시 진행해 주세요.')
-      return
-    }
-    if (gate === 'profile-required') {
-      setGateNotice('프로필 저장이 필요한 단계입니다. 사번/이름/소속을 먼저 저장해 주세요.')
-      return
-    }
-    if (gate === 'role-denied') {
-      setGateNotice('현재 권한으로 접근할 수 없는 페이지입니다.')
-      return
-    }
-    if (gate === 'feature-disabled') {
-      setGateNotice('운영 정책에 의해 현재 기능이 비활성화되어 있습니다.')
-      return
-    }
-    if (gate === 'stage-locked') {
-      setGateNotice('현재 단계에서는 접근할 수 없습니다. 안내된 순서대로 진행해 주세요.')
-      return
-    }
-    setGateNotice(null)
+    const gateNotice = getGateNoticeFromSearch(location.search)
+    setGateNotice(gateNotice.message)
+    setGateNextPath(gateNotice.nextPath)
   }, [location.search])
   const nextAction = getNextActionStatus({
     authenticated,
@@ -290,6 +268,13 @@ export function HomePage() {
         )}
         {blockers.length > 0 && <p className="hint-text">진입 조건: {blockers.join(' / ')}</p>}
         {nextAction.reason && <p className="hint-text">{nextAction.reason}</p>}
+        {gateNextPath && (
+          <div className="journey-actions">
+            <button className="secondary-btn" onClick={() => navigate(gateNextPath)} type="button">
+              권장 페이지로 이동
+            </button>
+          </div>
+        )}
         <p className="hint-text">인증 상태: {authenticated ? '로그인됨' : '로그인 필요'}</p>
         <p className="hint-text">현재 단계: {stage}</p>
         <p className="hint-text">현재 역할: {role}</p>
