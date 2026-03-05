@@ -158,6 +158,45 @@ a {
   min-height: 44px;
 }
 
+.journey-flow-guide {
+  margin-top: 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.journey-flow-guide h2 {
+  margin: 0 0 10px;
+  font-size: 16px;
+}
+
+.journey-flow-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+}
+
+.journey-flow-card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px;
+  background: #fbfdff;
+}
+
+.journey-flow-label {
+  margin: 0;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.journey-flow-status {
+  margin: 6px 0 10px;
+  color: var(--text-muted);
+  min-height: auto;
+  font-size: 13px;
+}
+
 .link-btn {
   display: inline-flex;
   align-items: center;

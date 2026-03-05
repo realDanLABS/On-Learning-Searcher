@@ -4,6 +4,7 @@ import type { ReactNode } from 'react'
 import { runtimeConfig } from '../config/runtime'
 import { featureRoutes } from '../../router/routeConfig'
 import { JourneyActionBar } from '../components/JourneyActionBar'
+import { JourneyFlowGuide } from '../components/JourneyFlowGuide'
 import { JourneyProgressPanel } from '../components/JourneyProgressPanel'
 import { canAccessRoute } from '../orchestration/access'
 import { isFeatureEnabled } from '../orchestration/features'
@@ -97,6 +98,7 @@ export function AppShell({ title, description, children }: AppShellProps) {
       </nav>
 
       <main className="content">{children}</main>
+      <JourneyFlowGuide />
       {location.pathname !== '/' && <JourneyActionBar />}
       <JourneyProgressPanel />
     </div>
