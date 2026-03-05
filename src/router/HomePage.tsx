@@ -132,13 +132,43 @@ export function HomePage() {
     hasDiagnosisDraft: diagnosisDraft,
   })
   const canStartNext = blockers.length === 0 && nextAction.enabled
-  const canGoDiagnosis = authenticated && profileReady
-  const canGoRecommendation = stage !== 'start'
-  const canGoEnrollment = stage === 'course_selected' || stage === 'enrollment_done'
-  const canGoHistory = stage !== 'start'
-  const canResumeDiagnosis = canGoDiagnosis && stage === 'start' && diagnosisDraft
+  const diagnosisRoute = featureRoutes.find((route) => route.path === '/diagnosis')
+  const recommendationRoute = featureRoutes.find((route) => route.path === '/recommendation')
   const historyRoute = featureRoutes.find((route) => route.path === '/history')
   const courseLinkingRoute = featureRoutes.find((route) => route.path === '/course-linking')
+  const canGoDiagnosis =
+    diagnosisRoute &&
+    canAccessRoute(diagnosisRoute, {
+      authenticated,
+      hasProfile: profileReady,
+      role,
+      stage,
+    })
+  const canGoRecommendation =
+    recommendationRoute &&
+    canAccessRoute(recommendationRoute, {
+      authenticated,
+      hasProfile: profileReady,
+      role,
+      stage,
+    })
+  const canGoEnrollment =
+    courseLinkingRoute &&
+    canAccessRoute(courseLinkingRoute, {
+      authenticated,
+      hasProfile: profileReady,
+      role,
+      stage,
+    })
+  const canGoHistory =
+    historyRoute &&
+    canAccessRoute(historyRoute, {
+      authenticated,
+      hasProfile: profileReady,
+      role,
+      stage,
+    })
+  const canResumeDiagnosis = Boolean(canGoDiagnosis) && stage === 'start' && diagnosisDraft
   const canOpenHistory =
     historyRoute &&
     canAccessRoute(historyRoute, {
@@ -314,7 +344,13 @@ export function HomePage() {
           <button
             className="secondary-btn"
             disabled={!nextAction.enabled}
-            onClick={() => navigate(nextAction.to)}
+            onClick={() =>
+              moveToBestNextStep({
+                authenticated,
+                hasProfile: profileReady,
+                stage,
+              })
+            }
             type="button"
           >
             현재 단계 이어서 진행
