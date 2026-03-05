@@ -5,8 +5,9 @@ import {
   clearJourneyData,
   saveDiagnosisPayload,
   saveSelectedCourse,
+  type JourneyEvent,
 } from '../state/learningFlow'
-import { getFunnelSnapshot } from './funnel'
+import { buildFunnelSnapshotFromEvents, buildWeeklyConversionSeriesFromEvents, getFunnelSnapshot } from './funnel'
 
 describe('funnel snapshot', () => {
   beforeEach(() => {
@@ -45,5 +46,25 @@ describe('funnel snapshot', () => {
     expect(snapshot.enrollmentCompleted).toBe(1)
     expect(snapshot.conversionToSelection).toBe(100)
     expect(snapshot.conversionToEnrollment).toBe(100)
+    expect(snapshot.dropOffAfterDiagnosis).toBe(0)
+    expect(snapshot.dropOffAfterSelection).toBe(0)
+  })
+
+  it('computes drop-off and weekly conversion from events', () => {
+    const events: JourneyEvent[] = [
+      { id: '1', type: 'diagnosis_completed', at: '2026-03-01T10:00:00.000Z', label: '' },
+      { id: '2', type: 'diagnosis_completed', at: '2026-03-02T10:00:00.000Z', label: '' },
+      { id: '3', type: 'course_selected', at: '2026-03-02T10:10:00.000Z', label: '' },
+      { id: '4', type: 'enrollment_completed', at: '2026-03-03T10:20:00.000Z', label: '' },
+    ]
+    const snapshot = buildFunnelSnapshotFromEvents(events)
+    expect(snapshot.dropOffAfterDiagnosis).toBe(1)
+    expect(snapshot.dropOffAfterSelection).toBe(0)
+
+    const weekly = buildWeeklyConversionSeriesFromEvents(events, 3, new Date('2026-03-03T12:00:00.000Z'))
+    expect(weekly.length).toBe(3)
+    expect(weekly[0].date).toBe('2026-03-01')
+    expect(weekly[1].diagnosisCompleted).toBe(1)
+    expect(weekly[2].enrollmentCompleted).toBe(1)
   })
 })

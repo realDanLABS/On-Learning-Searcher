@@ -25,8 +25,8 @@
 
 ## 5. Observability
 - [x] Funnel metrics: landing->diagnosis->recommendation->enrollment
-- [ ] Drop-off metrics by step
-- [ ] Dashboard for weekly learning conversion
+- [x] Drop-off metrics by step
+- [x] Dashboard for weekly learning conversion
 
 ## 6. Release
 - [ ] Staging environment sign-off

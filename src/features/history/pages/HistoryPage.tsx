@@ -9,6 +9,7 @@ import {
 import { getErrorMessage } from '../../../shared/api/errorMessage'
 import { AppShell } from '../../../shared/layouts/AppShell'
 import { getAuditLogs, type AuditRecord } from '../../../shared/observability/audit'
+import { getWeeklyConversionSeries, type WeeklyConversionPoint } from '../../../shared/observability/funnel'
 import { getUserRole } from '../../../shared/state/session'
 import {
   clearJourneyData,
@@ -22,6 +23,7 @@ export function HistoryPage() {
   const [enrollments, setEnrollments] = useState<EnrollmentRecord[]>([])
   const [events, setEvents] = useState<JourneyEvent[]>([])
   const [auditLogs, setAuditLogs] = useState<AuditRecord[]>([])
+  const [weeklySeries, setWeeklySeries] = useState<WeeklyConversionPoint[]>([])
   const [loading, setLoading] = useState(true)
   const [loadError, setLoadError] = useState<string | null>(null)
   const role = getUserRole()
@@ -35,6 +37,7 @@ export function HistoryPage() {
       setEnrollments(await fetchEnrollmentHistory())
       setEvents(await fetchJourneyEvents())
       setAuditLogs(getAuditLogs().slice(0, 12))
+      setWeeklySeries(getWeeklyConversionSeries(7))
     } catch (error) {
       setLoadError(getErrorMessage(error, '이력 데이터를 불러오지 못했습니다. 다시 시도해 주세요.'))
     } finally {
@@ -179,6 +182,28 @@ export function HistoryPage() {
             ))}
           </ul>
         )}
+      </section>
+
+      <section className="hero-card">
+        <h2>주간 전환 요약 (최근 7일)</h2>
+        <table className="history-table">
+          <thead>
+            <tr>
+              <th>날짜</th>
+              <th>진단 완료</th>
+              <th>신청 완료</th>
+            </tr>
+          </thead>
+          <tbody>
+            {weeklySeries.map((row) => (
+              <tr key={row.date}>
+                <td>{row.date}</td>
+                <td>{row.diagnosisCompleted}</td>
+                <td>{row.enrollmentCompleted}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </section>
     </AppShell>
   )

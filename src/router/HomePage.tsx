@@ -43,6 +43,8 @@ export function HomePage() {
     enrollmentCompleted: 0,
     conversionToSelection: 0,
     conversionToEnrollment: 0,
+    dropOffAfterDiagnosis: 0,
+    dropOffAfterSelection: 0,
   })
   const [employeeId, setEmployeeId] = useState('')
   const [name, setName] = useState('')
@@ -263,6 +265,8 @@ export function HomePage() {
           <p>진단 완료: {funnel.diagnosisCompleted}</p>
           <p>과정 선택: {funnel.courseSelected} ({funnel.conversionToSelection}%)</p>
           <p>신청 완료: {funnel.enrollmentCompleted} ({funnel.conversionToEnrollment}%)</p>
+          <p>드롭오프(진단→선택): {funnel.dropOffAfterDiagnosis}</p>
+          <p>드롭오프(선택→신청): {funnel.dropOffAfterSelection}</p>
           <Link to="/history">상세 이력 보기</Link>
         </article>
       </section>
