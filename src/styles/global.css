@@ -533,6 +533,14 @@ input {
   font-size: 14px;
 }
 
+.chat-bubble p {
+  margin: 0;
+}
+
+.chat-bubble .link-btn {
+  margin-top: 8px;
+}
+
 .chat-bubble.bot {
   background: var(--surface-muted);
   color: var(--text);

@@ -293,3 +293,11 @@ test('course-linking missing selection redirects safely to recommended predecess
   await page.getByRole('button', { name: '권장 페이지로 이동' }).click()
   await expect(page).toHaveURL(/\/recommendation/)
 })
+
+test('chatbot quick intent provides safe guided navigation CTA', async ({ page }) => {
+  await prepareLoggedInProfile(page)
+  await page.goto('/chatbot')
+  await page.getByRole('button', { name: '내 부족 역량 알려줘' }).click()
+  await page.getByRole('link', { name: '추천 흐름으로 이동' }).last().click()
+  await expect(page).toHaveURL(/\/diagnosis/)
+})
