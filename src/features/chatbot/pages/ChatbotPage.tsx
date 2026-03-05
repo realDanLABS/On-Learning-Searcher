@@ -1,9 +1,10 @@
-import { useMemo, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
 import { AppShell } from '../../../shared/layouts/AppShell'
 import { appendAuditLog } from '../../../shared/observability/audit'
 import { getHandoffMessage } from '../../../shared/orchestration/handoff'
+import { withJourneyFrom } from '../../../shared/orchestration/journeyLink'
 import { getNextActionStatus } from '../../../shared/orchestration/nextAction'
 import { resolveBestReachablePath } from '../../../shared/orchestration/smartPath'
 import { isAuthenticated } from '../../../shared/state/auth'
@@ -51,7 +52,7 @@ export function ChatbotPage() {
 
   const resolveGuidedPath = (preferredPath: string) =>
     resolveBestReachablePath({
-      preferredPath,
+      preferredPath: withJourneyFrom(preferredPath, location.pathname),
       context: {
         authenticated: isAuthenticated(),
         hasProfile: hasUserProfile(),
@@ -59,29 +60,27 @@ export function ChatbotPage() {
         stage: getJourneyStage(),
       },
       hasDiagnosisDraft: hasDiagnosisDraft(),
-    }) ?? preferredPath
+    }) ?? withJourneyFrom(preferredPath, location.pathname)
   const historyPathFromChatbot = resolveGuidedPath('/history?from=chatbot')
 
-  const botReply = useMemo(() => {
-    const gaps = diagnosis?.topGaps?.join(', ') || '진단 데이터 없음'
-    return {
-      '내 부족 역량 알려줘': {
-        text: `현재 보완 우선 역량은 ${gaps} 입니다. 먼저 추천 과정에서 해당 태그 과정을 확인해 보세요.`,
-        actionTo: resolveGuidedPath('/recommendation'),
-        actionLabel: '추천 흐름으로 이동',
-      },
-      '추천 이유 설명해줘': {
-        text: '추천 과정은 진단 점수와 역량 갭을 기반으로 자동 선별되었습니다. 추천 페이지의 reason tag를 확인하세요.',
-        actionTo: resolveGuidedPath('/recommendation'),
-        actionLabel: '추천 근거 확인',
-      },
-      '이번 달 학습계획 제안해줘': {
-        text: `이번 달에는 2개 과정을 목표로 하세요. 현재 신청 이력 ${enrollments.length}건 기준으로 부족 역량 우선 과정을 추천합니다.`,
-        actionTo: nextAction.enabled ? nextAction.to : resolveGuidedPath('/history'),
-        actionLabel: '현재 단계 기준 계획 실행',
-      },
-    }
-  }, [diagnosis, enrollments.length, nextAction.enabled, nextAction.to])
+  const gaps = diagnosis?.topGaps?.join(', ') || '진단 데이터 없음'
+  const botReply: Record<string, { text: string; actionTo: string; actionLabel: string }> = {
+    '내 부족 역량 알려줘': {
+      text: `현재 보완 우선 역량은 ${gaps} 입니다. 먼저 추천 과정에서 해당 태그 과정을 확인해 보세요.`,
+      actionTo: resolveGuidedPath('/recommendation'),
+      actionLabel: '추천 흐름으로 이동',
+    },
+    '추천 이유 설명해줘': {
+      text: '추천 과정은 진단 점수와 역량 갭을 기반으로 자동 선별되었습니다. 추천 페이지의 reason tag를 확인하세요.',
+      actionTo: resolveGuidedPath('/recommendation'),
+      actionLabel: '추천 근거 확인',
+    },
+    '이번 달 학습계획 제안해줘': {
+      text: `이번 달에는 2개 과정을 목표로 하세요. 현재 신청 이력 ${enrollments.length}건 기준으로 부족 역량 우선 과정을 추천합니다.`,
+      actionTo: nextAction.enabled ? withJourneyFrom(nextAction.to, location.pathname) : resolveGuidedPath('/history'),
+      actionLabel: '현재 단계 기준 계획 실행',
+    },
+  }
 
   const ask = (question: string) => {
     appendAuditLog('chatbot_prompt', `질문 선택: ${question}`)
@@ -146,7 +145,7 @@ export function ChatbotPage() {
         <p className="hint-text">현재 여정 단계에 맞춰 다음 행동을 제안합니다.</p>
         <div className="journey-actions">
           {nextAction.enabled ? (
-            <Link className="primary-btn link-btn" to={nextAction.to}>
+            <Link className="primary-btn link-btn" to={withJourneyFrom(nextAction.to, location.pathname)}>
               {nextAction.label}
             </Link>
           ) : (

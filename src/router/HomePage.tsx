@@ -24,6 +24,7 @@ import {
   getJourneyStartBlockers,
 } from '../shared/orchestration/readiness'
 import { resolveBestReachablePath } from '../shared/orchestration/smartPath'
+import { withJourneyFrom } from '../shared/orchestration/journeyLink'
 import {
   clearPendingNextPath,
   getPendingNextPath,
@@ -339,7 +340,7 @@ export function HomePage() {
     })
     if (nextPath) {
       clearPendingNextPath()
-      navigate(nextPath)
+      navigate(withJourneyFrom(nextPath, location.pathname))
     }
   }
 
