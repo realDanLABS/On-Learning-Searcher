@@ -27,5 +27,26 @@ export function getHandoffMessage(search: string, page: 'recommendation' | 'cour
     }
   }
 
+  if (page === 'history' && from === 'course-linking') {
+    return {
+      kind: 'success',
+      text: '신청 완료 처리가 반영되었습니다. 이력에서 결과를 확인해 보세요.',
+    }
+  }
+
+  if (page === 'history' && from === 'recommendation') {
+    return {
+      kind: 'info',
+      text: '추천 확인 후 이력으로 이동했습니다. 신청 완료 전에는 이력이 비어 있을 수 있습니다.',
+    }
+  }
+
+  if (page === 'history' && from === 'diagnosis') {
+    return {
+      kind: 'info',
+      text: '진단 단계에서 이력으로 이동했습니다. 추천과 신청을 진행하면 이력이 누적됩니다.',
+    }
+  }
+
   return null
 }

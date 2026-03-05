@@ -173,7 +173,7 @@ export function DiagnosisPage() {
         <h2>진단 가이드</h2>
         <p>진단 완료 후 추천 과정 선택까지 약 2분 내에 진행할 수 있습니다.</p>
         <div className="journey-actions">
-          <button className="secondary-btn" onClick={() => guidedNavigate('/history')} type="button">
+          <button className="secondary-btn" onClick={() => guidedNavigate('/history?from=diagnosis')} type="button">
             이전 진단/학습 이력 보기
           </button>
           <Link className="secondary-btn link-btn" to="/chatbot">

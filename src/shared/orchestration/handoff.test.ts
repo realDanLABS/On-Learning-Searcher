@@ -18,6 +18,21 @@ describe('handoff message', () => {
     expect(result?.kind).toBe('success')
   })
 
+  it('returns course-linking to history notice', () => {
+    const result = getHandoffMessage('?from=course-linking', 'history')
+    expect(result?.kind).toBe('success')
+  })
+
+  it('returns recommendation to history notice', () => {
+    const result = getHandoffMessage('?from=recommendation', 'history')
+    expect(result?.kind).toBe('info')
+  })
+
+  it('returns diagnosis to history notice', () => {
+    const result = getHandoffMessage('?from=diagnosis', 'history')
+    expect(result?.kind).toBe('info')
+  })
+
   it('returns null when no handoff', () => {
     expect(getHandoffMessage('', 'history')).toBeNull()
   })

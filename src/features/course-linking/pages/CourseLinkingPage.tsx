@@ -94,7 +94,7 @@ export function CourseLinkingPage() {
     try {
       setSubmitting(true)
       await submitEnrollment(record)
-      navigate('/history')
+      navigate('/history?from=course-linking')
     } catch (error) {
       setLoadError(error)
     } finally {
@@ -189,7 +189,7 @@ export function CourseLinkingPage() {
             >
               {submitting ? '처리 중...' : '신청 완료 처리'}
             </button>
-            <Link className="primary-btn link-btn" to="/history">
+            <Link className="primary-btn link-btn" to="/history?from=course-linking">
               이력 확인하기
             </Link>
           </div>

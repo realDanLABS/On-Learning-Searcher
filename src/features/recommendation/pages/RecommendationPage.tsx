@@ -205,7 +205,7 @@ export function RecommendationPage() {
             >
               신청 연동으로 이동
             </button>
-            <button className="secondary-btn" onClick={() => guidedNavigate('/history')} type="button">
+            <button className="secondary-btn" onClick={() => guidedNavigate('/history?from=recommendation')} type="button">
               이력 대시보드 보기
             </button>
           </div>

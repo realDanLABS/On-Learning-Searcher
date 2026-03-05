@@ -15,7 +15,7 @@
 | history | DONE | Orchestrator | 이력/퍼널/감사로그 + 여정 초기화 안정화 완료 | complete |
 | chatbot | DONE | Orchestrator | 상담 UI MVP 및 라우트 연결 완료 | complete |
 | responsive | DONE | Orchestrator | 반응형 기본 보정 + 라우트 보호 + E2E 회귀 통과 | complete |
-| integration-qa | DONE | Orchestrator | 홈 버튼만으로 랜딩→진단→추천→신청→이력 전체 여정 E2E 검증 완료(17 passed) | commit d89be5e |
+| integration-qa | DONE | Orchestrator | 랜딩→진단→추천→신청→이력 전체 여정 + remote smoke + handoff 문맥 전달 검증 완료(29+1 passed) | commit pending |
 
 ## Current Gates (Commercialization)
 1. 실 API/SSO 연결 전환 검증 (remote mode 실서버 smoke test).
