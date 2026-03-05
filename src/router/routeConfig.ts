@@ -6,6 +6,7 @@ export type FeatureRoute = {
   description: string
   minStage: JourneyStage
   requireProfile?: boolean
+  requireAuth?: boolean
 }
 
 export const featureRoutes: FeatureRoute[] = [
@@ -15,6 +16,7 @@ export const featureRoutes: FeatureRoute[] = [
     description: 'OX형/선택형 질문 기반 진단 흐름 구현 영역',
     minStage: 'start',
     requireProfile: true,
+    requireAuth: true,
   },
   {
     path: '/recommendation',
@@ -22,6 +24,7 @@ export const featureRoutes: FeatureRoute[] = [
     description: '진단 결과 기반 추천 목록/상세 UI 구현 영역',
     minStage: 'diagnosis_done',
     requireProfile: true,
+    requireAuth: true,
   },
   {
     path: '/course-linking',
@@ -29,6 +32,7 @@ export const featureRoutes: FeatureRoute[] = [
     description: '추천 과정에서 이캠퍼스 신청으로 이어지는 연동 영역',
     minStage: 'course_selected',
     requireProfile: true,
+    requireAuth: true,
   },
   {
     path: '/history',
@@ -36,6 +40,7 @@ export const featureRoutes: FeatureRoute[] = [
     description: '진단 결과 및 수강 히스토리 관리 화면 구현 영역',
     minStage: 'diagnosis_done',
     requireProfile: true,
+    requireAuth: true,
   },
   {
     path: '/chatbot',
@@ -43,6 +48,7 @@ export const featureRoutes: FeatureRoute[] = [
     description: '실시간 학습 상담/질의응답 UI 구현 영역',
     minStage: 'start',
     requireProfile: true,
+    requireAuth: true,
   },
   {
     path: '/responsive',
@@ -50,5 +56,6 @@ export const featureRoutes: FeatureRoute[] = [
     description: '데스크톱/모바일 UI 적응성 검증 영역',
     minStage: 'start',
     requireProfile: false,
+    requireAuth: false,
   },
 ]

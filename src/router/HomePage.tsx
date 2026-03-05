@@ -13,6 +13,7 @@ import { runtimeConfig } from '../shared/config/runtime'
 import { AppShell } from '../shared/layouts/AppShell'
 import { getFunnelSnapshot, type FunnelSnapshot } from '../shared/observability/funnel'
 import { getNextJourneyAction } from '../shared/orchestration/journey'
+import { isAuthenticated, setAuthenticated } from '../shared/state/auth'
 import {
   clearUserProfile,
   getUserProfile,
@@ -45,6 +46,7 @@ export function HomePage() {
   const [onboardingError, setOnboardingError] = useState<string | null>(null)
   const [profileReady, setProfileReady] = useState(false)
   const [sessionNotice, setSessionNotice] = useState<string | null>(null)
+  const [authenticated, setAuthenticatedState] = useState(false)
 
   useEffect(() => {
     if (consumeSessionExpiredNotice()) {
@@ -60,6 +62,7 @@ export function HomePage() {
         setFunnel(getFunnelSnapshot())
         setRole(getUserRole())
         setApiErrorMode(isForcedApiErrorMode())
+        setAuthenticatedState(isAuthenticated())
         const profile = getUserProfile()
         if (profile) {
           setEmployeeId(profile.employeeId)
@@ -96,6 +99,10 @@ export function HomePage() {
   }
 
   const submitOnboarding = () => {
+    if (!authenticated) {
+      setOnboardingError('로그인 후 프로필을 저장해 주세요.')
+      return
+    }
     if (!employeeId.trim() || !name.trim() || !organization.trim()) {
       setOnboardingError('사번, 이름, 소속을 모두 입력해 주세요.')
       return
@@ -107,6 +114,15 @@ export function HomePage() {
     })
     setProfileReady(true)
     setOnboardingError(null)
+  }
+
+  const startLogin = () => {
+    if (runtimeConfig.apiMode === 'remote' && runtimeConfig.ssoLoginUrl) {
+      window.location.href = runtimeConfig.ssoLoginUrl
+      return
+    }
+    setAuthenticated(true)
+    setAuthenticatedState(true)
   }
 
   return (
@@ -124,13 +140,16 @@ export function HomePage() {
           연결됩니다.
         </p>
         <div className="journey-actions">
+          <button className="primary-btn" onClick={startLogin} type="button">
+            {authenticated ? '로그인 완료' : '로그인'}
+          </button>
           <button className="primary-btn" onClick={submitOnboarding} type="button">
             {profileReady ? '프로필 수정 완료' : '프로필 저장'}
           </button>
           <Link
             className="primary-btn link-btn"
             onClick={(event) => {
-              if (!profileReady) event.preventDefault()
+              if (!authenticated || !profileReady) event.preventDefault()
             }}
             to={nextAction.to}
           >
@@ -150,6 +169,7 @@ export function HomePage() {
         {!profileReady && (
           <p className="hint-text">진단 시작 전 기본 프로필을 먼저 저장해 주세요.</p>
         )}
+        <p className="hint-text">인증 상태: {authenticated ? '로그인됨' : '로그인 필요'}</p>
         <p className="hint-text">현재 단계: {stage}</p>
         <p className="hint-text">현재 역할: {role}</p>
         <p className="hint-text">API 모드: {runtimeConfig.apiMode}</p>

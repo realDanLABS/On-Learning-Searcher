@@ -52,6 +52,12 @@ a {
   align-items: flex-start;
 }
 
+.header-actions {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+}
+
 .eyebrow {
   margin: 0;
   color: var(--primary);
@@ -420,6 +426,10 @@ input {
 
   .home-link {
     align-self: flex-start;
+  }
+
+  .header-actions {
+    width: 100%;
   }
 
   .journey-actions > *,

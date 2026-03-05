@@ -1,11 +1,14 @@
 import { Link, NavLink } from 'react-router-dom'
 import type { ReactNode } from 'react'
 
+import { runtimeConfig } from '../config/runtime'
 import { featureRoutes } from '../../router/routeConfig'
 import { JourneyProgressPanel } from '../components/JourneyProgressPanel'
 import { isStageAllowed } from '../orchestration/journey'
-import { getJourneyStage } from '../state/learningFlow'
-import { getUserProfile } from '../state/profile'
+import { clearJourneyData, getJourneyStage } from '../state/learningFlow'
+import { clearUserProfile, getUserProfile } from '../state/profile'
+import { clearUserRole } from '../state/session'
+import { clearAuthentication, isAuthenticated } from '../state/auth'
 
 type AppShellProps = {
   title: string
@@ -15,7 +18,19 @@ type AppShellProps = {
 
 export function AppShell({ title, description, children }: AppShellProps) {
   const profile = getUserProfile()
+  const authenticated = isAuthenticated()
   const stage = getJourneyStage()
+  const onLogout = () => {
+    clearAuthentication()
+    clearJourneyData()
+    clearUserProfile()
+    clearUserRole()
+    if (runtimeConfig.apiMode === 'remote' && runtimeConfig.ssoLogoutUrl) {
+      window.location.href = runtimeConfig.ssoLogoutUrl
+      return
+    }
+    window.location.href = '/'
+  }
 
   return (
     <div className="app-shell">
@@ -25,9 +40,16 @@ export function AppShell({ title, description, children }: AppShellProps) {
           <h1>{title}</h1>
           <p>{description}</p>
         </div>
-        <Link className="home-link" to="/">
-          홈으로
-        </Link>
+        <div className="header-actions">
+          <Link className="home-link" to="/">
+            홈으로
+          </Link>
+          {authenticated && (
+            <button className="secondary-btn" onClick={onLogout} type="button">
+              로그아웃
+            </button>
+          )}
+        </div>
       </header>
       {profile && (
         <section className="profile-banner" aria-label="사용자 프로필">
@@ -39,8 +61,9 @@ export function AppShell({ title, description, children }: AppShellProps) {
 
       <nav className="feature-nav" aria-label="주요 기능 이동">
         {featureRoutes.map((route) => {
+          const authAllowed = route.requireAuth === false || authenticated
           const profileAllowed = route.requireProfile === false || Boolean(profile)
-          const allowed = profileAllowed && isStageAllowed(stage, route.minStage)
+          const allowed = authAllowed && profileAllowed && isStageAllowed(stage, route.minStage)
 
           if (!allowed) {
             return (

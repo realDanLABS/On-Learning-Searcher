@@ -1,7 +1,10 @@
+import { clearAuthentication } from '../state/auth'
+
 const SESSION_EXPIRED_EVENT = 'on-learning:session-expired'
 const KEY_SESSION_EXPIRED_NOTICE = 'on_learning_session_expired_notice_v1'
 
 export function emitSessionExpiredNotice() {
+  clearAuthentication()
   localStorage.setItem(KEY_SESSION_EXPIRED_NOTICE, '1')
   window.dispatchEvent(new Event(SESSION_EXPIRED_EVENT))
 }
@@ -21,4 +24,3 @@ export function subscribeSessionExpired(callback: () => void): () => void {
     window.removeEventListener(SESSION_EXPIRED_EVENT, handler)
   }
 }
-
