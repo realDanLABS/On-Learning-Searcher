@@ -18,6 +18,7 @@ import { maskEmployeeId } from '../security/privacy'
 import { clearDiagnosisDraft } from '../../features/diagnosis/draftStorage'
 import { clearPendingNextPath } from '../orchestration/intent'
 import { hasDiagnosisDraft } from '../../features/diagnosis/draftStorage'
+import { withJourneyFrom } from '../orchestration/journeyLink'
 
 type AppShellProps = {
   title: string
@@ -73,8 +74,13 @@ export function AppShell({ title, description, children }: AppShellProps) {
           {nextAction.enabled && !isCurrentStepAction ? (
             <Link
               className="primary-btn link-btn header-next-link"
-              onClick={() => appendAuditLog('header_next_action', `${location.pathname} -> ${nextAction.to}`)}
-              to={nextAction.to}
+              onClick={() =>
+                appendAuditLog(
+                  'header_next_action',
+                  `${location.pathname} -> ${withJourneyFrom(nextAction.to, location.pathname)}`,
+                )
+              }
+              to={withJourneyFrom(nextAction.to, location.pathname)}
             >
               다음 단계 진행: {nextAction.label}
             </Link>
@@ -150,7 +156,7 @@ export function AppShell({ title, description, children }: AppShellProps) {
             <NavLink
               className={({ isActive }) => (isActive ? 'feature-link active' : 'feature-link')}
               key={route.path}
-              to={route.path}
+              to={withJourneyFrom(route.path, location.pathname)}
             >
               {route.label}
             </NavLink>

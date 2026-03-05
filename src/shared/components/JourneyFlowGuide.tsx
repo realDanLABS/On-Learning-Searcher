@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { featureRoutes, type FeatureRoute } from '../../router/routeConfig'
 import { canAccessRoute } from '../orchestration/access'
 import { isFeatureEnabled } from '../orchestration/features'
+import { withJourneyFrom } from '../orchestration/journeyLink'
 import { isAuthenticated } from '../state/auth'
 import { getJourneyStage } from '../state/learningFlow'
 import { hasUserProfile } from '../state/profile'
@@ -45,7 +46,10 @@ export function JourneyFlowGuide() {
                 {isCurrent ? '현재 단계' : isDone ? '완료' : allowed && enabled ? '진행 가능' : '잠금'}
               </p>
               {allowed && enabled ? (
-                <Link className={isCurrent ? 'secondary-btn link-btn' : 'primary-btn link-btn'} to={route.path}>
+                <Link
+                  className={isCurrent ? 'secondary-btn link-btn' : 'primary-btn link-btn'}
+                  to={withJourneyFrom(route.path, location.pathname)}
+                >
                   {isCurrent ? '현재 페이지' : '이동'}
                 </Link>
               ) : (

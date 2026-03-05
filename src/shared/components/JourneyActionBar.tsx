@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 import { getNextActionStatus } from '../orchestration/nextAction'
 import { getPrevJourneyAction } from '../orchestration/journey'
@@ -7,8 +7,10 @@ import { getJourneyStage } from '../state/learningFlow'
 import { hasUserProfile } from '../state/profile'
 import { getUserRole } from '../state/session'
 import { hasDiagnosisDraft } from '../../features/diagnosis/draftStorage'
+import { withJourneyFrom } from '../orchestration/journeyLink'
 
 export function JourneyActionBar() {
+  const location = useLocation()
   const stage = getJourneyStage()
   const prev = getPrevJourneyAction(stage)
   const next = getNextActionStatus({
@@ -22,7 +24,7 @@ export function JourneyActionBar() {
   return (
     <section className="journey-action-bar" aria-label="단계 이동 액션">
       {prev ? (
-        <Link className="secondary-btn link-btn" to={prev.to}>
+        <Link className="secondary-btn link-btn" to={withJourneyFrom(prev.to, location.pathname)}>
           {prev.label}
         </Link>
       ) : (
@@ -30,7 +32,7 @@ export function JourneyActionBar() {
       )}
 
       {next.enabled ? (
-        <Link className="primary-btn link-btn" to={next.to}>
+        <Link className="primary-btn link-btn" to={withJourneyFrom(next.to, location.pathname)}>
           다음 단계: {next.label}
         </Link>
       ) : (
