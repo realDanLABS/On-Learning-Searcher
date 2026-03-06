@@ -23,6 +23,10 @@ bash scripts/worktree-status.sh
 ```bash
 bash scripts/orchestrator-wave2-report.sh
 ```
+4. Wave2 게이트 점검:
+```bash
+bash scripts/orchestrator-wave2-gate.sh quick
+```
 
 ## 통합 기준
 - 사용자 여정: 랜딩 -> 진단 -> 추천 -> 신청 -> 이력
