@@ -1,6 +1,6 @@
 # Wave2 Kickstart Tasks
 
-- generatedAt: 2026-03-06 10:00:03 UTC
+- generatedAt: 2026-03-06 10:01:12 UTC
 
 아래 항목은 '첫 기능 커밋 없음' 워크트리 우선 착수용.
 

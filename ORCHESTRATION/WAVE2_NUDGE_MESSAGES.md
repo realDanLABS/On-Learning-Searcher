@@ -1,6 +1,6 @@
 # Wave2 Nudge Messages
 
-- generatedAt: 2026-03-06 10:00:03 UTC
+- generatedAt: 2026-03-06 10:01:12 UTC
 
 아래 메시지를 각 워크트리 스레드에 복붙해서 리마인드 하달.
 

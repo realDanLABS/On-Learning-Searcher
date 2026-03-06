@@ -65,6 +65,10 @@ bash scripts/orchestrator-wave2-kickstart.sh
 ```bash
 bash scripts/orchestrator-wave2-stale-checkins.sh
 ```
+14. Wave2 first-commit watch:
+```bash
+bash scripts/orchestrator-wave2-first-commit-watch.sh
+```
 
 ## 통합 기준
 - 사용자 여정: 랜딩 -> 진단 -> 추천 -> 신청 -> 이력

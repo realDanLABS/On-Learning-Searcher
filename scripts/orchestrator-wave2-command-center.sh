@@ -11,40 +11,45 @@ fi
 
 cd "$ROOT_DIR"
 
-echo "[1/8] cycle run ($MODE)"
+echo "[1/9] cycle run ($MODE)"
 bash scripts/orchestrator-wave2-cycle.sh "$MODE"
 
 echo
-echo "[2/8] apply execution board from checkins"
+echo "[2/9] run first-commit watch"
+bash scripts/orchestrator-wave2-first-commit-watch.sh
+
+echo
+echo "[3/9] apply execution board from checkins"
 bash scripts/orchestrator-wave2-board-apply.sh
 
 echo
-echo "[3/8] refresh checkin summary"
+echo "[4/9] refresh checkin summary"
 bash scripts/orchestrator-wave2-checkin-summary.sh
 
 echo
-echo "[4/8] refresh merge readiness"
+echo "[5/9] refresh merge readiness"
 bash scripts/orchestrator-wave2-merge-readiness.sh
 
 echo
-echo "[5/8] refresh nudge messages"
+echo "[6/9] refresh nudge messages"
 bash scripts/orchestrator-wave2-nudge-messages.sh
 
 echo
-echo "[6/8] refresh stale checkins"
+echo "[7/9] refresh stale checkins"
 bash scripts/orchestrator-wave2-stale-checkins.sh
 
 echo
-echo "[7/8] build kickstart tasks"
+echo "[8/9] build kickstart tasks"
 bash scripts/orchestrator-wave2-kickstart.sh
 
 echo
-echo "[8/8] build daily brief"
+echo "[9/9] build daily brief"
 bash scripts/orchestrator-wave2-daily-brief.sh
 
 echo
 echo "command-center complete"
 echo "- cycle: ORCHESTRATION/WAVE2_CYCLE_REPORT.md"
+echo "- first-commit-watch: ORCHESTRATION/WAVE2_FIRST_COMMIT_WATCH.md"
 echo "- board: ORCHESTRATION/EXECUTION_BOARD.md"
 echo "- merge: ORCHESTRATION/WAVE2_MERGE_READINESS.md"
 echo "- nudge: ORCHESTRATION/WAVE2_NUDGE_MESSAGES.md"

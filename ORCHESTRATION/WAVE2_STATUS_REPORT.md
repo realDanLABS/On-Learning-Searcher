@@ -1,19 +1,19 @@
 # Wave 2 Status Report
 
-- generatedAt: 2026-03-06 10:00:01 UTC
-- base(main): 7aaf6d5
+- generatedAt: 2026-03-06 10:01:10 UTC
+- base(main): 3964394
 
 ## Worktree Snapshot
 
 | Worktree | Branch | HEAD | Dirty | Last Commit |
 |---|---|---|---|---|
-| foundation | codex/foundation | 7aaf6d5 | NO | chore(orchestrator): add wave2 kickstart task generation |
-| diagnosis | codex/diagnosis | 7aaf6d5 | NO | chore(orchestrator): add wave2 kickstart task generation |
-| recommendation | codex/recommendation | 7aaf6d5 | NO | chore(orchestrator): add wave2 kickstart task generation |
-| course-linking | codex/course-linking | 7aaf6d5 | NO | chore(orchestrator): add wave2 kickstart task generation |
-| history | codex/history | 7aaf6d5 | NO | chore(orchestrator): add wave2 kickstart task generation |
-| chatbot | codex/chatbot | 7aaf6d5 | NO | chore(orchestrator): add wave2 kickstart task generation |
-| responsive | codex/responsive | 7aaf6d5 | NO | chore(orchestrator): add wave2 kickstart task generation |
+| foundation | codex/foundation | 3964394 | NO | chore(orchestrator): add stale-checkin monitoring and kickstart clipboard dispatch |
+| diagnosis | codex/diagnosis | 3964394 | NO | chore(orchestrator): add stale-checkin monitoring and kickstart clipboard dispatch |
+| recommendation | codex/recommendation | 3964394 | NO | chore(orchestrator): add stale-checkin monitoring and kickstart clipboard dispatch |
+| course-linking | codex/course-linking | 3964394 | NO | chore(orchestrator): add stale-checkin monitoring and kickstart clipboard dispatch |
+| history | codex/history | 3964394 | NO | chore(orchestrator): add stale-checkin monitoring and kickstart clipboard dispatch |
+| chatbot | codex/chatbot | 3964394 | NO | chore(orchestrator): add stale-checkin monitoring and kickstart clipboard dispatch |
+| responsive | codex/responsive | 3964394 | NO | chore(orchestrator): add stale-checkin monitoring and kickstart clipboard dispatch |
 
 ## Check-in Template
 
