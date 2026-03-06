@@ -15,7 +15,7 @@
 | history | IN_PROGRESS | Orchestrator | Wave2: 벤치마크 위젯 + 월간 리포트 다운로드 | 2026-03-06 |
 | chatbot | IN_PROGRESS | Orchestrator | Wave2: 컨텍스트 상담 + 종료 후 다음액션 | 2026-03-06 |
 | responsive | IN_PROGRESS | Orchestrator | Wave2: 접근성 QA + 모바일 UX 보강 | 2026-03-06 |
-| integration-qa | TODO | Orchestrator | Wave2 통합회귀(로컬+remote) 및 릴리즈 후보 검증 | Wave2 merge 후 |
+| integration-qa | DONE | Orchestrator | Wave2 통합회귀(로컬+remote) 릴리즈 게이트 통과 (`release:check:full`, 107+32+1 PASS) | 2026-03-06 |
 
 ## Current Gates (Commercialization)
 1. 실 API/SSO 연결 전환 검증 (remote mode 실서버 smoke test).
