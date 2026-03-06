@@ -7,6 +7,22 @@ APP_PORT="${APP_PORT:-5173}"
 
 cd "$ROOT_DIR"
 
+free_port_if_busy() {
+  local port="$1"
+  if command -v lsof >/dev/null 2>&1; then
+    local pids
+    pids="$(lsof -ti tcp:"$port" || true)"
+    if [[ -n "$pids" ]]; then
+      echo "[dev-remote-mock] port ${port} is busy. terminating: ${pids}"
+      kill $pids 2>/dev/null || true
+      sleep 0.5
+    fi
+  fi
+}
+
+free_port_if_busy "$API_PORT"
+free_port_if_busy "$APP_PORT"
+
 node scripts/remote-mock-server.mjs &
 MOCK_PID=$!
 

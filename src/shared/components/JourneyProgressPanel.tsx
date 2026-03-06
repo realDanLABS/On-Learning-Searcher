@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 import { getStagePath, stageOrder } from '../orchestration/journey'
 import { getNextActionStatus } from '../orchestration/nextAction'
+import { withJourneyFrom } from '../orchestration/journeyLink'
 import { isAuthenticated } from '../state/auth'
 import {
   getJourneyStage,
@@ -26,6 +27,7 @@ const stages: Array<{ key: JourneyStage; label: string }> = stageOrder.map((key)
 }))
 
 export function JourneyProgressPanel() {
+  const location = useLocation()
   const [stage, setStage] = useState<JourneyStage>(() => getJourneyStage())
 
   useEffect(() => {
@@ -48,8 +50,13 @@ export function JourneyProgressPanel() {
         {stages.map((item, index) => {
           const status = index < currentIndex ? 'done' : index === currentIndex ? 'active' : 'todo'
           if (index <= currentIndex) {
+            const stagePath = getStagePath(item.key)
             return (
-              <Link className={`journey-node ${status} link`} key={item.key} to={getStagePath(item.key)}>
+              <Link
+                className={`journey-node ${status} link`}
+                key={item.key}
+                to={withJourneyFrom(stagePath, location.pathname)}
+              >
                 <span className="dot" />
                 <span className="label">{item.label}</span>
               </Link>
@@ -64,7 +71,7 @@ export function JourneyProgressPanel() {
         })}
       </div>
       {nextAction.enabled ? (
-        <Link className="primary-btn link-btn" to={nextAction.to}>
+        <Link className="primary-btn link-btn" to={withJourneyFrom(nextAction.to, location.pathname)}>
           다음 단계: {nextAction.label}
         </Link>
       ) : (

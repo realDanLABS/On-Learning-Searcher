@@ -9,6 +9,19 @@ APP_BASE_URL="http://127.0.0.1:${APP_PORT}"
 
 cd "$ROOT_DIR"
 
+free_port_if_busy() {
+  local port="$1"
+  if command -v lsof >/dev/null 2>&1; then
+    local pids
+    pids="$(lsof -ti tcp:"$port" || true)"
+    if [[ -n "$pids" ]]; then
+      echo "[test:e2e:remote] port ${port} is busy. terminating: ${pids}"
+      kill $pids 2>/dev/null || true
+      sleep 0.5
+    fi
+  fi
+}
+
 wait_for_url() {
   local url="$1"
   local name="$2"
@@ -25,6 +38,9 @@ wait_for_url() {
   echo "[test:e2e:remote] timeout waiting for ${name}: ${url}"
   return 1
 }
+
+free_port_if_busy "$API_PORT"
+free_port_if_busy "$APP_PORT"
 
 node scripts/remote-mock-server.mjs > /tmp/on-learning-remote-mock.log 2>&1 &
 API_PID=$!
