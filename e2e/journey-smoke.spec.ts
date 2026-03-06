@@ -211,6 +211,11 @@ test('auth callback resumes pending next intent to reachable step', async ({ pag
   await expect(page).toHaveURL(/\/diagnosis/)
 })
 
+test('auth callback resumes next query intent to reachable step', async ({ page }) => {
+  await page.goto('/auth/callback?status=success&employeeId=E10089&name=김태훈&organization=교육문화팀&role=employee&next=%2Frecommendation')
+  await expect(page).toHaveURL(/\/diagnosis/)
+})
+
 test('home primary action auto-advances to diagnosis after profile save', async ({ page }) => {
   await page.goto('/')
   await page.evaluate(() => {

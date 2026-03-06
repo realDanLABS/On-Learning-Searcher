@@ -4,7 +4,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { completeAuthCallback } from '../../../shared/api/authApi'
 import { ApiErrorMessage } from '../../../shared/components/ApiErrorMessage'
 import { AppShell } from '../../../shared/layouts/AppShell'
-import { consumePendingNextPath } from '../../../shared/orchestration/intent'
+import { consumePendingNextPath, savePendingNextPath } from '../../../shared/orchestration/intent'
 import { withJourneyFrom } from '../../../shared/orchestration/journeyLink'
 import { resolveBestReachablePath } from '../../../shared/orchestration/smartPath'
 import { hasDiagnosisDraft } from '../../diagnosis/draftStorage'
@@ -22,6 +22,7 @@ export function AuthCallbackPage() {
     const run = async () => {
       try {
         setError(null)
+        savePendingNextPath(new URLSearchParams(location.search).get('next'))
         const session = await completeAuthCallback(location.search)
         if (session.authenticated) {
           const pendingPath = consumePendingNextPath()

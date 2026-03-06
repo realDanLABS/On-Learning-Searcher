@@ -295,12 +295,17 @@ export function HomePage() {
     if (runtimeConfig.apiMode === 'remote' && runtimeConfig.ssoLoginUrl) {
       appendAuditLog('login', '원격 SSO 로그인 이동')
       try {
-        const callback = runtimeConfig.ssoCallbackUrl.startsWith('http')
+        const baseCallback = runtimeConfig.ssoCallbackUrl.startsWith('http')
           ? runtimeConfig.ssoCallbackUrl
           : `${window.location.origin}${runtimeConfig.ssoCallbackUrl}`
+        const callback = new URL(baseCallback)
+        const pendingPath = gateNextPath ?? getPendingNextPath()
+        if (pendingPath && !callback.searchParams.get('next')) {
+          callback.searchParams.set('next', pendingPath)
+        }
         const login = new URL(runtimeConfig.ssoLoginUrl)
         if (!login.searchParams.get('redirect_uri')) {
-          login.searchParams.set('redirect_uri', callback)
+          login.searchParams.set('redirect_uri', callback.toString())
         }
         window.location.href = login.toString()
       } catch {
