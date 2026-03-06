@@ -66,7 +66,7 @@ export function RecommendationPage() {
       title="맞춤 교육 추천"
       description="진단 결과 기반으로 추천 이유를 포함한 과정을 제안합니다."
     >
-      {loadError && (
+      {Boolean(loadError) && (
         <section className="hero-card">
           <h2>추천 데이터 오류</h2>
           <ApiErrorMessage error={loadError} fallback="추천 데이터를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요." />
@@ -76,7 +76,7 @@ export function RecommendationPage() {
         </section>
       )}
 
-      {actionError && (
+      {Boolean(actionError) && (
         <section className="hero-card">
           <ApiErrorMessage error={actionError} fallback="과정 선택 처리 중 오류가 발생했습니다. 다시 시도해 주세요." />
         </section>

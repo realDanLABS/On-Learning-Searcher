@@ -73,7 +73,7 @@ export function HistoryPage() {
       title="진단 결과 및 학습 이력"
       description="진단 결과와 신청 이력을 한 곳에서 추적합니다."
     >
-      {loadError && (
+      {Boolean(loadError) && (
         <section className="hero-card">
           <h2>이력 데이터 오류</h2>
           <ApiErrorMessage error={loadError} fallback="이력 데이터를 불러오지 못했습니다. 다시 시도해 주세요." />

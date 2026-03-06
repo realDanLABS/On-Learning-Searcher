@@ -118,7 +118,7 @@ export function CourseLinkingPage() {
       title="교육 신청 연동"
       description="추천 과정을 선택하면 신청 후 이력 페이지에서 상태를 확인할 수 있습니다."
     >
-      {loadError && (
+      {Boolean(loadError) && (
         <section className="hero-card">
           <h2>오류</h2>
           <ApiErrorMessage error={loadError} fallback="요청 처리 중 오류가 발생했습니다. 다시 시도해 주세요." />
