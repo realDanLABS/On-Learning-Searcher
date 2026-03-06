@@ -77,6 +77,10 @@ bash scripts/orchestrator-wave2-release-snapshot.sh
 ```bash
 bash scripts/orchestrator-wave2-next-task.sh
 ```
+17. Wave2 우선순위 큐 생성:
+```bash
+bash scripts/orchestrator-wave2-priority-queue.sh
+```
 
 ## 통합 기준
 - 사용자 여정: 랜딩 -> 진단 -> 추천 -> 신청 -> 이력

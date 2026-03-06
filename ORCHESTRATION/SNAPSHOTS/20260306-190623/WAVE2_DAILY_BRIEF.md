@@ -1,6 +1,6 @@
 # Wave2 Daily Brief
 
-- generatedAt: 2026-03-06 10:06:57 UTC
+- generatedAt: 2026-03-06 10:06:23 UTC
 - base(main): ac9fff4
 
 ## KPI
@@ -13,9 +13,7 @@
 
 ## Priority Today
 
-1. foundation: 첫 기능 커밋 없음
-2. diagnosis: 첫 기능 커밋 없음
-3. recommendation: 첫 기능 커밋 없음
+1. 우선순위 항목 없음 (merge candidate 중심으로 진행)
 
 ## Orchestrator Action
 

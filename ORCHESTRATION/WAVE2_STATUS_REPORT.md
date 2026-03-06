@@ -1,19 +1,19 @@
 # Wave 2 Status Report
 
-- generatedAt: 2026-03-06 10:03:25 UTC
-- base(main): 1d57175
+- generatedAt: 2026-03-06 10:06:20 UTC
+- base(main): ac9fff4
 
 ## Worktree Snapshot
 
 | Worktree | Branch | HEAD | Dirty | Last Commit |
 |---|---|---|---|---|
-| foundation | codex/foundation | 1d57175 | NO | chore(orchestrator): add outbox pack generation for per-thread dispatch |
-| diagnosis | codex/diagnosis | 1d57175 | NO | chore(orchestrator): add outbox pack generation for per-thread dispatch |
-| recommendation | codex/recommendation | 1d57175 | NO | chore(orchestrator): add outbox pack generation for per-thread dispatch |
-| course-linking | codex/course-linking | 1d57175 | NO | chore(orchestrator): add outbox pack generation for per-thread dispatch |
-| history | codex/history | 1d57175 | NO | chore(orchestrator): add outbox pack generation for per-thread dispatch |
-| chatbot | codex/chatbot | 1d57175 | NO | chore(orchestrator): add outbox pack generation for per-thread dispatch |
-| responsive | codex/responsive | 1d57175 | NO | chore(orchestrator): add outbox pack generation for per-thread dispatch |
+| foundation | codex/foundation | ac9fff4 | NO | chore(orchestrator): add next-task auto dispatch selector |
+| diagnosis | codex/diagnosis | ac9fff4 | NO | chore(orchestrator): add next-task auto dispatch selector |
+| recommendation | codex/recommendation | ac9fff4 | NO | chore(orchestrator): add next-task auto dispatch selector |
+| course-linking | codex/course-linking | ac9fff4 | NO | chore(orchestrator): add next-task auto dispatch selector |
+| history | codex/history | ac9fff4 | NO | chore(orchestrator): add next-task auto dispatch selector |
+| chatbot | codex/chatbot | ac9fff4 | NO | chore(orchestrator): add next-task auto dispatch selector |
+| responsive | codex/responsive | ac9fff4 | NO | chore(orchestrator): add next-task auto dispatch selector |
 
 ## Check-in Template
 

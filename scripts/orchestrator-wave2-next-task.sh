@@ -3,6 +3,7 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 MERGE_FILE="$ROOT_DIR/ORCHESTRATION/WAVE2_MERGE_READINESS.md"
+QUEUE_FILE="$ROOT_DIR/ORCHESTRATION/WAVE2_PRIORITY_QUEUE.md"
 OUTBOX_NUDGE="$ROOT_DIR/ORCHESTRATION/OUTBOX/nudge"
 OUTBOX_KICK="$ROOT_DIR/ORCHESTRATION/OUTBOX/kickstart"
 
@@ -13,30 +14,34 @@ if [[ ! -f "$MERGE_FILE" ]]; then
   bash scripts/orchestrator-wave2-command-center.sh quick >/tmp/w2_next_task.log 2>&1 || true
 fi
 
+if [[ ! -f "$QUEUE_FILE" ]]; then
+  bash scripts/orchestrator-wave2-priority-queue.sh >/tmp/w2_next_queue.log 2>&1 || true
+fi
+
 target="$(
   awk -F'|' '
     /^\| [0-9]+ / {
       gsub(/^ +| +$/,"",$3); wt=$3
-      gsub(/^ +| +$/,"",$10); action=$10
-      if (action == "no feature commits yet") { print wt; exit }
+      if (wt != "-" && wt != "Worktree") { print wt; exit }
     }
-  ' "$MERGE_FILE"
+  ' "$QUEUE_FILE"
 )"
 
 if [[ -z "$target" ]]; then
+  # fallback to merge-readiness based selection
   target="$(
     awk -F'|' '
       /^\| [0-9]+ / {
         gsub(/^ +| +$/,"",$3); wt=$3
-        gsub(/^ +| +$/,"",$9); ready=$9
-        if (ready == "YES") { print wt; exit }
+        gsub(/^ +| +$/,"",$10); action=$10
+        if (action == "no feature commits yet") { print wt; exit }
       }
     ' "$MERGE_FILE"
   )"
 fi
 
 if [[ -z "$target" ]]; then
-  echo "no actionable worktree found from $MERGE_FILE"
+  echo "no actionable worktree found"
   exit 0
 fi
 
