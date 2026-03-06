@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+MERGE_FILE="$ROOT_DIR/ORCHESTRATION/WAVE2_MERGE_READINESS.md"
+CHECKIN_FILE="$ROOT_DIR/ORCHESTRATION/WAVE2_CHECKIN_SUMMARY.md"
+OUT_FILE="$ROOT_DIR/ORCHESTRATION/WAVE2_DAILY_BRIEF.md"
+
+cd "$ROOT_DIR"
+
+generated_at="$(date -u +"%Y-%m-%d %H:%M:%S UTC")"
+base_head="$(git rev-parse --short main)"
+
+if [[ ! -f "$MERGE_FILE" ]]; then
+  bash scripts/orchestrator-wave2-merge-readiness.sh >/tmp/w2_daily_merge.log 2>&1 || true
+fi
+if [[ ! -f "$CHECKIN_FILE" ]]; then
+  bash scripts/orchestrator-wave2-checkin-summary.sh >/tmp/w2_daily_checkin.log 2>&1 || true
+fi
+
+ready_count="$(awk -F'|' '/^\| [0-9]+ / {gsub(/ /,"",$8); if ($8=="YES") c++} END {print c+0}' "$MERGE_FILE")"
+blocked_count="$(awk -F'|' '/^\| [0-9]+ / {gsub(/ /,"",$9); if ($9=="resolveblocker") c++} END {print c+0}' "$MERGE_FILE")"
+no_commit_count="$(awk -F'|' '/^\| [0-9]+ / {if ($10 ~ /no feature commits yet/) c++} END {print c+0}' "$MERGE_FILE")"
+avg_progress="$(awk -F': ' '/^- averageProgress:/ {gsub(/%/,"",$2); print $2; exit}' "$CHECKIN_FILE" | tr -d '\r' || true)"
+[[ -z "$avg_progress" ]] && avg_progress="0"
+
+{
+  echo "# Wave2 Daily Brief"
+  echo
+  echo "- generatedAt: $generated_at"
+  echo "- base(main): $base_head"
+  echo
+  echo "## KPI"
+  echo
+  echo "- averageProgress: ${avg_progress}%"
+  echo "- mergeReadyCount: $ready_count"
+  echo "- blockedCount: $blocked_count"
+  echo "- noFeatureCommitCount: $no_commit_count"
+  echo
+  echo "## Priority Today"
+  echo
+  awk -F'|' '
+    BEGIN {n=0}
+    /^\| [0-9]+ / {
+      gsub(/^ +| +$/,"",$2); order=$2
+      gsub(/^ +| +$/,"",$3); wt=$3
+      gsub(/^ +| +$/,"",$10); action=$10
+      if (action=="no feature commits yet" && n<3) {
+        n++
+        printf "%d. %s: 첫 기능 커밋 생성 필요\n", n, wt
+      }
+    }
+    END {
+      if (n==0) print "1. 우선순위 항목 없음 (merge candidate 중심으로 진행)"
+    }
+  ' "$MERGE_FILE"
+  echo
+  echo "## Orchestrator Action"
+  echo
+  echo "1. ./scripts/dispatch_wave2_nudge_clipboard.sh 실행"
+  echo "2. 체크인 갱신 후 board apply"
+  echo "3. full gate 시점 확정"
+} > "$OUT_FILE"
+
+echo "generated: $OUT_FILE"

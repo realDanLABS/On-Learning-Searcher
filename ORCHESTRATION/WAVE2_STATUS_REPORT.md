@@ -1,19 +1,19 @@
 # Wave 2 Status Report
 
-- generatedAt: 2026-03-06 09:53:57 UTC
-- base(main): 2c70f20
+- generatedAt: 2026-03-06 09:55:25 UTC
+- base(main): efff16d
 
 ## Worktree Snapshot
 
 | Worktree | Branch | HEAD | Dirty | Last Commit |
 |---|---|---|---|---|
-| foundation | codex/foundation | 2c70f20 | NO | chore(orchestrator): generate wave2 nudge messages for dispatch |
-| diagnosis | codex/diagnosis | 2c70f20 | NO | chore(orchestrator): generate wave2 nudge messages for dispatch |
-| recommendation | codex/recommendation | 2c70f20 | NO | chore(orchestrator): generate wave2 nudge messages for dispatch |
-| course-linking | codex/course-linking | 2c70f20 | NO | chore(orchestrator): generate wave2 nudge messages for dispatch |
-| history | codex/history | 2c70f20 | NO | chore(orchestrator): generate wave2 nudge messages for dispatch |
-| chatbot | codex/chatbot | 2c70f20 | NO | chore(orchestrator): generate wave2 nudge messages for dispatch |
-| responsive | codex/responsive | 2c70f20 | NO | chore(orchestrator): generate wave2 nudge messages for dispatch |
+| foundation | codex/foundation | efff16d | NO | chore(orchestrator): add command-center and nudge clipboard dispatch |
+| diagnosis | codex/diagnosis | efff16d | NO | chore(orchestrator): add command-center and nudge clipboard dispatch |
+| recommendation | codex/recommendation | efff16d | NO | chore(orchestrator): add command-center and nudge clipboard dispatch |
+| course-linking | codex/course-linking | efff16d | NO | chore(orchestrator): add command-center and nudge clipboard dispatch |
+| history | codex/history | efff16d | NO | chore(orchestrator): add command-center and nudge clipboard dispatch |
+| chatbot | codex/chatbot | efff16d | NO | chore(orchestrator): add command-center and nudge clipboard dispatch |
+| responsive | codex/responsive | efff16d | NO | chore(orchestrator): add command-center and nudge clipboard dispatch |
 
 ## Check-in Template
 

@@ -53,6 +53,10 @@ bash scripts/orchestrator-wave2-nudge-messages.sh
 ```bash
 bash scripts/orchestrator-wave2-command-center.sh quick
 ```
+11. Wave2 데일리 브리프:
+```bash
+bash scripts/orchestrator-wave2-daily-brief.sh
+```
 
 ## 통합 기준
 - 사용자 여정: 랜딩 -> 진단 -> 추천 -> 신청 -> 이력

@@ -11,7 +11,7 @@ fi
 
 cd "$ROOT_DIR"
 
-echo "[1/5] cycle run ($MODE)"
+echo "[1/6] cycle run ($MODE)"
 bash scripts/orchestrator-wave2-cycle.sh "$MODE"
 
 echo
@@ -27,8 +27,12 @@ echo "[4/5] refresh merge readiness"
 bash scripts/orchestrator-wave2-merge-readiness.sh
 
 echo
-echo "[5/5] refresh nudge messages"
+echo "[5/6] refresh nudge messages"
 bash scripts/orchestrator-wave2-nudge-messages.sh
+
+echo
+echo "[6/6] build daily brief"
+bash scripts/orchestrator-wave2-daily-brief.sh
 
 echo
 echo "command-center complete"
@@ -36,3 +40,4 @@ echo "- cycle: ORCHESTRATION/WAVE2_CYCLE_REPORT.md"
 echo "- board: ORCHESTRATION/EXECUTION_BOARD.md"
 echo "- merge: ORCHESTRATION/WAVE2_MERGE_READINESS.md"
 echo "- nudge: ORCHESTRATION/WAVE2_NUDGE_MESSAGES.md"
+echo "- daily: ORCHESTRATION/WAVE2_DAILY_BRIEF.md"
