@@ -1,19 +1,19 @@
 # Wave 2 Status Report
 
-- generatedAt: 2026-03-06 09:58:30 UTC
-- base(main): 017f116
+- generatedAt: 2026-03-06 10:00:01 UTC
+- base(main): 7aaf6d5
 
 ## Worktree Snapshot
 
 | Worktree | Branch | HEAD | Dirty | Last Commit |
 |---|---|---|---|---|
-| foundation | codex/foundation | 017f116 | NO | chore(orchestrator): run full command-center pass and fix step labels |
-| diagnosis | codex/diagnosis | 017f116 | NO | chore(orchestrator): run full command-center pass and fix step labels |
-| recommendation | codex/recommendation | 017f116 | NO | chore(orchestrator): run full command-center pass and fix step labels |
-| course-linking | codex/course-linking | 017f116 | NO | chore(orchestrator): run full command-center pass and fix step labels |
-| history | codex/history | 017f116 | NO | chore(orchestrator): run full command-center pass and fix step labels |
-| chatbot | codex/chatbot | 017f116 | NO | chore(orchestrator): run full command-center pass and fix step labels |
-| responsive | codex/responsive | 017f116 | NO | chore(orchestrator): run full command-center pass and fix step labels |
+| foundation | codex/foundation | 7aaf6d5 | NO | chore(orchestrator): add wave2 kickstart task generation |
+| diagnosis | codex/diagnosis | 7aaf6d5 | NO | chore(orchestrator): add wave2 kickstart task generation |
+| recommendation | codex/recommendation | 7aaf6d5 | NO | chore(orchestrator): add wave2 kickstart task generation |
+| course-linking | codex/course-linking | 7aaf6d5 | NO | chore(orchestrator): add wave2 kickstart task generation |
+| history | codex/history | 7aaf6d5 | NO | chore(orchestrator): add wave2 kickstart task generation |
+| chatbot | codex/chatbot | 7aaf6d5 | NO | chore(orchestrator): add wave2 kickstart task generation |
+| responsive | codex/responsive | 7aaf6d5 | NO | chore(orchestrator): add wave2 kickstart task generation |
 
 ## Check-in Template
 

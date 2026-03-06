@@ -16,11 +16,13 @@ bash scripts/orchestrator-wave2-command-center.sh quick
 - 사이클/보드반영/체크인요약/머지준비도/리마인드 생성을 한 번에 수행.
 - 추가 산출물: `ORCHESTRATION/WAVE2_DAILY_BRIEF.md`
 - 추가 산출물: `ORCHESTRATION/WAVE2_KICKSTART_TASKS.md`
+- 추가 산출물: `ORCHESTRATION/WAVE2_STALE_CHECKINS.md`
 
 ## 1) 하달
 ```bash
 ./scripts/dispatch_wave2_clipboard.sh
 ./scripts/dispatch_wave2_nudge_clipboard.sh
+./scripts/dispatch_wave2_kickstart_clipboard.sh
 ```
 - 7개 워크트리 스레드에 순차 붙여넣기.
 

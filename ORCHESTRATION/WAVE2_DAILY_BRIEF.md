@@ -1,7 +1,7 @@
 # Wave2 Daily Brief
 
-- generatedAt: 2026-03-06 09:58:32 UTC
-- base(main): 017f116
+- generatedAt: 2026-03-06 10:00:03 UTC
+- base(main): 7aaf6d5
 
 ## KPI
 
@@ -9,6 +9,7 @@
 - mergeReadyCount: 0
 - blockedCount: 0
 - noFeatureCommitCount: 7
+- staleCheckinCount: 0
 
 ## Priority Today
 
@@ -19,5 +20,6 @@
 ## Orchestrator Action
 
 1. ./scripts/dispatch_wave2_nudge_clipboard.sh 실행
-2. 체크인 갱신 후 board apply
-3. full gate 시점 확정
+2. ./scripts/dispatch_wave2_kickstart_clipboard.sh 실행
+3. 체크인 갱신 후 board apply
+4. full gate 시점 확정

@@ -61,6 +61,10 @@ bash scripts/orchestrator-wave2-daily-brief.sh
 ```bash
 bash scripts/orchestrator-wave2-kickstart.sh
 ```
+13. Wave2 stale 체크인 감지:
+```bash
+bash scripts/orchestrator-wave2-stale-checkins.sh
+```
 
 ## 통합 기준
 - 사용자 여정: 랜딩 -> 진단 -> 추천 -> 신청 -> 이력
