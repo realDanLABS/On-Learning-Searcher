@@ -27,6 +27,10 @@ bash scripts/orchestrator-wave2-report.sh
 ```bash
 bash scripts/orchestrator-wave2-gate.sh quick
 ```
+5. Wave2 운영 사이클(상태+게이트+액션):
+```bash
+bash scripts/orchestrator-wave2-cycle.sh quick
+```
 
 ## 통합 기준
 - 사용자 여정: 랜딩 -> 진단 -> 추천 -> 신청 -> 이력

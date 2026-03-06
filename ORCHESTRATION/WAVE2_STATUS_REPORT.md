@@ -1,19 +1,19 @@
 # Wave 2 Status Report
 
-- generatedAt: 2026-03-06 09:41:56 UTC
-- base(main): 55c03d9
+- generatedAt: 2026-03-06 09:45:33 UTC
+- base(main): 98d0ad8
 
 ## Worktree Snapshot
 
 | Worktree | Branch | HEAD | Dirty | Last Commit |
 |---|---|---|---|---|
-| foundation | codex/foundation | 55c03d9 | NO | chore(orchestration): add wave2 copy-paste dispatch pack |
-| diagnosis | codex/diagnosis | 55c03d9 | NO | chore(orchestration): add wave2 copy-paste dispatch pack |
-| recommendation | codex/recommendation | 55c03d9 | NO | chore(orchestration): add wave2 copy-paste dispatch pack |
-| course-linking | codex/course-linking | 55c03d9 | NO | chore(orchestration): add wave2 copy-paste dispatch pack |
-| history | codex/history | 55c03d9 | NO | chore(orchestration): add wave2 copy-paste dispatch pack |
-| chatbot | codex/chatbot | 55c03d9 | NO | chore(orchestration): add wave2 copy-paste dispatch pack |
-| responsive | codex/responsive | 55c03d9 | NO | chore(orchestration): add wave2 copy-paste dispatch pack |
+| foundation | codex/foundation | 98d0ad8 | NO | chore(orchestrator): close wave2 integration qa gate |
+| diagnosis | codex/diagnosis | 98d0ad8 | NO | chore(orchestrator): close wave2 integration qa gate |
+| recommendation | codex/recommendation | 98d0ad8 | NO | chore(orchestrator): close wave2 integration qa gate |
+| course-linking | codex/course-linking | 98d0ad8 | NO | chore(orchestrator): close wave2 integration qa gate |
+| history | codex/history | 98d0ad8 | NO | chore(orchestrator): close wave2 integration qa gate |
+| chatbot | codex/chatbot | 98d0ad8 | NO | chore(orchestrator): close wave2 integration qa gate |
+| responsive | codex/responsive | 98d0ad8 | NO | chore(orchestrator): close wave2 integration qa gate |
 
 ## Check-in Template
 
