@@ -8,14 +8,14 @@
 
 | Worktree | Status | Owner Role | Current Goal | Next Check |
 |---|---|---|---|---|
-| foundation | DONE | Orchestrator | Landing->진단 CTA 및 글로벌 네비 연결 완료 | complete |
-| diagnosis | DONE | Orchestrator | Stepper + 결과 저장 + stage 전환 완료 | complete |
-| recommendation | DONE | Orchestrator | 스킬 갭 패널 + 30/60/90 성장 로드맵 연결 완료 | complete |
-| course-linking | DONE | Orchestrator | 신청 연동 CTA + stage 전환 완료 | complete |
-| history | DONE | Orchestrator | 이력/퍼널/감사로그 + 여정 초기화 안정화 완료 | complete |
-| chatbot | DONE | Orchestrator | 상담 UI MVP 및 라우트 연결 완료 | complete |
-| responsive | DONE | Orchestrator | 반응형 기본 보정 + 라우트 보호 + E2E 회귀 통과 | complete |
-| integration-qa | DONE | Orchestrator | 랜딩→진단→추천→신청→이력 전체 여정 + remote smoke + handoff 문맥 전달 검증 완료(29+1 passed) | commit pending |
+| foundation | IN_PROGRESS | Orchestrator | Wave2: 공통 상태 컴포넌트 + 릴리즈 메타 표기 | 2026-03-06 |
+| diagnosis | IN_PROGRESS | Orchestrator | Wave2: 문항 확장 + 이탈 이벤트 계측 | 2026-03-06 |
+| recommendation | IN_PROGRESS | Orchestrator | Wave2: 추천 근거 모달 + 즐겨찾기/보류 | 2026-03-06 |
+| course-linking | IN_PROGRESS | Orchestrator | Wave2: 신청 실패 재시도 + 콜백 검증 강화 | 2026-03-06 |
+| history | IN_PROGRESS | Orchestrator | Wave2: 벤치마크 위젯 + 월간 리포트 다운로드 | 2026-03-06 |
+| chatbot | IN_PROGRESS | Orchestrator | Wave2: 컨텍스트 상담 + 종료 후 다음액션 | 2026-03-06 |
+| responsive | IN_PROGRESS | Orchestrator | Wave2: 접근성 QA + 모바일 UX 보강 | 2026-03-06 |
+| integration-qa | TODO | Orchestrator | Wave2 통합회귀(로컬+remote) 및 릴리즈 후보 검증 | Wave2 merge 후 |
 
 ## Current Gates (Commercialization)
 1. 실 API/SSO 연결 전환 검증 (remote mode 실서버 smoke test).
