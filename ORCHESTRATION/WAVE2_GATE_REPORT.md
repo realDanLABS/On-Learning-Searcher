@@ -1,20 +1,20 @@
 # Wave2 Gate Report
 
-- generatedAt: 2026-03-06 09:52:51 UTC
+- generatedAt: 2026-03-06 09:53:58 UTC
 - mode: quick
-- base(main): cacd03b
+- base(main): 2c70f20
 
 ## Per-worktree Result
 
 | Worktree | Branch | HEAD | Dirty | Base Sync | Gate | Notes |
 |---|---|---|---|---|---|---|
-| foundation | codex/foundation | cacd03b | NO | YES | PASS | quick checks passed |
-| diagnosis | codex/diagnosis | cacd03b | NO | YES | PASS | quick checks passed |
-| recommendation | codex/recommendation | cacd03b | NO | YES | PASS | quick checks passed |
-| course-linking | codex/course-linking | cacd03b | NO | YES | PASS | quick checks passed |
-| history | codex/history | cacd03b | NO | YES | PASS | quick checks passed |
-| chatbot | codex/chatbot | cacd03b | NO | YES | PASS | quick checks passed |
-| responsive | codex/responsive | cacd03b | NO | YES | PASS | quick checks passed |
+| foundation | codex/foundation | 2c70f20 | NO | YES | PASS | quick checks passed |
+| diagnosis | codex/diagnosis | 2c70f20 | NO | YES | PASS | quick checks passed |
+| recommendation | codex/recommendation | 2c70f20 | NO | YES | PASS | quick checks passed |
+| course-linking | codex/course-linking | 2c70f20 | NO | YES | PASS | quick checks passed |
+| history | codex/history | 2c70f20 | NO | YES | PASS | quick checks passed |
+| chatbot | codex/chatbot | 2c70f20 | NO | YES | PASS | quick checks passed |
+| responsive | codex/responsive | 2c70f20 | NO | YES | PASS | quick checks passed |
 
 ## Summary
 

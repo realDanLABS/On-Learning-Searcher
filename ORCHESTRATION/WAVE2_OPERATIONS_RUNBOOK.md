@@ -9,9 +9,16 @@ cd "/Users/daniel/내 작업/내 프로젝트/Vibe Coding/On_Learning_Searcher"
 bash scripts/worktree-status.sh
 ```
 
+## 빠른 운영(권장)
+```bash
+bash scripts/orchestrator-wave2-command-center.sh quick
+```
+- 사이클/보드반영/체크인요약/머지준비도/리마인드 생성을 한 번에 수행.
+
 ## 1) 하달
 ```bash
 ./scripts/dispatch_wave2_clipboard.sh
+./scripts/dispatch_wave2_nudge_clipboard.sh
 ```
 - 7개 워크트리 스레드에 순차 붙여넣기.
 

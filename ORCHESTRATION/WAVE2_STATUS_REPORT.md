@@ -1,19 +1,19 @@
 # Wave 2 Status Report
 
-- generatedAt: 2026-03-06 09:52:50 UTC
-- base(main): cacd03b
+- generatedAt: 2026-03-06 09:53:57 UTC
+- base(main): 2c70f20
 
 ## Worktree Snapshot
 
 | Worktree | Branch | HEAD | Dirty | Last Commit |
 |---|---|---|---|---|
-| foundation | codex/foundation | cacd03b | NO | chore(orchestrator): add wave2 merge readiness report |
-| diagnosis | codex/diagnosis | cacd03b | NO | chore(orchestrator): add wave2 merge readiness report |
-| recommendation | codex/recommendation | cacd03b | NO | chore(orchestrator): add wave2 merge readiness report |
-| course-linking | codex/course-linking | cacd03b | NO | chore(orchestrator): add wave2 merge readiness report |
-| history | codex/history | cacd03b | NO | chore(orchestrator): add wave2 merge readiness report |
-| chatbot | codex/chatbot | cacd03b | NO | chore(orchestrator): add wave2 merge readiness report |
-| responsive | codex/responsive | cacd03b | NO | chore(orchestrator): add wave2 merge readiness report |
+| foundation | codex/foundation | 2c70f20 | NO | chore(orchestrator): generate wave2 nudge messages for dispatch |
+| diagnosis | codex/diagnosis | 2c70f20 | NO | chore(orchestrator): generate wave2 nudge messages for dispatch |
+| recommendation | codex/recommendation | 2c70f20 | NO | chore(orchestrator): generate wave2 nudge messages for dispatch |
+| course-linking | codex/course-linking | 2c70f20 | NO | chore(orchestrator): generate wave2 nudge messages for dispatch |
+| history | codex/history | 2c70f20 | NO | chore(orchestrator): generate wave2 nudge messages for dispatch |
+| chatbot | codex/chatbot | 2c70f20 | NO | chore(orchestrator): generate wave2 nudge messages for dispatch |
+| responsive | codex/responsive | 2c70f20 | NO | chore(orchestrator): generate wave2 nudge messages for dispatch |
 
 ## Check-in Template
 

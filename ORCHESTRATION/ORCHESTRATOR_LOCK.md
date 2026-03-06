@@ -49,6 +49,10 @@ bash scripts/orchestrator-wave2-merge-readiness.sh
 ```bash
 bash scripts/orchestrator-wave2-nudge-messages.sh
 ```
+10. Wave2 커맨드센터(권장):
+```bash
+bash scripts/orchestrator-wave2-command-center.sh quick
+```
 
 ## 통합 기준
 - 사용자 여정: 랜딩 -> 진단 -> 추천 -> 신청 -> 이력
