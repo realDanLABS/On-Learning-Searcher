@@ -32,6 +32,7 @@ bash scripts/orchestrator-wave2-cycle.sh quick
 - 체크인 파일 초기화/요약:
 ```bash
 bash scripts/orchestrator-wave2-checkin-init.sh
+bash scripts/orchestrator-wave2-checkin-update.sh foundation 35 IN_PROGRESS 없음
 bash scripts/orchestrator-wave2-checkin-summary.sh
 ```
 
@@ -48,9 +49,10 @@ npm run release:check:full
 - 통합/원격 스모크까지 확인.
 
 ## 6) 보드 업데이트
-- 실행보드 `ORCHESTRATION/EXECUTION_BOARD.md` 갱신:
-  - 각 워크트리: `IN_PROGRESS` -> `DONE`
-  - integration-qa: 최신 결과 반영
+- 체크인 기반 실행보드 반영:
+```bash
+bash scripts/orchestrator-wave2-board-apply.sh
+```
 
 ## 운영 규칙
 - dirty 워크트리는 동기화 금지.

@@ -90,6 +90,12 @@ generated_at="$(date +"%Y-%m-%d")"
   echo "1. 실 API/SSO 연결 전환 검증 (remote mode 실서버 smoke test)."
   echo "2. 이캠퍼스 신청 딥링크 파라미터 운영 확정."
   echo "3. 운영용 접근제어/권한 정책 서버측 강제 검증."
+  echo
+  echo "## Mitigation"
+  echo "1. \`VITE_API_MODE=remote\` + SSO callback로 운영 환경 사전 점검."
+  echo "2. course-linking 매핑표를 운영 정책 문서와 동기화."
+  echo "3. 퍼널/감사로그를 릴리즈 지표로 고정하고 회귀 테스트 유지."
+  echo "4. 로그아웃/초기화 시 임시 진단 데이터 정리 규칙 유지."
 } > "$OUT_FILE"
 
 echo "generated: $OUT_FILE"

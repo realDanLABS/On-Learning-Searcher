@@ -34,7 +34,12 @@ bash scripts/orchestrator-wave2-cycle.sh quick
 6. Wave2 체크인 초기화/요약:
 ```bash
 bash scripts/orchestrator-wave2-checkin-init.sh
+bash scripts/orchestrator-wave2-checkin-update.sh foundation 35 IN_PROGRESS 없음
 bash scripts/orchestrator-wave2-checkin-summary.sh
+```
+7. Wave2 보드 자동 반영:
+```bash
+bash scripts/orchestrator-wave2-board-apply.sh
 ```
 
 ## 통합 기준
