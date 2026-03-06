@@ -1,0 +1,16 @@
+# Wave2 Release Snapshot
+
+- createdAt: 2026-03-06 10:08:25 UTC
+- baseMain: ec4281a
+- path: /Users/daniel/내 작업/내 프로젝트/Vibe Coding/On_Learning_Searcher/ORCHESTRATION/SNAPSHOTS/20260306-190825
+
+## Included Files
+- EXECUTION_BOARD.md
+- WAVE2_DAILY_BRIEF.md
+- WAVE2_CYCLE_REPORT.md
+- WAVE2_GATE_REPORT.md
+- WAVE2_MERGE_READINESS.md
+- WAVE2_STALE_CHECKINS.md
+- WAVE2_FIRST_COMMIT_WATCH.md
+- WAVE2_NUDGE_MESSAGES.md
+- WAVE2_KICKSTART_TASKS.md

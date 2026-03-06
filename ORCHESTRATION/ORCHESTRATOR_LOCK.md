@@ -81,6 +81,10 @@ bash scripts/orchestrator-wave2-next-task.sh
 ```bash
 bash scripts/orchestrator-wave2-priority-queue.sh
 ```
+18. Wave2 트렌드 리포트:
+```bash
+bash scripts/orchestrator-wave2-trend-report.sh
+```
 
 ## 통합 기준
 - 사용자 여정: 랜딩 -> 진단 -> 추천 -> 신청 -> 이력

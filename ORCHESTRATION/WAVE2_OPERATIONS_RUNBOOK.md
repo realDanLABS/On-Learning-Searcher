@@ -21,6 +21,7 @@ bash scripts/orchestrator-wave2-command-center.sh quick
 - 추가 산출물: `ORCHESTRATION/OUTBOX/`
 - 추가 산출물: `ORCHESTRATION/SNAPSHOTS/`
 - 추가 산출물: `ORCHESTRATION/WAVE2_PRIORITY_QUEUE.md`
+- 추가 산출물: `ORCHESTRATION/WAVE2_TREND_REPORT.md`
 
 ## 1) 하달
 ```bash

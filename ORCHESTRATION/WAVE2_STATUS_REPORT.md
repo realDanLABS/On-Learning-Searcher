@@ -1,19 +1,19 @@
 # Wave 2 Status Report
 
-- generatedAt: 2026-03-06 10:06:20 UTC
-- base(main): ac9fff4
+- generatedAt: 2026-03-06 10:08:20 UTC
+- base(main): ec4281a
 
 ## Worktree Snapshot
 
 | Worktree | Branch | HEAD | Dirty | Last Commit |
 |---|---|---|---|---|
-| foundation | codex/foundation | ac9fff4 | NO | chore(orchestrator): add next-task auto dispatch selector |
-| diagnosis | codex/diagnosis | ac9fff4 | NO | chore(orchestrator): add next-task auto dispatch selector |
-| recommendation | codex/recommendation | ac9fff4 | NO | chore(orchestrator): add next-task auto dispatch selector |
-| course-linking | codex/course-linking | ac9fff4 | NO | chore(orchestrator): add next-task auto dispatch selector |
-| history | codex/history | ac9fff4 | NO | chore(orchestrator): add next-task auto dispatch selector |
-| chatbot | codex/chatbot | ac9fff4 | NO | chore(orchestrator): add next-task auto dispatch selector |
-| responsive | codex/responsive | ac9fff4 | NO | chore(orchestrator): add next-task auto dispatch selector |
+| foundation | codex/foundation | ec4281a | NO | chore(orchestrator): add priority queue and wire next-task selection |
+| diagnosis | codex/diagnosis | ec4281a | NO | chore(orchestrator): add priority queue and wire next-task selection |
+| recommendation | codex/recommendation | ec4281a | NO | chore(orchestrator): add priority queue and wire next-task selection |
+| course-linking | codex/course-linking | ec4281a | NO | chore(orchestrator): add priority queue and wire next-task selection |
+| history | codex/history | ec4281a | NO | chore(orchestrator): add priority queue and wire next-task selection |
+| chatbot | codex/chatbot | ec4281a | NO | chore(orchestrator): add priority queue and wire next-task selection |
+| responsive | codex/responsive | ec4281a | NO | chore(orchestrator): add priority queue and wire next-task selection |
 
 ## Check-in Template
 
