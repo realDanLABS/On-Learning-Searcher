@@ -1,20 +1,20 @@
 # Wave2 Gate Report
 
-- generatedAt: 2026-03-06 09:56:00 UTC
-- mode: full
-- base(main): 389ef65
+- generatedAt: 2026-03-06 09:58:30 UTC
+- mode: quick
+- base(main): 017f116
 
 ## Per-worktree Result
 
 | Worktree | Branch | HEAD | Dirty | Base Sync | Gate | Notes |
 |---|---|---|---|---|---|---|
-| foundation | codex/foundation | 389ef65 | NO | YES | PASS | lint/test/build passed |
-| diagnosis | codex/diagnosis | 389ef65 | NO | YES | PASS | lint/test/build passed |
-| recommendation | codex/recommendation | 389ef65 | NO | YES | PASS | lint/test/build passed |
-| course-linking | codex/course-linking | 389ef65 | NO | YES | PASS | lint/test/build passed |
-| history | codex/history | 389ef65 | NO | YES | PASS | lint/test/build passed |
-| chatbot | codex/chatbot | 389ef65 | NO | YES | PASS | lint/test/build passed |
-| responsive | codex/responsive | 389ef65 | NO | YES | PASS | lint/test/build passed |
+| foundation | codex/foundation | 017f116 | NO | YES | PASS | quick checks passed |
+| diagnosis | codex/diagnosis | 017f116 | NO | YES | PASS | quick checks passed |
+| recommendation | codex/recommendation | 017f116 | NO | YES | PASS | quick checks passed |
+| course-linking | codex/course-linking | 017f116 | NO | YES | PASS | quick checks passed |
+| history | codex/history | 017f116 | NO | YES | PASS | quick checks passed |
+| chatbot | codex/chatbot | 017f116 | NO | YES | PASS | quick checks passed |
+| responsive | codex/responsive | 017f116 | NO | YES | PASS | quick checks passed |
 
 ## Summary
 

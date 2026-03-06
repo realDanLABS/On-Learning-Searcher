@@ -57,6 +57,10 @@ bash scripts/orchestrator-wave2-command-center.sh quick
 ```bash
 bash scripts/orchestrator-wave2-daily-brief.sh
 ```
+12. Wave2 킥스타트 작업 생성:
+```bash
+bash scripts/orchestrator-wave2-kickstart.sh
+```
 
 ## 통합 기준
 - 사용자 여정: 랜딩 -> 진단 -> 추천 -> 신청 -> 이력

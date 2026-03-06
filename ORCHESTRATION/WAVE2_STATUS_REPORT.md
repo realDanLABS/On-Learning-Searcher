@@ -1,19 +1,19 @@
 # Wave 2 Status Report
 
-- generatedAt: 2026-03-06 09:56:00 UTC
-- base(main): 389ef65
+- generatedAt: 2026-03-06 09:58:30 UTC
+- base(main): 017f116
 
 ## Worktree Snapshot
 
 | Worktree | Branch | HEAD | Dirty | Last Commit |
 |---|---|---|---|---|
-| foundation | codex/foundation | 389ef65 | NO | chore(orchestrator): add wave2 daily brief to command center |
-| diagnosis | codex/diagnosis | 389ef65 | NO | chore(orchestrator): add wave2 daily brief to command center |
-| recommendation | codex/recommendation | 389ef65 | NO | chore(orchestrator): add wave2 daily brief to command center |
-| course-linking | codex/course-linking | 389ef65 | NO | chore(orchestrator): add wave2 daily brief to command center |
-| history | codex/history | 389ef65 | NO | chore(orchestrator): add wave2 daily brief to command center |
-| chatbot | codex/chatbot | 389ef65 | NO | chore(orchestrator): add wave2 daily brief to command center |
-| responsive | codex/responsive | 389ef65 | NO | chore(orchestrator): add wave2 daily brief to command center |
+| foundation | codex/foundation | 017f116 | NO | chore(orchestrator): run full command-center pass and fix step labels |
+| diagnosis | codex/diagnosis | 017f116 | NO | chore(orchestrator): run full command-center pass and fix step labels |
+| recommendation | codex/recommendation | 017f116 | NO | chore(orchestrator): run full command-center pass and fix step labels |
+| course-linking | codex/course-linking | 017f116 | NO | chore(orchestrator): run full command-center pass and fix step labels |
+| history | codex/history | 017f116 | NO | chore(orchestrator): run full command-center pass and fix step labels |
+| chatbot | codex/chatbot | 017f116 | NO | chore(orchestrator): run full command-center pass and fix step labels |
+| responsive | codex/responsive | 017f116 | NO | chore(orchestrator): run full command-center pass and fix step labels |
 
 ## Check-in Template
 
