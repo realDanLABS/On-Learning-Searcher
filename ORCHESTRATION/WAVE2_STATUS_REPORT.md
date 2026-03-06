@@ -1,19 +1,19 @@
 # Wave 2 Status Report
 
-- generatedAt: 2026-03-06 10:02:10 UTC
-- base(main): 9b2fd3e
+- generatedAt: 2026-03-06 10:03:25 UTC
+- base(main): 1d57175
 
 ## Worktree Snapshot
 
 | Worktree | Branch | HEAD | Dirty | Last Commit |
 |---|---|---|---|---|
-| foundation | codex/foundation | 9b2fd3e | NO | chore(orchestrator): add first-commit watch to command center |
-| diagnosis | codex/diagnosis | 9b2fd3e | NO | chore(orchestrator): add first-commit watch to command center |
-| recommendation | codex/recommendation | 9b2fd3e | NO | chore(orchestrator): add first-commit watch to command center |
-| course-linking | codex/course-linking | 9b2fd3e | NO | chore(orchestrator): add first-commit watch to command center |
-| history | codex/history | 9b2fd3e | NO | chore(orchestrator): add first-commit watch to command center |
-| chatbot | codex/chatbot | 9b2fd3e | NO | chore(orchestrator): add first-commit watch to command center |
-| responsive | codex/responsive | 9b2fd3e | NO | chore(orchestrator): add first-commit watch to command center |
+| foundation | codex/foundation | 1d57175 | NO | chore(orchestrator): add outbox pack generation for per-thread dispatch |
+| diagnosis | codex/diagnosis | 1d57175 | NO | chore(orchestrator): add outbox pack generation for per-thread dispatch |
+| recommendation | codex/recommendation | 1d57175 | NO | chore(orchestrator): add outbox pack generation for per-thread dispatch |
+| course-linking | codex/course-linking | 1d57175 | NO | chore(orchestrator): add outbox pack generation for per-thread dispatch |
+| history | codex/history | 1d57175 | NO | chore(orchestrator): add outbox pack generation for per-thread dispatch |
+| chatbot | codex/chatbot | 1d57175 | NO | chore(orchestrator): add outbox pack generation for per-thread dispatch |
+| responsive | codex/responsive | 1d57175 | NO | chore(orchestrator): add outbox pack generation for per-thread dispatch |
 
 ## Check-in Template
 

@@ -69,6 +69,10 @@ bash scripts/orchestrator-wave2-stale-checkins.sh
 ```bash
 bash scripts/orchestrator-wave2-first-commit-watch.sh
 ```
+15. Wave2 release snapshot:
+```bash
+bash scripts/orchestrator-wave2-release-snapshot.sh
+```
 
 ## 통합 기준
 - 사용자 여정: 랜딩 -> 진단 -> 추천 -> 신청 -> 이력
