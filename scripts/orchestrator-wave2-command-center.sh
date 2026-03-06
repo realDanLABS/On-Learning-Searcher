@@ -15,15 +15,15 @@ echo "[1/6] cycle run ($MODE)"
 bash scripts/orchestrator-wave2-cycle.sh "$MODE"
 
 echo
-echo "[2/5] apply execution board from checkins"
+echo "[2/6] apply execution board from checkins"
 bash scripts/orchestrator-wave2-board-apply.sh
 
 echo
-echo "[3/5] refresh checkin summary"
+echo "[3/6] refresh checkin summary"
 bash scripts/orchestrator-wave2-checkin-summary.sh
 
 echo
-echo "[4/5] refresh merge readiness"
+echo "[4/6] refresh merge readiness"
 bash scripts/orchestrator-wave2-merge-readiness.sh
 
 echo

@@ -1,19 +1,19 @@
 # Wave 2 Status Report
 
-- generatedAt: 2026-03-06 09:55:25 UTC
-- base(main): efff16d
+- generatedAt: 2026-03-06 09:56:00 UTC
+- base(main): 389ef65
 
 ## Worktree Snapshot
 
 | Worktree | Branch | HEAD | Dirty | Last Commit |
 |---|---|---|---|---|
-| foundation | codex/foundation | efff16d | NO | chore(orchestrator): add command-center and nudge clipboard dispatch |
-| diagnosis | codex/diagnosis | efff16d | NO | chore(orchestrator): add command-center and nudge clipboard dispatch |
-| recommendation | codex/recommendation | efff16d | NO | chore(orchestrator): add command-center and nudge clipboard dispatch |
-| course-linking | codex/course-linking | efff16d | NO | chore(orchestrator): add command-center and nudge clipboard dispatch |
-| history | codex/history | efff16d | NO | chore(orchestrator): add command-center and nudge clipboard dispatch |
-| chatbot | codex/chatbot | efff16d | NO | chore(orchestrator): add command-center and nudge clipboard dispatch |
-| responsive | codex/responsive | efff16d | NO | chore(orchestrator): add command-center and nudge clipboard dispatch |
+| foundation | codex/foundation | 389ef65 | NO | chore(orchestrator): add wave2 daily brief to command center |
+| diagnosis | codex/diagnosis | 389ef65 | NO | chore(orchestrator): add wave2 daily brief to command center |
+| recommendation | codex/recommendation | 389ef65 | NO | chore(orchestrator): add wave2 daily brief to command center |
+| course-linking | codex/course-linking | 389ef65 | NO | chore(orchestrator): add wave2 daily brief to command center |
+| history | codex/history | 389ef65 | NO | chore(orchestrator): add wave2 daily brief to command center |
+| chatbot | codex/chatbot | 389ef65 | NO | chore(orchestrator): add wave2 daily brief to command center |
+| responsive | codex/responsive | 389ef65 | NO | chore(orchestrator): add wave2 daily brief to command center |
 
 ## Check-in Template
 
