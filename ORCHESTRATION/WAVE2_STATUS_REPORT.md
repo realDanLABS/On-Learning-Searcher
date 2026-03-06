@@ -1,19 +1,19 @@
 # Wave 2 Status Report
 
-- generatedAt: 2026-03-06 10:01:10 UTC
-- base(main): 3964394
+- generatedAt: 2026-03-06 10:02:10 UTC
+- base(main): 9b2fd3e
 
 ## Worktree Snapshot
 
 | Worktree | Branch | HEAD | Dirty | Last Commit |
 |---|---|---|---|---|
-| foundation | codex/foundation | 3964394 | NO | chore(orchestrator): add stale-checkin monitoring and kickstart clipboard dispatch |
-| diagnosis | codex/diagnosis | 3964394 | NO | chore(orchestrator): add stale-checkin monitoring and kickstart clipboard dispatch |
-| recommendation | codex/recommendation | 3964394 | NO | chore(orchestrator): add stale-checkin monitoring and kickstart clipboard dispatch |
-| course-linking | codex/course-linking | 3964394 | NO | chore(orchestrator): add stale-checkin monitoring and kickstart clipboard dispatch |
-| history | codex/history | 3964394 | NO | chore(orchestrator): add stale-checkin monitoring and kickstart clipboard dispatch |
-| chatbot | codex/chatbot | 3964394 | NO | chore(orchestrator): add stale-checkin monitoring and kickstart clipboard dispatch |
-| responsive | codex/responsive | 3964394 | NO | chore(orchestrator): add stale-checkin monitoring and kickstart clipboard dispatch |
+| foundation | codex/foundation | 9b2fd3e | NO | chore(orchestrator): add first-commit watch to command center |
+| diagnosis | codex/diagnosis | 9b2fd3e | NO | chore(orchestrator): add first-commit watch to command center |
+| recommendation | codex/recommendation | 9b2fd3e | NO | chore(orchestrator): add first-commit watch to command center |
+| course-linking | codex/course-linking | 9b2fd3e | NO | chore(orchestrator): add first-commit watch to command center |
+| history | codex/history | 9b2fd3e | NO | chore(orchestrator): add first-commit watch to command center |
+| chatbot | codex/chatbot | 9b2fd3e | NO | chore(orchestrator): add first-commit watch to command center |
+| responsive | codex/responsive | 9b2fd3e | NO | chore(orchestrator): add first-commit watch to command center |
 
 ## Check-in Template
 
