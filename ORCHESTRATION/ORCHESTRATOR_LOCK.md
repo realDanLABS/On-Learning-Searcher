@@ -31,6 +31,11 @@ bash scripts/orchestrator-wave2-gate.sh quick
 ```bash
 bash scripts/orchestrator-wave2-cycle.sh quick
 ```
+6. Wave2 체크인 초기화/요약:
+```bash
+bash scripts/orchestrator-wave2-checkin-init.sh
+bash scripts/orchestrator-wave2-checkin-summary.sh
+```
 
 ## 통합 기준
 - 사용자 여정: 랜딩 -> 진단 -> 추천 -> 신청 -> 이력

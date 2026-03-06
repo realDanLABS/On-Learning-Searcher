@@ -27,6 +27,11 @@ bash scripts/orchestrator-wave2-cycle.sh quick
 ## 3) 체크인 회수
 - 각 워크트리에 아래 템플릿으로 회신 요청:
   - `ORCHESTRATION/WAVE2_CHECKIN_TEMPLATE.md`
+- 체크인 파일 초기화/요약:
+```bash
+bash scripts/orchestrator-wave2-checkin-init.sh
+bash scripts/orchestrator-wave2-checkin-summary.sh
+```
 
 ## 4) 품질 게이트(마감 직전)
 ```bash
