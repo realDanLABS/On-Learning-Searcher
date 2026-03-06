@@ -1,19 +1,19 @@
 # Wave 2 Status Report
 
-- generatedAt: 2026-03-06 10:08:20 UTC
-- base(main): ec4281a
+- generatedAt: 2026-03-06 10:09:37 UTC
+- base(main): a80bcdd
 
 ## Worktree Snapshot
 
 | Worktree | Branch | HEAD | Dirty | Last Commit |
 |---|---|---|---|---|
-| foundation | codex/foundation | ec4281a | NO | chore(orchestrator): add priority queue and wire next-task selection |
-| diagnosis | codex/diagnosis | ec4281a | NO | chore(orchestrator): add priority queue and wire next-task selection |
-| recommendation | codex/recommendation | ec4281a | NO | chore(orchestrator): add priority queue and wire next-task selection |
-| course-linking | codex/course-linking | ec4281a | NO | chore(orchestrator): add priority queue and wire next-task selection |
-| history | codex/history | ec4281a | NO | chore(orchestrator): add priority queue and wire next-task selection |
-| chatbot | codex/chatbot | ec4281a | NO | chore(orchestrator): add priority queue and wire next-task selection |
-| responsive | codex/responsive | ec4281a | NO | chore(orchestrator): add priority queue and wire next-task selection |
+| foundation | codex/foundation | a80bcdd | NO | chore(orchestrator): add snapshot trend report to command center |
+| diagnosis | codex/diagnosis | a80bcdd | NO | chore(orchestrator): add snapshot trend report to command center |
+| recommendation | codex/recommendation | a80bcdd | NO | chore(orchestrator): add snapshot trend report to command center |
+| course-linking | codex/course-linking | a80bcdd | NO | chore(orchestrator): add snapshot trend report to command center |
+| history | codex/history | a80bcdd | NO | chore(orchestrator): add snapshot trend report to command center |
+| chatbot | codex/chatbot | a80bcdd | NO | chore(orchestrator): add snapshot trend report to command center |
+| responsive | codex/responsive | a80bcdd | NO | chore(orchestrator): add snapshot trend report to command center |
 
 ## Check-in Template
 

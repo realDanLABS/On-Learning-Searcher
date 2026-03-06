@@ -11,56 +11,60 @@ fi
 
 cd "$ROOT_DIR"
 
-echo "[1/13] cycle run ($MODE)"
+echo "[1/14] cycle run ($MODE)"
 bash scripts/orchestrator-wave2-cycle.sh "$MODE"
 
 echo
-echo "[2/13] run first-commit watch"
+echo "[2/14] run first-commit watch"
 bash scripts/orchestrator-wave2-first-commit-watch.sh
 
 echo
-echo "[3/13] apply execution board from checkins"
+echo "[3/14] apply execution board from checkins"
 bash scripts/orchestrator-wave2-board-apply.sh
 
 echo
-echo "[4/13] refresh checkin summary"
+echo "[4/14] refresh checkin summary"
 bash scripts/orchestrator-wave2-checkin-summary.sh
 
 echo
-echo "[5/13] refresh merge readiness"
+echo "[5/14] refresh merge readiness"
 bash scripts/orchestrator-wave2-merge-readiness.sh
 
 echo
-echo "[6/13] refresh nudge messages"
+echo "[6/14] refresh nudge messages"
 bash scripts/orchestrator-wave2-nudge-messages.sh
 
 echo
-echo "[7/13] refresh stale checkins"
+echo "[7/14] refresh stale checkins"
 bash scripts/orchestrator-wave2-stale-checkins.sh
 
 echo
-echo "[8/13] build kickstart tasks"
+echo "[8/14] build kickstart tasks"
 bash scripts/orchestrator-wave2-kickstart.sh
 
 echo
-echo "[9/13] build priority queue"
+echo "[9/14] build priority queue"
 bash scripts/orchestrator-wave2-priority-queue.sh
 
 echo
-echo "[10/13] build daily brief"
+echo "[10/14] build daily brief"
 bash scripts/orchestrator-wave2-daily-brief.sh
 
 echo
-echo "[11/13] build outbox pack"
+echo "[11/14] build outbox pack"
 bash scripts/orchestrator-wave2-inbox-pack.sh
 
 echo
-echo "[12/13] create release snapshot"
+echo "[12/14] create release snapshot"
 bash scripts/orchestrator-wave2-release-snapshot.sh
 
 echo
-echo "[13/13] build trend report"
+echo "[13/14] build trend report"
 bash scripts/orchestrator-wave2-trend-report.sh
+
+echo
+echo "[14/14] build merge plan"
+bash scripts/orchestrator-wave2-merge-plan.sh
 
 echo
 echo "command-center complete"
@@ -76,3 +80,4 @@ echo "- kickstart: ORCHESTRATION/WAVE2_KICKSTART_TASKS.md"
 echo "- outbox: ORCHESTRATION/OUTBOX/"
 echo "- snapshots: ORCHESTRATION/SNAPSHOTS/"
 echo "- trend: ORCHESTRATION/WAVE2_TREND_REPORT.md"
+echo "- merge-plan: ORCHESTRATION/WAVE2_MERGE_PLAN.md"

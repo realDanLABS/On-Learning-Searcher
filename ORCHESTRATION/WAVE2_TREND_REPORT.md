@@ -1,11 +1,11 @@
 # Wave2 Trend Report
 
-- generatedAt: 2026-03-06 10:08:25 UTC
+- generatedAt: 2026-03-06 10:09:40 UTC
 
 ## Snapshot Window
 
-- previous: 20260306-190623
-- current: 20260306-190825
+- previous: 20260306-190825
+- current: 20260306-190940
 
 ## KPI Delta
 

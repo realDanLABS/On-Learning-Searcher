@@ -85,6 +85,10 @@ bash scripts/orchestrator-wave2-priority-queue.sh
 ```bash
 bash scripts/orchestrator-wave2-trend-report.sh
 ```
+19. Wave2 머지 플랜 생성:
+```bash
+bash scripts/orchestrator-wave2-merge-plan.sh
+```
 
 ## 통합 기준
 - 사용자 여정: 랜딩 -> 진단 -> 추천 -> 신청 -> 이력
