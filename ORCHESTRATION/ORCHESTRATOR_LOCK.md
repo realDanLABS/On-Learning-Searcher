@@ -19,6 +19,10 @@ bash scripts/sync-worktrees-from-main.sh
 ```bash
 bash scripts/worktree-status.sh
 ```
+3. Wave2 운영 리포트 생성:
+```bash
+bash scripts/orchestrator-wave2-report.sh
+```
 
 ## 통합 기준
 - 사용자 여정: 랜딩 -> 진단 -> 추천 -> 신청 -> 이력
