@@ -41,6 +41,10 @@ bash scripts/orchestrator-wave2-checkin-summary.sh
 ```bash
 bash scripts/orchestrator-wave2-board-apply.sh
 ```
+8. Wave2 머지 준비도 리포트:
+```bash
+bash scripts/orchestrator-wave2-merge-readiness.sh
+```
 
 ## 통합 기준
 - 사용자 여정: 랜딩 -> 진단 -> 추천 -> 신청 -> 이력

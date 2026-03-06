@@ -1,19 +1,19 @@
 # Wave 2 Status Report
 
-- generatedAt: 2026-03-06 09:48:24 UTC
-- base(main): fd59dad
+- generatedAt: 2026-03-06 09:51:29 UTC
+- base(main): ee78fd6
 
 ## Worktree Snapshot
 
 | Worktree | Branch | HEAD | Dirty | Last Commit |
 |---|---|---|---|---|
-| foundation | codex/foundation | fd59dad | NO | chore(orchestrator): add wave2 checkin init and summary pipeline |
-| diagnosis | codex/diagnosis | fd59dad | NO | chore(orchestrator): add wave2 checkin init and summary pipeline |
-| recommendation | codex/recommendation | fd59dad | NO | chore(orchestrator): add wave2 checkin init and summary pipeline |
-| course-linking | codex/course-linking | fd59dad | NO | chore(orchestrator): add wave2 checkin init and summary pipeline |
-| history | codex/history | fd59dad | NO | chore(orchestrator): add wave2 checkin init and summary pipeline |
-| chatbot | codex/chatbot | fd59dad | NO | chore(orchestrator): add wave2 checkin init and summary pipeline |
-| responsive | codex/responsive | fd59dad | NO | chore(orchestrator): add wave2 checkin init and summary pipeline |
+| foundation | codex/foundation | ee78fd6 | NO | chore(orchestrator): automate checkin updates and execution board apply |
+| diagnosis | codex/diagnosis | ee78fd6 | NO | chore(orchestrator): automate checkin updates and execution board apply |
+| recommendation | codex/recommendation | ee78fd6 | NO | chore(orchestrator): automate checkin updates and execution board apply |
+| course-linking | codex/course-linking | ee78fd6 | NO | chore(orchestrator): automate checkin updates and execution board apply |
+| history | codex/history | ee78fd6 | NO | chore(orchestrator): automate checkin updates and execution board apply |
+| chatbot | codex/chatbot | ee78fd6 | NO | chore(orchestrator): automate checkin updates and execution board apply |
+| responsive | codex/responsive | ee78fd6 | NO | chore(orchestrator): automate checkin updates and execution board apply |
 
 ## Check-in Template
 
