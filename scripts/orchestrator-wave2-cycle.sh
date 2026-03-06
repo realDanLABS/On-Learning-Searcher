@@ -25,6 +25,7 @@ bash scripts/orchestrator-wave2-gate.sh "$MODE" >/tmp/w2_cycle_gate.log 2>&1 || 
 bash scripts/orchestrator-wave2-checkin-summary.sh >/tmp/w2_cycle_checkin.log 2>&1 || true
 bash scripts/orchestrator-wave2-board-draft.sh >/tmp/w2_cycle_board.log 2>&1 || true
 bash scripts/orchestrator-wave2-merge-readiness.sh >/tmp/w2_cycle_merge.log 2>&1 || true
+bash scripts/orchestrator-wave2-nudge-messages.sh >/tmp/w2_cycle_nudge.log 2>&1 || true
 
 # 4) Compose cycle summary
 {
@@ -61,6 +62,11 @@ bash scripts/orchestrator-wave2-merge-readiness.sh >/tmp/w2_cycle_merge.log 2>&1
   else
     echo "- merge readiness: FAIL"
   fi
+  if grep -q "generated:" /tmp/w2_cycle_nudge.log; then
+    echo "- nudge messages: PASS"
+  else
+    echo "- nudge messages: FAIL"
+  fi
   echo
   echo "## Artifacts"
   echo
@@ -69,6 +75,7 @@ bash scripts/orchestrator-wave2-merge-readiness.sh >/tmp/w2_cycle_merge.log 2>&1
   echo "- /Users/daniel/내 작업/내 프로젝트/Vibe Coding/On_Learning_Searcher/ORCHESTRATION/WAVE2_CHECKIN_SUMMARY.md"
   echo "- /Users/daniel/내 작업/내 프로젝트/Vibe Coding/On_Learning_Searcher/ORCHESTRATION/EXECUTION_BOARD_WAVE2_DRAFT.md"
   echo "- /Users/daniel/내 작업/내 프로젝트/Vibe Coding/On_Learning_Searcher/ORCHESTRATION/WAVE2_MERGE_READINESS.md"
+  echo "- /Users/daniel/내 작업/내 프로젝트/Vibe Coding/On_Learning_Searcher/ORCHESTRATION/WAVE2_NUDGE_MESSAGES.md"
   echo
   echo "## Next Action Guide"
   echo

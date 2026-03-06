@@ -1,19 +1,19 @@
 # Wave 2 Status Report
 
-- generatedAt: 2026-03-06 09:51:29 UTC
-- base(main): ee78fd6
+- generatedAt: 2026-03-06 09:52:50 UTC
+- base(main): cacd03b
 
 ## Worktree Snapshot
 
 | Worktree | Branch | HEAD | Dirty | Last Commit |
 |---|---|---|---|---|
-| foundation | codex/foundation | ee78fd6 | NO | chore(orchestrator): automate checkin updates and execution board apply |
-| diagnosis | codex/diagnosis | ee78fd6 | NO | chore(orchestrator): automate checkin updates and execution board apply |
-| recommendation | codex/recommendation | ee78fd6 | NO | chore(orchestrator): automate checkin updates and execution board apply |
-| course-linking | codex/course-linking | ee78fd6 | NO | chore(orchestrator): automate checkin updates and execution board apply |
-| history | codex/history | ee78fd6 | NO | chore(orchestrator): automate checkin updates and execution board apply |
-| chatbot | codex/chatbot | ee78fd6 | NO | chore(orchestrator): automate checkin updates and execution board apply |
-| responsive | codex/responsive | ee78fd6 | NO | chore(orchestrator): automate checkin updates and execution board apply |
+| foundation | codex/foundation | cacd03b | NO | chore(orchestrator): add wave2 merge readiness report |
+| diagnosis | codex/diagnosis | cacd03b | NO | chore(orchestrator): add wave2 merge readiness report |
+| recommendation | codex/recommendation | cacd03b | NO | chore(orchestrator): add wave2 merge readiness report |
+| course-linking | codex/course-linking | cacd03b | NO | chore(orchestrator): add wave2 merge readiness report |
+| history | codex/history | cacd03b | NO | chore(orchestrator): add wave2 merge readiness report |
+| chatbot | codex/chatbot | cacd03b | NO | chore(orchestrator): add wave2 merge readiness report |
+| responsive | codex/responsive | cacd03b | NO | chore(orchestrator): add wave2 merge readiness report |
 
 ## Check-in Template
 

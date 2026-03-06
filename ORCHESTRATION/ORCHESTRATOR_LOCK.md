@@ -45,6 +45,10 @@ bash scripts/orchestrator-wave2-board-apply.sh
 ```bash
 bash scripts/orchestrator-wave2-merge-readiness.sh
 ```
+9. Wave2 리마인드 하달문 자동 생성:
+```bash
+bash scripts/orchestrator-wave2-nudge-messages.sh
+```
 
 ## 통합 기준
 - 사용자 여정: 랜딩 -> 진단 -> 추천 -> 신청 -> 이력
