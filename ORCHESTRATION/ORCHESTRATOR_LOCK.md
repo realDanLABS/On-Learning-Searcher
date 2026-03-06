@@ -73,6 +73,10 @@ bash scripts/orchestrator-wave2-first-commit-watch.sh
 ```bash
 bash scripts/orchestrator-wave2-release-snapshot.sh
 ```
+16. Wave2 다음 우선작업 자동하달:
+```bash
+bash scripts/orchestrator-wave2-next-task.sh
+```
 
 ## 통합 기준
 - 사용자 여정: 랜딩 -> 진단 -> 추천 -> 신청 -> 이력

@@ -26,6 +26,7 @@ bash scripts/orchestrator-wave2-command-center.sh quick
 ./scripts/dispatch_wave2_clipboard.sh
 ./scripts/dispatch_wave2_nudge_clipboard.sh
 ./scripts/dispatch_wave2_kickstart_clipboard.sh
+./scripts/orchestrator-wave2-next-task.sh
 ```
 - 7개 워크트리 스레드에 순차 붙여넣기.
 
