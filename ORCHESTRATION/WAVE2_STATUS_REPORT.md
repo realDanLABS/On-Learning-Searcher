@@ -1,19 +1,19 @@
 # Wave 2 Status Report
 
-- generatedAt: 2026-03-06 09:45:33 UTC
-- base(main): 98d0ad8
+- generatedAt: 2026-03-06 09:48:24 UTC
+- base(main): fd59dad
 
 ## Worktree Snapshot
 
 | Worktree | Branch | HEAD | Dirty | Last Commit |
 |---|---|---|---|---|
-| foundation | codex/foundation | 98d0ad8 | NO | chore(orchestrator): close wave2 integration qa gate |
-| diagnosis | codex/diagnosis | 98d0ad8 | NO | chore(orchestrator): close wave2 integration qa gate |
-| recommendation | codex/recommendation | 98d0ad8 | NO | chore(orchestrator): close wave2 integration qa gate |
-| course-linking | codex/course-linking | 98d0ad8 | NO | chore(orchestrator): close wave2 integration qa gate |
-| history | codex/history | 98d0ad8 | NO | chore(orchestrator): close wave2 integration qa gate |
-| chatbot | codex/chatbot | 98d0ad8 | NO | chore(orchestrator): close wave2 integration qa gate |
-| responsive | codex/responsive | 98d0ad8 | NO | chore(orchestrator): close wave2 integration qa gate |
+| foundation | codex/foundation | fd59dad | NO | chore(orchestrator): add wave2 checkin init and summary pipeline |
+| diagnosis | codex/diagnosis | fd59dad | NO | chore(orchestrator): add wave2 checkin init and summary pipeline |
+| recommendation | codex/recommendation | fd59dad | NO | chore(orchestrator): add wave2 checkin init and summary pipeline |
+| course-linking | codex/course-linking | fd59dad | NO | chore(orchestrator): add wave2 checkin init and summary pipeline |
+| history | codex/history | fd59dad | NO | chore(orchestrator): add wave2 checkin init and summary pipeline |
+| chatbot | codex/chatbot | fd59dad | NO | chore(orchestrator): add wave2 checkin init and summary pipeline |
+| responsive | codex/responsive | fd59dad | NO | chore(orchestrator): add wave2 checkin init and summary pipeline |
 
 ## Check-in Template
 

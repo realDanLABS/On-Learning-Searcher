@@ -21,7 +21,11 @@ bash scripts/orchestrator-wave2-report.sh >/tmp/w2_cycle_report.log 2>&1 || true
 # 2) Gate report
 bash scripts/orchestrator-wave2-gate.sh "$MODE" >/tmp/w2_cycle_gate.log 2>&1 || true
 
-# 3) Compose cycle summary
+# 3) Check-in summary + board draft
+bash scripts/orchestrator-wave2-checkin-summary.sh >/tmp/w2_cycle_checkin.log 2>&1 || true
+bash scripts/orchestrator-wave2-board-draft.sh >/tmp/w2_cycle_board.log 2>&1 || true
+
+# 4) Compose cycle summary
 {
   echo "# Wave2 Cycle Report"
   echo
@@ -41,11 +45,23 @@ bash scripts/orchestrator-wave2-gate.sh "$MODE" >/tmp/w2_cycle_gate.log 2>&1 || 
   else
     echo "- gate report: FAIL"
   fi
+  if grep -q "generated:" /tmp/w2_cycle_checkin.log; then
+    echo "- checkin summary: PASS"
+  else
+    echo "- checkin summary: FAIL"
+  fi
+  if grep -q "generated:" /tmp/w2_cycle_board.log; then
+    echo "- board draft: PASS"
+  else
+    echo "- board draft: FAIL"
+  fi
   echo
   echo "## Artifacts"
   echo
   echo "- /Users/daniel/내 작업/내 프로젝트/Vibe Coding/On_Learning_Searcher/ORCHESTRATION/WAVE2_STATUS_REPORT.md"
   echo "- /Users/daniel/내 작업/내 프로젝트/Vibe Coding/On_Learning_Searcher/ORCHESTRATION/WAVE2_GATE_REPORT.md"
+  echo "- /Users/daniel/내 작업/내 프로젝트/Vibe Coding/On_Learning_Searcher/ORCHESTRATION/WAVE2_CHECKIN_SUMMARY.md"
+  echo "- /Users/daniel/내 작업/내 프로젝트/Vibe Coding/On_Learning_Searcher/ORCHESTRATION/EXECUTION_BOARD_WAVE2_DRAFT.md"
   echo
   echo "## Next Action Guide"
   echo

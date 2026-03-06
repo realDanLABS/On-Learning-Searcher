@@ -1,20 +1,20 @@
 # Wave2 Gate Report
 
-- generatedAt: 2026-03-06 09:45:34 UTC
+- generatedAt: 2026-03-06 09:48:24 UTC
 - mode: quick
-- base(main): 98d0ad8
+- base(main): fd59dad
 
 ## Per-worktree Result
 
 | Worktree | Branch | HEAD | Dirty | Base Sync | Gate | Notes |
 |---|---|---|---|---|---|---|
-| foundation | codex/foundation | 98d0ad8 | NO | YES | PASS | quick checks passed |
-| diagnosis | codex/diagnosis | 98d0ad8 | NO | YES | PASS | quick checks passed |
-| recommendation | codex/recommendation | 98d0ad8 | NO | YES | PASS | quick checks passed |
-| course-linking | codex/course-linking | 98d0ad8 | NO | YES | PASS | quick checks passed |
-| history | codex/history | 98d0ad8 | NO | YES | PASS | quick checks passed |
-| chatbot | codex/chatbot | 98d0ad8 | NO | YES | PASS | quick checks passed |
-| responsive | codex/responsive | 98d0ad8 | NO | YES | PASS | quick checks passed |
+| foundation | codex/foundation | fd59dad | NO | YES | PASS | quick checks passed |
+| diagnosis | codex/diagnosis | fd59dad | NO | YES | PASS | quick checks passed |
+| recommendation | codex/recommendation | fd59dad | NO | YES | PASS | quick checks passed |
+| course-linking | codex/course-linking | fd59dad | NO | YES | PASS | quick checks passed |
+| history | codex/history | fd59dad | NO | YES | PASS | quick checks passed |
+| chatbot | codex/chatbot | fd59dad | NO | YES | PASS | quick checks passed |
+| responsive | codex/responsive | fd59dad | NO | YES | PASS | quick checks passed |
 
 ## Summary
 
