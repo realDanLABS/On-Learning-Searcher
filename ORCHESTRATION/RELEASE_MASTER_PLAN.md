@@ -81,6 +81,12 @@
 ## Integration Contract
 Reference: ORCHESTRATION/INTEGRATION_CONTRACT.md
 
+## Commercialization Checklist
+Reference: ORCHESTRATION/COMMERCIALIZATION_CHECKLIST.md
+
+## Dependency Map
+Reference: ORCHESTRATION/DEPENDENCY_MAP.md
+
 ## Release Gates
 1. Feature Gate
 - 핵심 CTA 흐름 모두 연결

@@ -1,19 +1,19 @@
 # Wave 2 Status Report
 
-- generatedAt: 2026-03-06 10:09:37 UTC
-- base(main): a80bcdd
+- generatedAt: 2026-03-08 03:35:42 UTC
+- base(main): 6770fd3
 
 ## Worktree Snapshot
 
 | Worktree | Branch | HEAD | Dirty | Last Commit |
 |---|---|---|---|---|
-| foundation | codex/foundation | a80bcdd | NO | chore(orchestrator): add snapshot trend report to command center |
-| diagnosis | codex/diagnosis | a80bcdd | NO | chore(orchestrator): add snapshot trend report to command center |
-| recommendation | codex/recommendation | a80bcdd | NO | chore(orchestrator): add snapshot trend report to command center |
-| course-linking | codex/course-linking | a80bcdd | NO | chore(orchestrator): add snapshot trend report to command center |
-| history | codex/history | a80bcdd | NO | chore(orchestrator): add snapshot trend report to command center |
-| chatbot | codex/chatbot | a80bcdd | NO | chore(orchestrator): add snapshot trend report to command center |
-| responsive | codex/responsive | a80bcdd | NO | chore(orchestrator): add snapshot trend report to command center |
+| foundation | codex/foundation | 6770fd3 | NO | chore(orchestrator): add merge plan generation and command-center step |
+| diagnosis | codex/diagnosis | 6770fd3 | NO | chore(orchestrator): add merge plan generation and command-center step |
+| recommendation | codex/recommendation | 6770fd3 | NO | chore(orchestrator): add merge plan generation and command-center step |
+| course-linking | codex/course-linking | 6770fd3 | NO | chore(orchestrator): add merge plan generation and command-center step |
+| history | codex/history | 6770fd3 | NO | chore(orchestrator): add merge plan generation and command-center step |
+| chatbot | codex/chatbot | 6770fd3 | NO | chore(orchestrator): add merge plan generation and command-center step |
+| responsive | codex/responsive | 6770fd3 | NO | chore(orchestrator): add merge plan generation and command-center step |
 
 ## Check-in Template
 

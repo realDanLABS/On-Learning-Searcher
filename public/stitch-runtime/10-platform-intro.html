@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+
+<html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>On Learning Searcher - 현대위아 AI 학습 플랫폼</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002C5F", // Hyundai WIA Navy
+                        "secondary": "#00AAD2", // Hyundai WIA Blue
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "Noto Sans KR", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+<header class="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/80 backdrop-blur-md dark:border-slate-800 dark:bg-background-dark/80 px-4 md:px-10 lg:px-40 py-3">
+<div class="flex items-center justify-between max-w-[1200px] mx-auto">
+<div class="flex items-center gap-3">
+<div class="size-8 flex items-center justify-center bg-primary text-white rounded">
+<span class="material-symbols-outlined">auto_stories</span>
+</div>
+<h2 class="text-primary dark:text-white text-xl font-bold tracking-tight">On Learning Searcher</h2>
+</div>
+<nav class="hidden md:flex flex-1 justify-center gap-8">
+<a class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-secondary text-sm font-semibold transition-colors" href="#">서비스 소개</a>
+<a class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-secondary text-sm font-semibold transition-colors" href="#">역량 진단</a>
+<a class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-secondary text-sm font-semibold transition-colors" href="#">학습 추천</a>
+<a class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-secondary text-sm font-semibold transition-colors" href="#">나의 성장</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="hidden sm:flex min-w-[84px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-all">
+                        로그인
+                    </button>
+<div class="bg-slate-200 dark:bg-slate-700 rounded-full size-10 flex items-center justify-center">
+<span class="material-symbols-outlined text-slate-500">person</span>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-1">
+<section class="max-w-[1200px] mx-auto px-6 py-20">
+<div class="text-center mb-16 space-y-4">
+<h2 class="text-3xl md:text-4xl font-bold text-primary dark:text-white">성장의 여정을 정의합니다</h2>
+<p class="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+                        수많은 교육 과정 속에서 나에게 정말 필요한 학습이 무엇인지 고민하는 구성원들의 목소리에 집중했습니다. 
+                        단순한 나열이 아닌, 데이터 기반의 로드맵을 제공합니다.
+                    </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+<div class="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 hover:border-secondary transition-all">
+<div class="w-12 h-12 bg-primary/10 text-primary rounded-lg flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-3xl">fact_check</span>
+</div>
+<h3 class="text-xl font-bold mb-3">역량 진단</h3>
+<p class="text-slate-500 text-sm leading-relaxed">현재 나의 역량 수준을 직무 표준에 맞추어 정교하게 파악합니다.</p>
+</div>
+<div class="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 hover:border-secondary transition-all">
+<div class="w-12 h-12 bg-primary/10 text-primary rounded-lg flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-3xl">analytics</span>
+</div>
+<h3 class="text-xl font-bold mb-3">격차 분석</h3>
+<p class="text-slate-500 text-sm leading-relaxed">목표 수준과의 차이를 수치화된 데이터로 투명하게 분석합니다.</p>
+</div>
+<div class="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 hover:border-secondary transition-all">
+<div class="w-12 h-12 bg-primary/10 text-primary rounded-lg flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-3xl">psychology</span>
+</div>
+<h3 class="text-xl font-bold mb-3">맞춤 추천</h3>
+<p class="text-slate-500 text-sm leading-relaxed">분석된 격차를 가장 효과적으로 채울 최적의 학습 과정을 AI가 제안합니다.</p>
+</div>
+<div class="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 hover:border-secondary transition-all">
+<div class="w-12 h-12 bg-primary/10 text-primary rounded-lg flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-3xl">trending_up</span>
+</div>
+<h3 class="text-xl font-bold mb-3">성장 추적</h3>
+<p class="text-slate-500 text-sm leading-relaxed">학습 이후의 변화와 역량 향상도를 지속적으로 업데이트하고 관리합니다.</p>
+</div>
+</div>
+</section>
+<section class="bg-slate-100 dark:bg-slate-900/50 py-20 px-6">
+<div class="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+<div class="space-y-8">
+<div>
+<h2 class="text-3xl font-bold text-primary dark:text-white mb-6">프로그램 운영 목표</h2>
+<p class="text-slate-600 dark:text-slate-400">우리는 다음 세 가지 가치를 실현하여 현대위아의 미래 경쟁력을 확보합니다.</p>
+</div>
+<div class="space-y-6">
+<div class="flex gap-4">
+<span class="flex-shrink-0 w-8 h-8 rounded-full bg-secondary text-white flex items-center justify-center font-bold">1</span>
+<div>
+<h4 class="font-bold text-lg mb-1">객관적 역량 현황 파악</h4>
+<p class="text-slate-500 dark:text-slate-400 text-sm">개인별 강점과 보완점을 데이터로 증명하여 학습의 동기를 부여합니다.</p>
+</div>
+</div>
+<div class="flex gap-4">
+<span class="flex-shrink-0 w-8 h-8 rounded-full bg-secondary text-white flex items-center justify-center font-bold">2</span>
+<div>
+<h4 class="font-bold text-lg mb-1">개인화된 학습 추천 체계</h4>
+<p class="text-slate-500 dark:text-slate-400 text-sm">불필요한 시간을 줄이고 가장 필요한 지식을 습득하는 효율적 경로를 제공합니다.</p>
+</div>
+</div>
+<div class="flex gap-4">
+<span class="flex-shrink-0 w-8 h-8 rounded-full bg-secondary text-white flex items-center justify-center font-bold">3</span>
+<div>
+<h4 class="font-bold text-lg mb-1">심리스(Seamless) 통합 연결</h4>
+<p class="text-slate-500 dark:text-slate-400 text-sm">신청부터 수강, 사후 관리까지 끊김 없는 사용자 경험을 보장합니다.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-xl border border-slate-200 dark:border-slate-700 relative">
+<div class="absolute -top-4 -right-4 bg-secondary p-4 rounded-2xl shadow-lg">
+<span class="material-symbols-outlined text-white text-3xl">rocket_launch</span>
+</div>
+<h3 class="text-2xl font-black text-primary dark:text-white mb-8">What 'On' Means?</h3>
+<div class="space-y-6">
+<div class="border-l-4 border-secondary pl-4">
+<h4 class="font-bold text-secondary text-xl">Online</h4>
+<p class="text-slate-500 dark:text-slate-400 text-sm">언제 어디서나 접근 가능한 디지털 기반 학습</p>
+</div>
+<div class="border-l-4 border-slate-300 pl-4">
+<h4 class="font-bold text-primary dark:text-white text-xl">Learning</h4>
+<p class="text-slate-500 dark:text-slate-400 text-sm">성장을 멈추지 않는 지식 습득의 과정</p>
+</div>
+<div class="border-l-4 border-slate-300 pl-4">
+<h4 class="font-bold text-primary dark:text-white text-xl">Searcher</h4>
+<p class="text-slate-500 dark:text-slate-400 text-sm">최적의 답과 길을 찾아내는 스마트한 탐색자</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="max-w-[1200px] mx-auto px-6 py-24">
+<h2 class="text-3xl font-bold text-center text-primary dark:text-white mb-16">기대 효과</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl p-8 flex flex-col items-center text-center">
+<div class="w-16 h-16 bg-blue-50 dark:bg-blue-900/20 text-blue-500 rounded-full flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-4xl">timer</span>
+</div>
+<h4 class="text-xl font-bold mb-4">학습 시간 절약</h4>
+<p class="text-slate-500 text-sm">수많은 강좌 중 나에게 맞는 것을 찾기 위한 고민 시간이 70% 이상 단축됩니다.</p>
+</div>
+<div class="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl p-8 flex flex-col items-center text-center">
+<div class="w-16 h-16 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-500 rounded-full flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-4xl">thumb_up</span>
+</div>
+<h4 class="text-xl font-bold mb-4">학습 만족도 증대</h4>
+<p class="text-slate-500 text-sm">개인화된 추천 시스템을 통해 현업 적용도가 높은 강의를 수강하게 됩니다.</p>
+</div>
+<div class="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl p-8 flex flex-col items-center text-center">
+<div class="w-16 h-16 bg-purple-50 dark:bg-purple-900/20 text-purple-500 rounded-full flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-4xl">groups</span>
+</div>
+<h4 class="text-xl font-bold mb-4">조직 역량의 상향 평준화</h4>
+<p class="text-slate-500 text-sm">데이터 기반의 체계적 학습이 개인의 성장을 넘어 팀 전체의 성과로 이어집니다.</p>
+</div>
+</div>
+</section>
+<section class="bg-primary py-24 px-6 text-white text-center relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-full bg-[url('https://placeholder.pics/svg/1200')] bg-cover opacity-5 mix-blend-overlay" data-alt="Faint technology circuit pattern background"></div>
+<div class="max-w-[800px] mx-auto relative z-10">
+<h2 class="text-3xl md:text-4xl font-black mb-8">AI 기반의 퍼스널 러닝 파트너</h2>
+<p class="text-xl text-slate-300 leading-relaxed mb-12">
+                        On Learning Searcher는 모든 현대위아 구성원이 <br/>
+                        자신만의 속도와 방향으로 성장할 수 있도록 곁에서 돕는 가장 똑똑한 '러닝 파트너'가 되겠습니다.
+                    </p>
+<div class="flex justify-center gap-6">
+<button class="bg-white text-primary font-bold px-10 py-4 rounded-full text-lg hover:bg-slate-100 transition-all">
+                            역량 진단 시작하기
+                        </button>
+</div>
+</div>
+</section>
+</main>
+<footer class="bg-white dark:bg-background-dark border-t border-slate-200 dark:border-slate-800 py-12 px-10 md:px-40">
+<div class="max-w-[1200px] mx-auto flex flex-col md:flex-row justify-between items-start gap-8">
+<div class="space-y-4">
+<div class="flex items-center gap-2">
+<div class="size-6 bg-primary text-white rounded text-[10px] flex items-center justify-center">
+<span class="material-symbols-outlined text-xs">auto_stories</span>
+</div>
+<h3 class="text-primary dark:text-white font-bold">On Learning Searcher</h3>
+</div>
+<p class="text-slate-400 text-sm max-w-sm">
+                        현대위아 인재개발팀(HRD)에서 운영하는 전사 역량 기반 학습 지원 플랫폼입니다.
+                    </p>
+<p class="text-slate-400 text-xs">© 2024 HYUNDAI WIA. All Rights Reserved.</p>
+</div>
+<div class="flex gap-16">
+<div class="space-y-4">
+<h4 class="text-slate-900 dark:text-white font-bold text-sm">Quick Links</h4>
+<ul class="text-slate-400 text-sm space-y-2">
+<li><a class="hover:text-primary" href="#">공지사항</a></li>
+<li><a class="hover:text-primary" href="#">이용약관</a></li>
+<li><a class="hover:text-primary" href="#">개인정보처리방침</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h4 class="text-slate-900 dark:text-white font-bold text-sm">Support</h4>
+<ul class="text-slate-400 text-sm space-y-2">
+<li><a class="hover:text-primary" href="#">1:1 문의하기</a></li>
+<li><a class="hover:text-primary" href="#">자주 묻는 질문</a></li>
+<li><a class="hover:text-primary" href="#">시스템 도움말</a></li>
+</ul>
+</div>
+</div>
+</div>
+</footer>
+</div>
+
+<script src="/stitch-runtime/runtime.js"></script>
+</body></html>

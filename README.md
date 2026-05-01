@@ -2,6 +2,8 @@
 
 현대위아 온러닝서처(Online + Learning + Search) 프로젝트 저장소입니다.
 
+현재 기준 앱은 `Next.js App Router`이며, 백엔드는 Supabase/Postgres 기반 `/api` 경로를 사용합니다.
+
 ## 시작하기
 ```bash
 npm install
@@ -14,14 +16,12 @@ npm run dev:remote-mock
 ```
 
 환경 변수는 `.env.example`을 참고해서 설정합니다.
-- `VITE_API_MODE=mock|remote` (`mock` 기본)
-- `VITE_API_MODE=remote`일 때 `VITE_API_BASE_URL` 필수
-- `VITE_SSO_LOGIN_URL`, `VITE_SSO_LOGOUT_URL`, `VITE_SSO_CALLBACK_URL` (remote 권장)
-- remote 모드에서는 온보딩 프로필 저장이 `PUT /profile` 계약을 사용합니다.
-- `VITE_DISABLED_FEATURES=chatbot,responsive` 형태로 기능 임시 비활성화
-- `VITE_API_RETRY_COUNT` 원격 GET 요청 재시도 횟수
-- `VITE_ERROR_REPORT_URL` 전역 오류 리포트 수집 엔드포인트
-- `VITE_DEBUG_TOOLS=1`일 때 홈의 디버그 액션(데이터 초기화/역할전환/API 오류 모드) 노출
+- `NEXT_PUBLIC_API_BASE_URL`
+  - 기본값은 `/api`
+  - 원격 mock/E2E 리허설에서는 `http://127.0.0.1:8787` 같은 절대 경로를 사용합니다.
+- `SUPABASE_URL`
+- `SUPABASE_ANON_KEY`
+- `SUPABASE_DB_URL`
 
 ## 시작 전 핵심
 - 기능별 `git worktree`를 사용합니다.
@@ -67,20 +67,12 @@ npm run api:remote-mock
 
 ## 폴더 구조
 ```text
-src/
-  app/
-  router/
-  styles/
-  shared/
-    layouts/
-    state/
-  features/
-    diagnosis/
-    recommendation/
-    course-linking/
-    history/
-    chatbot/
-    responsive/
+app/
+components/
+lib/
+api/
+public/
+server/
 ```
 
 ## 협업 템플릿

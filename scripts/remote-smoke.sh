@@ -16,16 +16,8 @@ set +a
 
 echo "[remote-smoke] 환경 검증 시작"
 
-if [[ "${VITE_API_MODE:-}" != "remote" ]]; then
-  echo "[remote-smoke] VITE_API_MODE=remote 가 아닙니다."
-  exit 1
-fi
-
 required_vars=(
-  "VITE_API_BASE_URL"
-  "VITE_SSO_LOGIN_URL"
-  "VITE_SSO_LOGOUT_URL"
-  "VITE_ECAMPUS_COURSE_APPLY_URL"
+  "NEXT_PUBLIC_API_BASE_URL"
 )
 
 for key in "${required_vars[@]}"; do
@@ -40,12 +32,12 @@ for key in "${required_vars[@]}"; do
   fi
 done
 
-if [[ ! "${VITE_API_BASE_URL}" =~ ^https?:// ]]; then
-  echo "[remote-smoke] VITE_API_BASE_URL 형식 오류: ${VITE_API_BASE_URL}"
+if [[ ! "${NEXT_PUBLIC_API_BASE_URL}" =~ ^https?:// ]]; then
+  echo "[remote-smoke] NEXT_PUBLIC_API_BASE_URL 형식 오류: ${NEXT_PUBLIC_API_BASE_URL}"
   exit 1
 fi
 
-HEALTH_URL="${VITE_API_BASE_URL%/}/health"
+HEALTH_URL="${NEXT_PUBLIC_API_BASE_URL%/}/health"
 echo "[remote-smoke] API health 체크: ${HEALTH_URL}"
 
 http_code="$(curl -sS -o /tmp/on_learning_remote_health.out -w "%{http_code}" \

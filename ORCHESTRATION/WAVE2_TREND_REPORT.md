@@ -1,17 +1,17 @@
 # Wave2 Trend Report
 
-- generatedAt: 2026-03-06 10:09:40 UTC
+- generatedAt: 2026-03-08 03:35:44 UTC
 
 ## Snapshot Window
 
-- previous: 20260306-190825
-- current: 20260306-190940
+- previous: 20260308-122618
+- current: 20260308-123544
 
 ## KPI Delta
 
 | Metric | Previous | Current | Delta |
 |---|---:|---:|---:|
-| averageProgress | 0 | 0 | 0 |
+| averageProgress | 10 | 10 | 0 |
 | mergeReadyCount | 0 | 0 | 0 |
 | blockedCount | 0 | 0 | 0 |
 | noFeatureCommitCount | 7 | 7 | 0 |

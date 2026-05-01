@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+
+<html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002C5F",
+                        "secondary": "#00AAD2",
+                        "background-light": "#f8f9fa",
+                        "background-dark": "#0a111a",
+                        "hyundai-navy": "#002C5F",
+                        "hyundai-blue": "#00AAD2",
+                        "neutral-gray": "#f1f3f5"
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "Noto Sans KR", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: "Public Sans", "Noto Sans KR", sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-6 py-3 lg:px-20">
+<div class="flex items-center gap-4 text-hyundai-navy dark:text-white">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-3xl text-hyundai-navy dark:text-hyundai-blue">corporate_fare</span>
+<h2 class="text-xl font-black leading-tight tracking-tight">HYUNDAI WIA <span class="font-normal text-secondary">On-Learning</span></h2>
+</div>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-slate-700 dark:text-slate-300 text-sm font-semibold hover:text-hyundai-blue" href="#">교육과정</a>
+<a class="text-slate-700 dark:text-slate-300 text-sm font-semibold hover:text-hyundai-blue" href="#">학습지원</a>
+<a class="text-slate-700 dark:text-slate-300 text-sm font-semibold hover:text-hyundai-blue" href="#">마이페이지</a>
+</nav>
+<div class="flex items-center gap-3 border-l pl-6 border-slate-200 dark:border-slate-700">
+<div class="flex flex-col items-end">
+<span class="text-sm font-bold text-hyundai-navy dark:text-white">현대위아 구성원</span>
+<span class="text-xs text-slate-500 dark:text-slate-400">R&amp;D Engineer</span>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-hyundai-blue/20" data-alt="User profile picture of Alex Kim" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDbHtuWaepagWA3dA6bTwCjM5wo6_HgKpTMbkuTPVfwgusVThdM0FudPRBX73nWxsZRerODslE-d5B4dPoywOKQYSK4uyCWo-t0WWVA7T_lKzkdjgLnPn1hAxLRrIypEdhzSl0YiU7W0nJMBmiRmM6OXEWTN0WwEXMr0Y_m4hM1LaQc6k9L9g3c0oSOG0F4f5nl8lfTyeV6LuacYcXPlJE_B1YQawB5sEmdqzKPKxOKK7rsKUHwby46At5x7cYKUSbzkD33gryIKw");'></div>
+</div>
+</div>
+</header>
+<main class="px-6 py-8 lg:px-20 max-w-[1280px] mx-auto w-full">
+<!-- Breadcrumb -->
+<div class="flex items-center gap-2 mb-6 text-sm">
+<a class="text-slate-500 hover:text-hyundai-navy transition-colors" href="#">홈</a>
+<span class="material-symbols-outlined text-sm text-slate-400">chevron_right</span>
+<span class="text-hyundai-navy dark:text-hyundai-blue font-bold">교육 신청 연동</span>
+</div>
+<!-- Hero Section -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
+<div class="lg:col-span-2 flex flex-col gap-6">
+<div class="inline-flex px-3 py-1 rounded-full bg-hyundai-blue/10 text-hyundai-blue text-xs font-bold w-fit uppercase tracking-wider">
+                            Recommended Course
+                        </div>
+<h1 class="text-slate-900 dark:text-white text-4xl lg:text-5xl font-black leading-tight tracking-tight">
+                            AI가 말했다 그건 네가 안 해도 돼 - <br class="hidden md:block"/>
+<span class="text-hyundai-navy dark:text-hyundai-blue">반복 업무 대신 AI가 일하는 업무 자동화 입문</span>
+</h1>
+<p class="text-slate-600 dark:text-slate-400 text-lg leading-relaxed max-w-2xl">
+                            업무 효율의 혁명! 단순히 AI를 아는 것을 넘어, 실질적인 업무 프로세스를 자동화하여 생산성을 200% 향상시키는 실무 중심 교육입니다.
+                        </p>
+</div>
+<!-- Quick Actions Card -->
+<div class="lg:col-span-1">
+<div class="bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-200 dark:border-slate-800 p-6 flex flex-col gap-6">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-hyundai-navy flex items-center justify-center text-white">
+<span class="material-symbols-outlined">schedule</span>
+</div>
+<div>
+<p class="text-xs text-slate-500 uppercase font-bold tracking-tighter">총 학습 시간</p>
+<p class="text-lg font-bold text-slate-900 dark:text-white">8시간 (1Day 과정)</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-hyundai-blue flex items-center justify-center text-white">
+<span class="material-symbols-outlined">laptop_mac</span>
+</div>
+<div>
+<p class="text-xs text-slate-500 uppercase font-bold tracking-tighter">교육 방식</p>
+<p class="text-lg font-bold text-slate-900 dark:text-white">실시간 온라인 교육</p>
+</div>
+</div>
+<div class="pt-4 border-t border-slate-100 dark:border-slate-800">
+<p class="text-sm text-slate-500 mb-4">이 과정은 현대위아 E-Campus 시스템과 연동되어 있습니다. 신청 시 해당 시스템으로 이동합니다.</p>
+<button class="w-full flex items-center justify-center gap-2 rounded-xl h-14 bg-hyundai-navy text-white text-base font-bold hover:bg-opacity-90 transition-all shadow-lg shadow-hyundai-navy/20">
+<span>E-Campus에서 신청하기</span>
+<span class="material-symbols-outlined">open_in_new</span>
+</button>
+<button class="w-full mt-3 flex items-center justify-center gap-2 rounded-xl h-12 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-sm font-semibold border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">
+<span class="material-symbols-outlined text-lg">check_circle</span>
+<span>추천 과정 수강 완료</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Detailed Info -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+<div class="lg:col-span-2 space-y-12">
+<!-- Course Image -->
+<div class="relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl">
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+<div class="absolute bottom-6 left-8 z-20">
+<p class="text-white/80 text-sm font-medium mb-1">Modern AI Workflow</p>
+<h3 class="text-white text-2xl font-bold">차세대 업무 자동화 솔루션</h3>
+</div>
+<img class="w-full h-full object-cover" data-alt="Modern AI office workspace with clean tech interface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9pig_3kctiw2dhgCViTHUYr6EvowIDXjDH4ezIaxhoCGpTFt0h7h-aHZR2C8xVrioJC3K4qvgI0edSlixbGrTBbgCE4sU8onIzpVJR3KSr7ao9wQ9Gw6YeL69VhTu79PkFN78u8Eum31bDBCUPFrtL-uSEjHSkoAvRb9WXDP1ZJAUztqspSdCNI5Ztke0w7324vkJeB3ji4Ka-Lv6eGjcQv96rWOoMKElOiJzhdOHQJy_dJHyj_tHoOLI7BiP5blw6Qccm5fqjA"/>
+</div>
+<!-- Info Tabs/Sections -->
+<section>
+<h2 class="text-2xl font-bold text-hyundai-navy dark:text-white mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-hyundai-blue">target</span>
+                                학습 목표
+                            </h2>
+<div class="grid md:grid-cols-2 gap-4">
+<div class="p-5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+<p class="text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
+                                        • AI 툴(ChatGPT, Claude 등)의 기본 원리와 업무 적용 방법 습득
+                                    </p>
+</div>
+<div class="p-5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+<p class="text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
+                                        • 노코드 협업 툴과 AI를 연동한 자동화 워크플로우 설계 능력 배양
+                                    </p>
+</div>
+</div>
+</section>
+<section>
+<h2 class="text-2xl font-bold text-hyundai-navy dark:text-white mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-hyundai-blue">menu_book</span>
+                                커리큘럼
+                            </h2>
+<div class="space-y-4">
+<div class="flex gap-4 p-6 rounded-xl bg-white dark:bg-slate-900 border-l-4 border-hyundai-blue shadow-sm">
+<span class="text-hyundai-blue font-black text-xl">01</span>
+<div>
+<h4 class="font-bold text-slate-900 dark:text-white mb-1">AI 시대의 업무 방식 변화</h4>
+<p class="text-sm text-slate-500">생성형 AI의 이해와 업무 자동화의 필요성 파악</p>
+</div>
+</div>
+<div class="flex gap-4 p-6 rounded-xl bg-white dark:bg-slate-900 border-l-4 border-hyundai-navy shadow-sm">
+<span class="text-hyundai-navy font-black text-xl">02</span>
+<div>
+<h4 class="font-bold text-slate-900 dark:text-white mb-1">프롬프트 엔지니어링 실습</h4>
+<p class="text-sm text-slate-500">원하는 결과를 즉시 얻어내는 고급 프롬프트 기술</p>
+</div>
+</div>
+<div class="flex gap-4 p-6 rounded-xl bg-white dark:bg-slate-900 border-l-4 border-hyundai-blue shadow-sm">
+<span class="text-hyundai-blue font-black text-xl">03</span>
+<div>
+<h4 class="font-bold text-slate-900 dark:text-white mb-1">데이터 분석 및 보고서 자동화</h4>
+<p class="text-sm text-slate-500">엑셀 및 파워포인트 작업 시간을 90% 단축하는 AI 활용법</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+<div class="lg:col-span-1 space-y-8">
+<!-- Expectations Section -->
+<div class="p-8 rounded-2xl bg-hyundai-navy text-white">
+<h3 class="text-xl font-bold mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-hyundai-blue">trending_up</span>
+                                기대 효과
+                            </h3>
+<ul class="space-y-4">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-hyundai-blue mt-1">check_circle</span>
+<span class="text-slate-200">단순 반복 업무에서 해방되어 핵심 가치 업무에 집중 가능</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-hyundai-blue mt-1">check_circle</span>
+<span class="text-slate-200">최신 AI 기술 습득을 통한 개인 및 조직의 디지털 경쟁력 강화</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-hyundai-blue mt-1">check_circle</span>
+<span class="text-slate-200">팀 전체의 업무 프로세스 최적화 및 커뮤니케이션 효율 증대</span>
+</li>
+</ul>
+</div>
+<!-- Target Audience -->
+<div class="p-6 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-800">
+<h3 class="text-lg font-bold text-slate-900 dark:text-white mb-4">권장 대상</h3>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-sm text-slate-600 dark:text-slate-400">#전사 임직원</span>
+<span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-sm text-slate-600 dark:text-slate-400">#R&amp;D 센터</span>
+<span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-sm text-slate-600 dark:text-slate-400">#기획/관리팀</span>
+<span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-sm text-slate-600 dark:text-slate-400">#생산기술</span>
+</div>
+</div>
+<!-- External Link Notice -->
+<div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-900/40 p-5 rounded-xl flex gap-3">
+<span class="material-symbols-outlined text-amber-600">info</span>
+<p class="text-sm text-amber-800 dark:text-amber-300 leading-relaxed">
+<b>외부 시스템 안내:</b> <br/>
+                                본 페이지는 교육 정보를 제공하며, 실제 수강 신청 및 이수 처리는 현대위아 E-Campus 웹사이트에서 관리됩니다.
+                            </p>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="mt-auto py-8 px-6 lg:px-20 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+<div class="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-slate-500 text-sm">
+<p>© 2024 HYUNDAI WIA. All rights reserved.</p>
+<div class="flex gap-6">
+<a class="hover:text-hyundai-blue" href="#">개인정보처리방침</a>
+<a class="hover:text-hyundai-blue" href="#">이용약관</a>
+<a class="hover:text-hyundai-blue" href="#">고객센터</a>
+</div>
+</div>
+</footer>
+</div>
+</div>
+
+<script src="/stitch-runtime/runtime.js"></script>
+</body></html>

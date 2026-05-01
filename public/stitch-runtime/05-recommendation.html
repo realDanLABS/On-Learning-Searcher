@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CourseHub | Recommended for You</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script content='tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002C5F",
+                        "accent": "#00AAD2",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }' id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Public Sans', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-10 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-[#002C5F]">
+<div class="size-8 flex items-center justify-center bg-[#002C5F] rounded-lg text-white">
+<span class="material-symbols-outlined">architecture</span>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-[-0.015em]">On-Learning Searcher</h2>
+</div>
+<nav class="hidden md:flex items-center gap-9">
+<a class="text-slate-700 dark:text-slate-300 text-sm font-medium hover:text-[#00AAD2] transition-colors" href="#">가이드라인</a>
+<a class="text-slate-700 dark:text-slate-300 text-sm font-medium hover:text-[#00AAD2] transition-colors" href="#">컴포넌트</a>
+<a class="text-slate-700 dark:text-slate-300 text-sm font-medium hover:text-[#00AAD2] transition-colors" href="#">토큰</a>
+<a class="text-slate-700 dark:text-slate-300 text-sm font-medium hover:text-[#00AAD2] transition-colors" href="#">에셋</a>
+</nav>
+</div>
+<div class="flex flex-1 justify-end gap-4 items-center">
+<label class="flex flex-col min-w-40 h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full bg-slate-100 dark:bg-slate-800">
+<div class="text-slate-500 flex items-center justify-center pl-4">
+<span class="material-symbols-outlined text-xl">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 border-none bg-transparent focus:ring-0 h-full placeholder:text-slate-500 px-4 pl-2 text-sm font-normal" placeholder="디자인 시스템 검색..." value=""/>
+</div>
+</label>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-[#002C5F] text-white text-sm font-bold transition-all hover:bg-[#002C5F]/90">
+<span class="truncate">로그인</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border border-slate-200 dark:border-slate-700" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA6dFmhH5sp24wx_aGXcCIIK691AW-aoKjx05Esc0PPXFoR8bMbE0y7j4vtQQNsfuBGP1FQQZrbSp3-aQt-rZzmc-wkzg6VRsOcKvserEOUzhskq3IjySsCMCJr4DXMTVbXxWvOqr8HjH5VDXDiotZgDem8V07mzxWgC1jaSNG7D2S0Z_Wy5XXgp1MrdB6_7BuGeD2cMS1iXVle-Ju7aMRugQq0256Ye6OA0jBnyn7tJshRDYe6-BAPhILPr0A_D-77Gy190xfYAQ");'></div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-4 md:px-10 py-8"><div class="layout-content-container flex flex-col max-w-[1200px] flex-1 mx-auto">
+<section class="mb-10">
+<div class="flex flex-col md:flex-row items-center gap-8 py-8">
+<div class="relative">
+<div class="size-24 md:size-32 rounded-full border-4 border-[#00AAD2]/20 p-1">
+<img alt="User Profile" class="rounded-full size-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGXXp2u4NeX0hnEYzYMQBfA1gYMCCeUCnYoVIDGen2RXkFPFiI_mCLixZCszc6SKW3WUUQFis4XYQe02ym99JpN6xwXV1sXDdvjTno6iCjF3kVoroB1qdjGx-R9j7eVOmM8uBg7SSohvIKongdPXFQReFa-vtKQUiinutNOxjIBMS76l3g-xhKMYOcMcf6ZsqUDCLUVR4p6sVSynYRf8nG1P4SgOaBKF8O-LfJv1EXWqVNgmhMV5Vq07KUWqmycT_JbDY7tiN0Vw"/>
+</div>
+<div class="absolute -bottom-1 -right-1 bg-[#00AAD2] text-white p-1 rounded-full border-2 border-white dark:border-slate-900">
+<span class="material-symbols-outlined text-sm block">verified</span>
+</div>
+</div>
+<div class="flex-1 text-center md:text-left">
+<h1 class="text-3xl font-black text-slate-900 dark:text-white mb-2">맞춤 교육 추천</h1>
+<p class="text-slate-600 dark:text-slate-400 text-lg">최근 진단 결과를 바탕으로 지금 바로 이어갈 추천 과정을 정리했습니다.</p>
+</div>
+</div>
+</section>
+<div class="flex flex-col lg:flex-row gap-10">
+<aside class="w-full lg:w-64 flex-shrink-0 space-y-8">
+<div>
+<h3 class="text-sm font-bold text-slate-900 dark:text-white mb-4 uppercase tracking-wider">카테고리</h3>
+<div class="space-y-2">
+<label class="flex items-center gap-2 cursor-pointer">
+<input checked="" class="rounded border-slate-300 text-[#002C5F] focus:ring-[#002C5F]" type="checkbox"/> <span class="text-sm">전체</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer">
+<input class="rounded border-slate-300 text-[#002C5F] focus:ring-[#002C5F]" type="checkbox"/> <span class="text-sm">디자인</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer">
+<input class="rounded border-slate-300 text-[#002C5F] focus:ring-[#002C5F]" type="checkbox"/> <span class="text-sm">개발</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer">
+<input class="rounded border-slate-300 text-[#002C5F] focus:ring-[#002C5F]" type="checkbox"/> <span class="text-sm">데이터/AI</span>
+</label>
+</div>
+</div>
+<div>
+<h3 class="text-sm font-bold text-slate-900 dark:text-white mb-4 uppercase tracking-wider">난이도</h3>
+<div class="space-y-2">
+<label class="flex items-center gap-2 cursor-pointer">
+<input checked="" class="border-slate-300 text-[#002C5F] focus:ring-[#002C5F]" name="diff" type="radio"/> <span class="text-sm">전체</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer">
+<input class="border-slate-300 text-[#002C5F] focus:ring-[#002C5F]" name="diff" type="radio"/> <span class="text-sm">초급</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer">
+<input class="border-slate-300 text-[#002C5F] focus:ring-[#002C5F]" name="diff" type="radio"/> <span class="text-sm">중급</span>
+</label>
+</div>
+</div>
+</aside>
+<div class="flex-1">
+<div class="flex items-center justify-between mb-8 pb-4 border-b border-slate-200 dark:border-slate-800">
+<h2 class="text-2xl font-bold text-slate-900 dark:text-white">맞춤 교육 추천</h2>
+<select class="bg-transparent border-none text-sm font-bold text-slate-500 focus:ring-0">
+<option>추천순</option>
+<option>최신순</option>
+</select>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Course Card 1 -->
+<div class="bg-white dark:bg-slate-900 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 flex flex-col">
+<div class="h-40 bg-slate-100 dark:bg-slate-800 relative">
+<img alt="ChatGPT" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7j2oh5TwDs2LammLaxAShaW3g1U86Q-Zoft9OH-kAFzK7ms2WYGyHXTd3561odRPplwiSHdShm4VCKbykyBQ_TWjsRfNd1ge7JAxc3g2v55sFas1QqtbAiOXjFbK5js3ImCXGc9UgADo9Ce0UCLhpUIjToDZQtVywfnZWopNUdHya-WdmRITFHh-sFgH8KtkHEY-nzopCGNRxWZW46GhUU3B81PEIJ_2fHsLfohNExx6_bH_0EUsrOnKF9jqAT2rR0OT56Ar50A"/>
+<span class="absolute top-3 left-3 bg-[#002C5F] text-white text-[10px] font-bold px-2 py-0.5 rounded">인기</span>
+</div>
+<div class="p-5 flex-1 flex flex-col">
+<div class="flex gap-2 mb-2">
+<span class="text-[10px] font-bold text-[#00AAD2] uppercase">중급</span>
+<span class="text-[10px] font-bold text-slate-400">5시간 30분</span>
+</div>
+<h4 class="text-lg font-bold text-slate-900 dark:text-white mb-4">ChatGPT 정복을 위한 프롬프트 엔지니어링</h4>
+<div class="mt-auto flex gap-2">
+<button class="flex-1 border border-slate-200 dark:border-slate-700 text-sm font-bold py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800">상세보기</button>
+<button class="flex-1 bg-[#002C5F] text-white text-sm font-bold py-2 rounded-lg hover:bg-[#002C5F]/90">수강 신청</button>
+</div>
+</div>
+</div>
+<!-- Course Card 2 -->
+<div class="bg-white dark:bg-slate-900 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 flex flex-col">
+<div class="h-40 bg-slate-100 dark:bg-slate-800 relative">
+<img alt="Data Storytelling" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvQrVXmN3Sqn5VJctDn6Plafo8DMYQPD_M1yJCpVBB3MQW_BCq5hBy_id7lsCSgEkxxHXDN1RlErQs1iD0D8-hBphtpAfl0xjN3xwczI_PUzUWltoh8N7GCdGgBxyYyjBnf0UbZZX_rbs7h6P89TZQ4Itt-n9tvD8MZYwE1X5w2j3ykhtNTeAPt4H81mz5Ijq0slc6TbIIVaMPv4w_fvu6ivjmNI1dXOUv0i4pWi3CWeEyzk82GoCsV9eYPwgvmKZfNaPLYkPpGQ"/>
+<span class="absolute top-3 left-3 bg-[#00AAD2] text-white text-[10px] font-bold px-2 py-0.5 rounded">신규</span>
+</div>
+<div class="p-5 flex-1 flex flex-col">
+<div class="flex gap-2 mb-2">
+<span class="text-[10px] font-bold text-[#00AAD2] uppercase">초급</span>
+<span class="text-[10px] font-bold text-slate-400">12시간</span>
+</div>
+<h4 class="text-lg font-bold text-slate-900 dark:text-white mb-4">데이터 스토리텔링</h4>
+<div class="mt-auto flex gap-2">
+<button class="flex-1 border border-slate-200 dark:border-slate-700 text-sm font-bold py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800">상세보기</button>
+<button class="flex-1 bg-[#002C5F] text-white text-sm font-bold py-2 rounded-lg hover:bg-[#002C5F]/90">수강 신청</button>
+</div>
+</div>
+</div>
+<!-- Course Card 3 -->
+<div class="bg-white dark:bg-slate-900 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 flex flex-col">
+<div class="h-40 bg-slate-100 dark:bg-slate-800 relative">
+<img alt="Cloud Security" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNPNCiaBesfy_nbbbzDcWfdGHuwLnLSmMt9ZVj2mDsOIojjBsqFP7BidSc95Ety1CSAOButB8tIHb9YwDvadCjLQCAYVSVPrGeVZF4wug-tKstJJsl64F0WKvnMj67M_E_UzJLI4sBG89MXuUV9U-cR0p8rrqBa2IBRmz2cAk0Nl_wVJQn_45DWb2zH5iGCBmbKauwpcs-mkfLcCY1t3dlb6GWkAeG12ybAYa5m1ugRAfjZGJYCTgUukWZs8BcH9fv-LI1U8VmvQ"/>
+</div>
+<div class="p-5 flex-1 flex flex-col">
+<div class="flex gap-2 mb-2">
+<span class="text-[10px] font-bold text-[#00AAD2] uppercase">고급</span>
+<span class="text-[10px] font-bold text-slate-400">8시간 45분</span>
+</div>
+<h4 class="text-lg font-bold text-slate-900 dark:text-white mb-4">클라우드 보안</h4>
+<div class="mt-auto flex gap-2">
+<button class="flex-1 border border-slate-200 dark:border-slate-700 text-sm font-bold py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800">상세보기</button>
+<button class="flex-1 bg-[#002C5F] text-white text-sm font-bold py-2 rounded-lg hover:bg-[#002C5F]/90">수강 신청</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div></main>
+<footer class="border-t border-slate-200 dark:border-slate-800 py-12 px-10 bg-white dark:bg-slate-900 mt-20">
+<div class="max-w-[1200px] mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+<div class="flex items-center gap-3">
+<div class="size-6 bg-slate-400 rounded flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-sm">architecture</span>
+</div>
+<span class="text-slate-500 text-sm font-medium">© 2024 현대위아 온러닝 서처</span>
+</div>
+<div class="flex gap-8">
+<a class="text-slate-400 hover:text-[#002C5F] transition-colors text-sm" href="#">도움말</a>
+<a class="text-slate-400 hover:text-[#002C5F] transition-colors text-sm" href="#">고객 지원</a>
+<a class="text-slate-400 hover:text-[#002C5F] transition-colors text-sm" href="#">v2.4.0</a>
+</div>
+</div>
+</footer>
+
+<script src="/stitch-runtime/runtime.js"></script>
+</body></html>

@@ -1,15 +1,17 @@
 # Wave2 Check-in: chatbot
 
-- updatedAt: 2026-03-06
-- progress: 0
+- updatedAt: 2026-03-08
+- progress: 10
 - status: IN_PROGRESS
 - completed:
-  - (작성 필요)
+  - Recovery Plan 기준 chatbot 소유 범위 확정
+  - upstream 상태 소비 원칙 유지 필요성 확인
 - inProgress:
-  - (작성 필요)
+  - main drift에서 빠른 질문 / 상태기반 상담 / 다음 액션 유도 회수 준비
+  - history/recommendation/course-linking 결과 소비 경계 점검
 - blockers:
   - 없음
 - nextCommit:
-  - (작성 필요)
+  - feat(chatbot): recover contextual guidance flow from main drift
 - validation:
-  - (명령 + 결과)
+  - 문서 검토 기준: 답변이 항상 다음 액션으로 이어지는지

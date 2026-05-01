@@ -3,7 +3,7 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 API_PORT="${REMOTE_MOCK_PORT:-8787}"
-APP_PORT="${APP_PORT:-4173}"
+APP_PORT="${APP_PORT:-3000}"
 API_BASE_URL="http://127.0.0.1:${API_PORT}"
 APP_BASE_URL="http://127.0.0.1:${APP_PORT}"
 
@@ -45,13 +45,8 @@ free_port_if_busy "$APP_PORT"
 node scripts/remote-mock-server.mjs > /tmp/on-learning-remote-mock.log 2>&1 &
 API_PID=$!
 
-VITE_API_MODE=remote \
-VITE_API_BASE_URL="$API_BASE_URL" \
-VITE_SSO_LOGIN_URL="$APP_BASE_URL/auth/callback?status=success&employeeId=E1001&name=Demo%20User&organization=Learning%20Team&role=employee" \
-VITE_SSO_LOGOUT_URL="$APP_BASE_URL" \
-VITE_SSO_CALLBACK_URL="/auth/callback" \
-VITE_ECAMPUS_COURSE_APPLY_URL="$API_BASE_URL/ecampus/apply" \
-npm run dev -- --host 127.0.0.1 --port "$APP_PORT" > /tmp/on-learning-remote-app.log 2>&1 &
+NEXT_PUBLIC_API_BASE_URL="$API_BASE_URL" \
+npm run dev > /tmp/on-learning-remote-app.log 2>&1 &
 APP_PID=$!
 
 cleanup() {

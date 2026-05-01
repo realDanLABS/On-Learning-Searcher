@@ -40,3 +40,4 @@ worktrees/
 # Playwright artifacts
 playwright-report/
 test-results/
+.vercel

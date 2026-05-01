@@ -1,7 +1,7 @@
 # Execution Board
 
 - generatedFrom: ORCHESTRATION/CHECKINS
-- generatedAt: 2026-03-06
+- generatedAt: 2026-03-08
 
 ## Status Legend
 - TODO
@@ -11,13 +11,13 @@
 
 | Worktree | Status | Owner Role | Current Goal | Next Check |
 |---|---|---|---|---|
-| foundation | IN_PROGRESS | Orchestrator | Wave2: 공통 상태 컴포넌트 + 릴리즈 메타 표기 (0%) | 2026-03-06 |
-| diagnosis | IN_PROGRESS | Orchestrator | Wave2: 문항 확장 + 이탈 이벤트 계측 (0%) | 2026-03-06 |
-| recommendation | IN_PROGRESS | Orchestrator | Wave2: 추천 근거 모달 + 즐겨찾기/보류 (0%) | 2026-03-06 |
-| course-linking | IN_PROGRESS | Orchestrator | Wave2: 신청 실패 재시도 + 콜백 검증 강화 (0%) | 2026-03-06 |
-| history | IN_PROGRESS | Orchestrator | Wave2: 벤치마크 위젯 + 월간 리포트 다운로드 (0%) | 2026-03-06 |
-| chatbot | IN_PROGRESS | Orchestrator | Wave2: 컨텍스트 상담 + 종료 후 다음액션 (0%) | 2026-03-06 |
-| responsive | IN_PROGRESS | Orchestrator | Wave2: 접근성 QA + 모바일 UX 보강 (0%) | 2026-03-06 |
+| foundation | IN_PROGRESS | Orchestrator | Wave2: 공통 상태 컴포넌트 + 릴리즈 메타 표기 (10%) | 2026-03-08 |
+| diagnosis | IN_PROGRESS | Orchestrator | Recovery: 질문 구조 + 결과 스냅샷 + 갭 계산 선별 회수 (20%) | 2026-03-08 |
+| recommendation | IN_PROGRESS | Orchestrator | Wave2: 추천 근거 모달 + 즐겨찾기/보류 (10%) | 2026-03-08 |
+| course-linking | IN_PROGRESS | Orchestrator | Wave2: 신청 실패 재시도 + 콜백 검증 강화 (10%) | 2026-03-08 |
+| history | IN_PROGRESS | Orchestrator | Wave2: 벤치마크 위젯 + 월간 리포트 다운로드 (10%) | 2026-03-08 |
+| chatbot | IN_PROGRESS | Orchestrator | Wave2: 컨텍스트 상담 + 종료 후 다음액션 (10%) | 2026-03-08 |
+| responsive | IN_PROGRESS | Orchestrator | Wave2: 접근성 QA + 모바일 UX 보강 (10%) | 2026-03-08 |
 | integration-qa | DONE | Orchestrator | Wave2 통합회귀(로컬+remote) 릴리즈 게이트 통과 (`release:check:full`, 107+32+1 PASS) | 2026-03-06 |
 
 ## Current Gates (Commercialization)

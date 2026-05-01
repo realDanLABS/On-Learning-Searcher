@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Learning Path | Mastery Roadmap</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002C5F",
+                        "accent": "#00AAD2",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }</script>
+<style>
+        body { font-family: 'Public Sans', sans-serif; }
+        .roadmap-line {
+            position: absolute;
+            left: 20px;
+            top: 40px;
+            bottom: -20px;
+            width: 2px;
+            background: repeating-linear-gradient(to bottom, #ec5b13 0, #ec5b13 8px, transparent 8px, transparent 16px);
+        }
+        .step-node {
+            position: relative;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+<div class="relative flex min-h-screen flex-col">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-10 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-[#002C5F]">
+<div class="size-8 flex items-center justify-center bg-[#002C5F] rounded-lg text-white">
+<span class="material-symbols-outlined">architecture</span>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-[-0.015em]">온러닝 서처</h2>
+</div>
+<nav class="hidden md:flex items-center gap-9">
+<a class="text-slate-700 dark:text-slate-300 text-sm font-medium hover:text-[#00AAD2] transition-colors" href="#">가이드라인</a>
+<a class="text-slate-700 dark:text-slate-300 text-sm font-medium hover:text-[#00AAD2] transition-colors" href="#">컴포넌트</a>
+<a class="text-slate-700 dark:text-slate-300 text-sm font-medium hover:text-[#00AAD2] transition-colors" href="#">토큰</a>
+<a class="text-slate-700 dark:text-slate-300 text-sm font-medium hover:text-[#00AAD2] transition-colors" href="#">에셋</a>
+</nav>
+</div>
+<div class="flex flex-1 justify-end gap-4 items-center">
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-[#002C5F] text-white text-sm font-bold transition-all hover:bg-[#002C5F]/90">
+<span class="truncate">로그인</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border border-slate-200 dark:border-slate-700" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCHs1lIenIfUNsVZbdE0S3-bqnHTVFBaZdUHxahuNiQpRvqspsXkNO5J2jF_Pv5uw6g7jOgQdGiFgA2eokWg06nYHxO0qeuh5eNo38NqEkS6oP38SX7pBXEUcsSmG6NbrPw4PzhL6DsSVeG5eCglIo6QWVmUCtAievEmXYC5zVpdAF0EM1C-XcVEN9OXd_up-UwZc6VkZgu9HZXPa4oUWSv55FkpyUVJWbokoN4etlQ87xvC2_iM0gq_ls1qbEnWMyc4ZGWSw8C0g");'></div>
+</div>
+</header>
+<main class="flex-1 max-w-5xl mx-auto w-full px-4 md:px-6 py-8 pb-32">
+<!-- Header Section -->
+<div class="mb-8"><h1 class="text-3xl md:text-4xl font-black tracking-tight mb-2">추천 학습 경로</h1>
+<p class="text-slate-600 dark:text-slate-400 text-lg">귀하의 <span class="text-[#00AAD2] font-semibold">AI 및 자동화</span> 커리어 목표를 위한 맞춤형 로드맵입니다.</p></div>
+<!-- Summary Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12"><div class="flex items-center gap-4 p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
+<div class="bg-[#00AAD2]/10 text-[#00AAD2] p-3 rounded-lg">
+<span class="material-symbols-outlined">target</span>
+</div>
+<div>
+<h3 class="text-xs uppercase tracking-widest font-bold text-slate-500">집중 분야</h3>
+<p class="text-base font-bold">AI 및 자동화</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
+<div class="bg-[#00AAD2]/10 text-[#00AAD2] p-3 rounded-lg">
+<span class="material-symbols-outlined">pace</span>
+</div>
+<div>
+<h3 class="text-xs uppercase tracking-widest font-bold text-slate-500">시작 방식</h3>
+<p class="text-base font-bold">자기주도형 온라인</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
+<div class="bg-[#00AAD2]/10 text-[#00AAD2] p-3 rounded-lg">
+<span class="material-symbols-outlined">flag</span>
+</div>
+<div>
+<h3 class="text-xs uppercase tracking-widest font-bold text-slate-500">최종 목표</h3>
+<p class="text-base font-bold">업계 전문가 수준</p>
+</div>
+</div></div>
+<!-- Vertical Roadmap -->
+<div class="space-y-12">
+<!-- Step 1 -->
+<div class="relative flex gap-6 md:gap-10">
+<div class="roadmap-line" style="position: absolute; left: 20px; top: 40px; bottom: -20px; width: 2px; background: repeating-linear-gradient(to bottom, #00AAD2 0, #00AAD2 8px, transparent 8px, transparent 16px);"></div>
+<div class="step-node">
+<div class="flex items-center justify-center w-10 h-10 rounded-full text-white font-bold shadow-lg shadow-primary/30 bg-[#00AAD2]">1</div>
+</div>
+<div class="flex-1 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm hover:border-primary/50 transition-colors">
+<div class="flex flex-col md:flex-row">
+<div class="w-full md:w-48 h-32 md:h-auto bg-slate-100 dark:bg-slate-800 relative">
+<img class="w-full h-full object-cover" data-alt="Neural network digital abstract pattern" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3ha7vuzhhvuHDr6DIjNtZg9ygLreXON_ZulHzQq8nFecfmvywdeRfuS3UCwwD_ADlCerN-jKywdfyGZrKI71unT4DiT2ZZyMVkK39LetsJJKAci9S0ABNBi5aSaJhIQwL7zD5KtttrJMDSjUBXs_hUmJr0oB3AlxsqvkmybgxBDJUnzUyFY4qF9f8sH9lMTnF4m__CFwESI-YHJ2qCQBGKVkhpfdZipK1rxbl47mQaMXxfYf3OSL10VhJS5L2MQcgE7fnY97FnQ"/>
+<div class="absolute inset-0 bg-primary/10"></div>
+</div>
+<div class="p-6 flex-1"><div class="flex justify-between items-start mb-2">
+<h3 class="text-xl font-bold">프롬프트 엔지니어링 A to Z</h3>
+<span class="px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded text-xs font-bold text-slate-600 dark:text-slate-400">12시간</span>
+</div>
+<p class="text-slate-600 dark:text-slate-400 mb-4">매번 정확한 결과를 얻기 위해 LLM과 소통하는 기술을 마스터하세요.</p>
+<div class="p-4 bg-[#00AAD2]/5 rounded-lg border-l-4 border-[#00AAD2]">
+<h4 class="text-sm font-bold text-[#00AAD2] mb-1 uppercase tracking-wider">왜 이 과정이 필요한가요?</h4>
+<p class="text-sm text-slate-700 dark:text-slate-300 italic">"모든 현대적 AI 도구의 기초가 되는 기술입니다. 효율적인 프롬프트 없이는 자동화 결과가 일관되지 않고 신뢰할 수 없습니다."</p>
+</div></div>
+</div>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="relative flex gap-6 md:gap-10">
+<div class="roadmap-line" style="position: absolute; left: 20px; top: 40px; bottom: -20px; width: 2px; background: repeating-linear-gradient(to bottom, #00AAD2 0, #00AAD2 8px, transparent 8px, transparent 16px);"></div>
+<div class="step-node">
+<div class="flex items-center justify-center w-10 h-10 rounded-full text-white font-bold shadow-lg shadow-primary/30 bg-[#00AAD2]">2</div>
+</div>
+<div class="flex-1 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm hover:border-primary/50 transition-colors">
+<div class="flex flex-col md:flex-row">
+<div class="w-full md:w-48 h-32 md:h-auto bg-slate-100 dark:bg-slate-800 relative">
+<img class="w-full h-full object-cover" data-alt="Futuristic glowing circuit board technology" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQPue2ahs17Za7ZcAR-xIXbG1Ko_Fi_Tt1Xkd20QUQwSnMPpstSDZaMYbFxSzeK10lhSEFAKmWHWkWljBeVsS1DGo8epso_XFU1a8eBkwdUcdOaguHEy_T43uB37A32Ve-excgBarTqjCBDKA1vi15e0eydWmCwlGNoTNgcpGBtCB-2MSslWIUhb10EROKMzlE2NzP-ldWNVhqv-NyDbsxgql2JoTRaJcRVn_0dU5xVYe9eY2Jrk-OkAdKefB5TZNzkPl6wNBCYA"/>
+<div class="absolute inset-0 bg-primary/10"></div>
+</div>
+<div class="p-6 flex-1"><div class="flex justify-between items-start mb-2">
+<h3 class="text-xl font-bold">업무를 위한 생성형 AI</h3>
+<span class="px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded text-xs font-bold text-slate-600 dark:text-slate-400">8시간</span>
+</div>
+<p class="text-slate-600 dark:text-slate-400 mb-4">표준 비즈니스 워크플로우 및 문서 관리에 생성형 AI를 적용합니다.</p>
+<div class="p-4 bg-[#00AAD2]/5 rounded-lg border-l-4 border-[#00AAD2]">
+<h4 class="text-sm font-bold text-[#00AAD2] mb-1 uppercase tracking-wider">왜 이 과정이 필요한가요?</h4>
+<p class="text-sm text-slate-700 dark:text-slate-300 italic">"이론적인 AI 지식과 실제 업무 생산성을 연결하여 주당 10시간 이상의 시간을 절약할 수 있게 해줍니다."</p>
+</div></div>
+</div>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="relative flex gap-6 md:gap-10">
+<div class="step-node">
+<div class="flex items-center justify-center w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-bold border-2 border-slate-300 dark:border-slate-700">3</div>
+</div>
+<div class="flex-1 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm hover:border-primary/50 transition-colors opacity-90">
+<div class="flex flex-col md:flex-row">
+<div class="w-full md:w-48 h-32 md:h-auto bg-slate-100 dark:bg-slate-800 relative">
+<img class="w-full h-full object-cover" data-alt="Complex server room hardware equipment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHbP8yniPMhZBoxHOA2EmPtp_hMr6rnpvQWwpPnxKzXDBWOK213HYQXndjhVZaHJcTwHhXUYBwoEHkagVRLzvj0xYrb4oxvlMfmXOWZOH9eChCey0sI2QHLB-npB8zVeV9tkzoARWXP4wJdnbjDH0feOjgaiozW20XEvu7ow3H3QZ6-4T2UA900HpPsPFqDGe9CmHjWJlJxZgYsIOa_rAAHbaaK6pFOfonTVb6YuSmcgPz9L5Zm7Sw1E2O1iFxysLwLxnB5Wgb-A"/>
+<div class="absolute inset-0 bg-slate-500/10"></div>
+</div>
+<div class="p-6 flex-1"><div class="flex justify-between items-start mb-2">
+<h3 class="text-xl font-bold">고급 자동화 아키텍트</h3>
+<span class="px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded text-xs font-bold text-slate-600 dark:text-slate-400">24시간</span>
+</div>
+<p class="text-slate-600 dark:text-slate-400 mb-4">엔드-투-엔드 에이전트 및 복잡한 멀티 도구 자동화 파이프라인을 구축합니다.</p>
+<div class="p-4 bg-[#00AAD2]/5 rounded-lg border-l-4 border-[#00AAD2]">
+<h4 class="text-sm font-bold text-[#00AAD2] mb-1 uppercase tracking-wider">왜 이 과정이 필요한가요?</h4>
+<p class="text-sm text-slate-700 dark:text-slate-300 italic">"최종 핵심 기술입니다. 여러분을 단순한 AI 사용자에서 기업용 솔루션을 개발할 수 있는 AI 빌더로 성장시킵니다."</p>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+</main>
+
+<script src="/stitch-runtime/runtime.js"></script>
+</body></html>

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+
+<html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;900&amp;family=Noto+Sans+KR:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002c5f",
+                        "hyundai-navy": "#002c5f",
+                        "hyundai-blue": "#00aad2",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "Noto Sans KR", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }</script>
+<style>        body { font-family: 'Public Sans', 'Noto Sans KR', sans-serif; }
+        .sidebar-active { background-color: rgba(0, 44, 95, 0.1); border-left: 4px solid #002c5f; }
+        .glass-card { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(8px); }</style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-72 bg-white dark:bg-zinc-900 border-r border-slate-200 dark:border-zinc-800 flex flex-col shrink-0">
+<div class="p-6 border-b border-slate-100 dark:border-zinc-800 flex items-center gap-3">
+<div class="w-10 h-10 flex items-center justify-center rounded-lg bg-hyundai-navy">
+<span class="material-symbols-outlined text-white">search_insights</span>
+</div>
+<div>
+<h1 class="font-bold text-lg leading-tight">HYUNDAI WIA</h1>
+<p class="text-xs text-slate-500 font-medium uppercase tracking-wider">On Learning Searcher</p>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto py-6 px-4 space-y-2">
+<div class="px-3 mb-2 text-xs font-semibold text-slate-400 uppercase tracking-widest">Analytics</div>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl sidebar-active font-bold text-hyundai-navy" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>운영 분석 대시보드</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-zinc-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-400">analytics</span>
+<span>현황 분석</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-zinc-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-400">group</span>
+<span>부서 관리</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-zinc-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-400">description</span>
+<span>신청 관리</span>
+</a>
+<div class="pt-6 px-3 mb-2 text-xs font-semibold text-slate-400 uppercase tracking-widest">Settings</div>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-zinc-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-400">settings</span>
+<span>시스템 설정</span>
+</a>
+</nav>
+<div class="p-6 border-t border-slate-100 dark:border-zinc-800">
+<button class="flex items-center gap-3 px-4 py-2 w-full text-slate-500 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-medium text-sm">로그아웃</span>
+</button>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col overflow-hidden bg-slate-50/50 dark:bg-zinc-950">
+<!-- Header -->
+<header class="h-20 bg-white dark:bg-zinc-900 border-b border-slate-200 dark:border-zinc-800 flex items-center justify-between px-8 shrink-0">
+<div class="flex items-center gap-4">
+<h2 class="text-xl font-bold">운영 분석 개요</h2>
+<span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-bold border border-primary/20 bg-hyundai-blue/10 text-hyundai-blue border-hyundai-blue/20">실시간 데이터</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative group">
+<span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-primary transition-colors">notifications</span>
+<span class="absolute -top-1 -right-1 w-4 h-4 text-white text-[10px] flex items-center justify-center rounded-full font-bold bg-hyundai-navy">5</span>
+</div>
+<div class="h-8 w-px bg-slate-200 dark:bg-zinc-800"></div>
+<div class="flex items-center gap-3">
+<div class="text-right">
+<p class="text-sm font-bold">현대위아 관리자</p>
+<p class="text-xs text-slate-500">인재개발팀 관리자</p>
+</div>
+<div class="w-10 h-10 rounded-full border-2 p-0.5">
+<img class="w-full h-full rounded-full object-cover shadow-sm" data-alt="Admin user profile picture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-bNnBQoFq7n90eKhMn7q8s6FqfYlJxwX7TdyjkawqnnKSXApyChmokn9Dq4W6ZpsaTHEFh3JAd32oVAffF4mdrauz14r0WuUrc2Nmo8N9k9TPhzhF60TxnnErdjxj4C9iEmtGAaUHegtXXS4KfKYtZMA-R2VWRgxk6T5foH1fExQ_KXITdQ2xc8mSU8rS-aQULasoTp-bA643HxpS1R5AkjA8sMBPdXQ4ESdUd5uRA4lOkIXRMdsvuCtlhYWVFbtHZN_VLTCEOQ"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Dashboard Content -->
+<div class="flex-1 overflow-y-auto p-8 space-y-8">
+<!-- KPI Section -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-zinc-800">
+<div class="flex justify-between items-start mb-4">
+<div class="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl text-blue-600">
+<span class="material-symbols-outlined">person_search</span>
+</div>
+<span class="text-xs font-bold text-green-500 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">trending_up</span> +12.5%
+                            </span>
+</div>
+<p class="text-slate-500 text-sm font-medium mb-1">누적 진단 인원</p>
+<h3 class="text-3xl font-black">1,240<span class="text-lg font-normal ml-1">명</span></h3>
+</div>
+<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-zinc-800">
+<div class="flex justify-between items-start mb-4">
+<div class="p-3 bg-green-50 dark:bg-green-900/20 rounded-xl text-green-600">
+<span class="material-symbols-outlined">task_alt</span>
+</div>
+<span class="text-xs font-bold text-slate-400 flex items-center gap-1">전일 대비 동일</span>
+</div>
+<p class="text-slate-500 text-sm font-medium mb-1">신청 완료 건수</p>
+<h3 class="text-3xl font-black">856<span class="text-lg font-normal ml-1">건</span></h3>
+</div>
+<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-zinc-800">
+<div class="flex justify-between items-start mb-4">
+<div class="p-3 bg-red-50 dark:bg-red-900/20 rounded-xl text-red-600">
+<span class="material-symbols-outlined">error</span>
+</div>
+<span class="text-xs font-bold text-red-500 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">warning</span> +3건
+                            </span>
+</div>
+<p class="text-slate-500 text-sm font-medium mb-1">신청 실패 건수</p>
+<h3 class="text-3xl font-black">12<span class="text-lg font-normal ml-1">건</span></h3>
+</div>
+<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-zinc-800">
+<div class="flex justify-between items-start mb-4">
+<div class="p-3 bg-amber-50 dark:bg-amber-900/20 rounded-xl text-amber-600">
+<span class="material-symbols-outlined">notification_important</span>
+</div>
+<span class="px-2 py-0.5 bg-amber-100 text-amber-700 rounded text-[10px] font-bold">긴급</span>
+</div>
+<p class="text-slate-500 text-sm font-medium mb-1">확인 필요 알림</p>
+<h3 class="text-3xl font-black">5<span class="text-lg font-normal ml-1">건</span></h3>
+</div>
+</div>
+<!-- Analysis Summary & Recommendations -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Funnel Analysis -->
+<div class="lg:col-span-2 bg-white dark:bg-zinc-900 p-8 rounded-2xl shadow-sm border border-slate-100 dark:border-zinc-800 flex flex-col">
+<div class="flex items-center justify-between mb-8">
+<div>
+<h3 class="text-lg font-bold">전환 퍼널 시각화</h3>
+<p class="text-sm text-slate-500">진단부터 최종 신청까지의 이탈률 분석</p>
+</div>
+<button class="text-sm font-bold flex items-center gap-1 hover:underline text-hyundai-navy">
+                                상세 리포트 <span class="material-symbols-outlined text-sm">open_in_new</span>
+</button>
+</div>
+<div class="flex-1 flex flex-col justify-between gap-4 py-4">
+<!-- Funnel Item 1 -->
+<div class="relative">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-slate-600 dark:text-slate-300">1. 진단 완료 (1,240명)</span>
+<span class="text-xs font-medium text-slate-400">100%</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-zinc-800 h-10 rounded-lg overflow-hidden flex">
+<div class="h-full w-full opacity-100 bg-hyundai-blue"></div>
+</div>
+</div>
+<!-- Funnel Item 2 -->
+<div class="relative">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-slate-600 dark:text-slate-300">2. 추천 교육 확인 (1,054명)</span>
+<span class="text-xs font-medium text-slate-400">85%</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-zinc-800 h-10 rounded-lg overflow-hidden flex justify-center">
+<div class="h-full w-[85%] opacity-80 bg-hyundai-blue"></div>
+</div>
+</div>
+<!-- Funnel Item 3 -->
+<div class="relative">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-slate-600 dark:text-slate-300">3. 신청 폼 진입 (912명)</span>
+<span class="text-xs font-medium text-slate-400">73%</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-zinc-800 h-10 rounded-lg overflow-hidden flex justify-center">
+<div class="h-full w-[73%] opacity-60 bg-hyundai-blue"></div>
+</div>
+</div>
+<!-- Funnel Item 4 -->
+<div class="relative">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-slate-600 dark:text-slate-300">4. 신청 최종 완료 (856명)</span>
+<span class="text-xs font-medium text-slate-400">69%</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-zinc-800 h-10 rounded-lg overflow-hidden flex justify-center">
+<div class="h-full w-[69%] opacity-40 bg-hyundai-blue"></div>
+</div>
+</div>
+</div>
+<div class="mt-8 p-4 bg-slate-50 dark:bg-zinc-800/50 rounded-xl border border-dashed border-slate-200 dark:border-zinc-700">
+<p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+<span class="font-bold text-hyundai-blue">인사이트:</span> 추천 확인 후 신청 폼 진입 단계에서 가장 큰 이탈(-12%)이 발생하고 있습니다. 신청 폼의 간소화 또는 모바일 최적화 여부 점검이 권장됩니다.
+                            </p>
+</div>
+</div>
+<!-- Bottleneck & Actions -->
+<div class="space-y-6">
+<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-zinc-800">
+<h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-hyundai-navy">priority_high</span>
+                                운영 병목 구간
+                            </h3>
+<div class="space-y-4">
+<div class="p-4 bg-red-50 dark:bg-red-900/10 rounded-xl border border-red-100 dark:border-red-900/20">
+<p class="text-xs font-bold text-red-600 uppercase mb-1">최장 지연</p>
+<p class="text-sm font-bold mb-2">팀장 승인 단계 (평균 4.2일)</p>
+<div class="w-full bg-slate-200 dark:bg-zinc-700 h-1.5 rounded-full overflow-hidden">
+<div class="bg-red-500 h-full w-[88%]"></div>
+</div>
+</div>
+<div class="p-4 bg-amber-50 dark:bg-amber-900/10 rounded-xl border border-amber-100 dark:border-amber-900/20">
+<p class="text-xs font-bold text-amber-600 uppercase mb-1">지연 발생</p>
+<p class="text-sm font-bold mb-2">결제 정보 검증 (평균 1.5일)</p>
+<div class="w-full bg-slate-200 dark:bg-zinc-700 h-1.5 rounded-full overflow-hidden">
+<div class="bg-amber-500 h-full w-[45%]"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-primary p-6 rounded-2xl shadow-lg shadow-primary/20 text-white bg-hyundai-navy shadow-hyundai-navy/20">
+<h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-hyundai-navy">rocket_launch</span>
+                                즉시 권장 액션
+                            </h3>
+<ul class="space-y-3">
+<li class="flex items-start gap-3 text-sm leading-tight">
+<span class="material-symbols-outlined text-sm mt-0.5">check_circle</span>
+<span>승인 3일 이상 지연 팀장 대상 리마인드 알림 발송</span>
+</li>
+<li class="flex items-start gap-3 text-sm leading-tight">
+<span class="material-symbols-outlined text-sm mt-0.5">check_circle</span>
+<span>R&amp;D 센터 부서별 신청 매뉴얼 재배포 (이탈률 높음)</span>
+</li>
+<li class="flex items-start gap-3 text-sm leading-tight">
+<span class="material-symbols-outlined text-sm mt-0.5">check_circle</span>
+<span>실패 12건에 대한 로그 분석 및 개별 연락 조치</span>
+</li>
+</ul>
+<button class="w-full mt-6 py-3 bg-white font-bold rounded-xl text-sm shadow-sm hover:bg-slate-50 transition-colors">
+                                전체 자동 액션 실행
+                            </button>
+</div>
+</div>
+</div>
+<!-- Department Comparison Table -->
+<div class="bg-white dark:bg-zinc-900 rounded-2xl shadow-sm border border-slate-100 dark:border-zinc-800 overflow-hidden">
+<div class="p-8 border-b border-slate-100 dark:border-zinc-800 flex justify-between items-center">
+<div>
+<h3 class="text-lg font-bold">부서별 전환 비교 및 분석</h3>
+<p class="text-sm text-slate-500">조직별 온러닝서처 활용 및 신청 현황 데이터</p>
+</div>
+<div class="flex gap-2">
+<button class="px-4 py-2 border border-slate-200 dark:border-zinc-700 rounded-lg text-sm font-medium hover:bg-slate-50 dark:hover:bg-zinc-800">Excel 다운로드</button>
+<button class="px-4 py-2 bg-slate-900 dark:bg-primary text-white rounded-lg text-sm font-medium bg-hyundai-navy">필터 설정</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-zinc-800/50">
+<th class="px-8 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">부서명</th>
+<th class="px-8 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">진단 인원</th>
+<th class="px-8 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">전환율</th>
+<th class="px-8 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">평균 승인 기간</th>
+<th class="px-8 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">상태</th>
+<th class="px-8 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">추천 액션</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-zinc-800">
+<tr>
+<td class="px-8 py-5 font-bold">경영지원본부</td>
+<td class="px-8 py-5 text-sm">245명</td>
+<td class="px-8 py-5 text-sm font-bold text-green-600">92%</td>
+<td class="px-8 py-5 text-sm">0.8일</td>
+<td class="px-8 py-5"><span class="px-2 py-1 bg-green-100 text-green-700 text-[11px] font-bold rounded">우수</span></td>
+<td class="px-8 py-5"><button class="text-xs font-bold text-hyundai-blue">사례 공유</button></td>
+</tr>
+<tr>
+<td class="px-8 py-5 font-bold">생산기획팀</td>
+<td class="px-8 py-5 text-sm">182명</td>
+<td class="px-8 py-5 text-sm font-bold">74%</td>
+<td class="px-8 py-5 text-sm">1.5일</td>
+<td class="px-8 py-5"><span class="px-2 py-1 bg-blue-100 text-blue-700 text-[11px] font-bold rounded">정상</span></td>
+<td class="px-8 py-5"><button class="text-xs font-bold text-hyundai-blue">독려 알림</button></td>
+</tr>
+<tr>
+<td class="px-8 py-5 font-bold">R&amp;D 기술연구소</td>
+<td class="px-8 py-5 text-sm">412명</td>
+<td class="px-8 py-5 text-sm font-bold text-red-500">45%</td>
+<td class="px-8 py-5 text-sm">5.1일</td>
+<td class="px-8 py-5"><span class="px-2 py-1 bg-red-100 text-red-700 text-[11px] font-bold rounded">주의</span></td>
+<td class="px-8 py-5"><button class="text-xs font-bold text-hyundai-blue">집중 워크숍</button></td>
+</tr>
+<tr>
+<td class="px-8 py-5 font-bold">구매전략실</td>
+<td class="px-8 py-5 text-sm">98명</td>
+<td class="px-8 py-5 text-sm font-bold">68%</td>
+<td class="px-8 py-5 text-sm">2.2일</td>
+<td class="px-8 py-5"><span class="px-2 py-1 bg-amber-100 text-amber-700 text-[11px] font-bold rounded">관리</span></td>
+<td class="px-8 py-5"><button class="text-xs font-bold text-hyundai-blue">승인 촉구</button></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+<script src="/stitch-runtime/runtime.js"></script>
+</body></html>

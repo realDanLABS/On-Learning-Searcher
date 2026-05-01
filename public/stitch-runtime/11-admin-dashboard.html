@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+
+<html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>On Learning Searcher 관리자 - 부서 분석</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "navy-wia": "#002c5f",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark px-6 md:px-10 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3 text-navy-wia dark:text-primary">
+<div class="size-8 flex items-center justify-center bg-navy-wia text-white rounded-lg">
+<span class="material-symbols-outlined">auto_stories</span>
+</div>
+<h2 class="text-navy-wia dark:text-slate-100 text-lg font-extrabold leading-tight tracking-tight uppercase">Hyundai Wia <span class="text-primary">On-Learning</span></h2>
+</div>
+<label class="hidden lg:flex flex-col min-w-40 h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full bg-slate-100 dark:bg-slate-800">
+<div class="text-slate-500 dark:text-slate-400 flex items-center justify-center pl-4">
+<span class="material-symbols-outlined text-xl">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 border-none bg-transparent focus:ring-0 h-full placeholder:text-slate-500 px-4 pl-2 text-sm" placeholder="부서를 검색하세요" value=""/>
+</div>
+</label>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-slate-600 dark:text-slate-300 text-sm font-semibold hover:text-primary transition-colors" href="#">대시보드</a>
+<a class="text-primary text-sm font-bold border-b-2 border-primary py-1" href="#">부서 분석</a>
+<a class="text-slate-600 dark:text-slate-300 text-sm font-semibold hover:text-primary transition-colors" href="#">운영 리포트</a>
+<a class="text-slate-600 dark:text-slate-300 text-sm font-semibold hover:text-primary transition-colors" href="#">시스템 설정</a>
+</nav>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700">
+<span class="material-symbols-outlined text-xl">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700">
+<span class="material-symbols-outlined text-xl">help</span>
+</button>
+</div>
+<div class="bg-primary/20 border-2 border-primary rounded-full size-10 flex items-center justify-center text-primary font-bold overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="User profile avatar of admin employee" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWDxApvZkhGj3ISgFs9i6XyDN36NxA5S7PjokgSrnObDHzsHBqE79ntC_bOS2B33GN_FG6KYqG0nCxD9duV3ZNgmc2GSYNLgyADwKc0S0NZRf2-696Jgjjr0U_z38MJ0Qwp9KJqjalWTonj7TMlr1OTXgHtnoMEIzgU7i8ih2BQ2VPkpw8gX3RGyAxNHzdkFODCnx_-nMHpUBsqCoFn-0o1vNHbmbFdyMIc9OzzZDUFprud33QrKAaseZufRVp1Xe0ANHLddX9dQ"/>
+</div>
+</div>
+</header>
+<main class="max-w-[1280px] mx-auto w-full px-4 md:px-10 py-8">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-8">
+<div class="flex flex-col gap-1">
+<h1 class="text-slate-900 dark:text-white text-3xl font-black tracking-tight">대시보드</h1>
+<p class="text-slate-500 dark:text-slate-400 text-base">현대위아 온러닝 운영 현황과 핵심 지표를 한눈에 확인할 수 있습니다.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex h-10 items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-bold text-slate-700 dark:text-slate-200">
+<span class="material-symbols-outlined text-lg">calendar_today</span>
+                    최근 30일
+                </button>
+<button class="flex h-10 items-center justify-center gap-2 px-6 py-2.5 rounded-lg text-sm font-bold text-white transition-all" style="background-color: #002C5F; box-shadow: 0 4px 6px rgba(15, 23, 42, 0.12);">
+<span class="material-symbols-outlined text-lg">download</span>
+                    PDF 내보내기
+                </button>
+</div>
+</div>
+<!-- Metric Summary Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+<div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-100 dark:border-slate-700 shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">평균 참여율</p>
+<span class="text-green-500 bg-green-500/10 px-2 py-0.5 rounded text-xs font-bold">+4.2%</span>
+</div>
+<div class="flex items-baseline gap-2">
+<p class="text-3xl font-black text-navy-wia dark:text-white">92.4%</p>
+<p class="text-slate-400 text-xs">전체 평균</p>
+</div>
+<div class="mt-4 w-full bg-slate-100 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 92.4%"></div>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-100 dark:border-slate-700 shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">평균 완료율</p>
+<span class="text-red-500 bg-red-500/10 px-2 py-0.5 rounded text-xs font-bold">-1.8%</span>
+</div>
+<div class="flex items-baseline gap-2">
+<p class="text-3xl font-black text-navy-wia dark:text-white">88.7%</p>
+<p class="text-slate-400 text-xs">전체 평균</p>
+</div>
+<div class="mt-4 w-full bg-slate-100 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden">
+<div class="bg-navy-wia h-full rounded-full" style="width: 88.7%"></div>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-100 dark:border-slate-700 shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">평균 역량 점수</p>
+<span class="text-green-500 bg-green-500/10 px-2 py-0.5 rounded text-xs font-bold">+12.5%</span>
+</div>
+<div class="flex items-baseline gap-2">
+<p class="text-3xl font-black text-navy-wia dark:text-white">4.2</p>
+<p class="text-slate-400 text-xs">5.0 만점 기준</p>
+</div>
+<div class="mt-4 w-full bg-slate-100 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden">
+<div class="bg-amber-500 h-full rounded-full" style="width: 84%"></div>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-primary/20 border-slate-100 shadow-sm relative overflow-hidden">
+<div class="flex justify-between items-start mb-4">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">활성 학습자</p>
+<span class="material-symbols-outlined text-primary">groups</span>
+</div>
+<div class="flex items-baseline gap-2">
+<p class="text-3xl font-black text-navy-wia dark:text-white">14,208</p>
+<p class="text-slate-400 text-xs">현재 기준</p>
+</div>
+<div class="mt-4 flex -space-x-2">
+<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-slate-800" data-alt="User avatar thumbnail 1" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZij_NUMtKQxHNsRgdJesiuzytXSazc6f0kDO3MUl9UCzUSRUdnmZzF3aVbnu87TWOICfKpbciWw9Ahdc_zjf8MQ_13wG57O054AWmYNJSqLAcKQinp-puP1yaxhJzGPfsoSUlH7od1NRp8KHxh2tI1Piumn_K37phIMJkoGfxZOVjkODAA-PLr-Zk3pt-KF6G11Qcl_yx-4kTueCuZCY58FsBfQ2_N_hlh-_zPFudJ6HNjGq6A06ZsSg8CksWmJ4t3ayCtV-gjg"/>
+<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-slate-800" data-alt="User avatar thumbnail 2" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCOijqpkyQzrNjydpQdgUwKZvMN0r-JZYtjZfgke-uHXVkwLAnqNaCJsKe8Mv35_TrSXIGdN9Ev-oo8QICC5FuvrwcG21P-G0WdgVGYuxQskC89mfdAk2Agm5u600oeMgFQZhPvZWkdGnnZ7EMUOfn1FCrH3tXGu84RvSvIsiFcv290Im5ZkmoXIItvb9ghcMHSjvJI3JAiAP2XpPbVkyU7OSo8VY4RiHFcj1kgD8byaD6hijcc67S1-AcEqXnX7v3U7tvYlmIxMw"/>
+<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-slate-800" data-alt="User avatar thumbnail 3" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDH95SBcN5pSrNxOyzAZISSpTp9DYPMIXfLSWrLZhgXyTkjqYG7QvFAM92hnT7OC6I8CXo1N2KVpPvrb-iKL9ak9k0pI9TEmHXHlTzYUmHqkm8DEwenq8odZ0Ouw17Qo_zd48_8yfLju2S5muSjkgvd6BA_UmDTV7VQc2I9VZGf18htwsdcXD7rDvOt8DzR9irrQXGdKfEsrU8WtjOuj_3kan3Q15wjZzgGtVl3DCwCX-tIvT1wzaJWj3f-_CwLrItxcwgzF2oUQ"/>
+<div class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-slate-800 bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[8px] font-bold">+9k</div>
+</div>
+</div>
+</div>
+<!-- Charts Section -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+<div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-100 dark:border-slate-700 shadow-sm">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-bold text-lg text-navy-wia dark:text-white">부서별 참여율</h3>
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<!-- Visual Bar Chart Placeholder -->
+<div class="space-y-4">
+<div class="flex items-center gap-4">
+<span class="text-xs font-semibold w-24 text-slate-500">R&amp;D Center</span>
+<div class="flex-1 h-6 bg-slate-100 dark:bg-slate-700 rounded-sm overflow-hidden flex">
+<div class="h-full bg-primary" style="width: 98%"></div>
+</div>
+<span class="text-xs font-bold w-10 text-right">98%</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-xs font-semibold w-24 text-slate-500">Production</span>
+<div class="flex-1 h-6 bg-slate-100 dark:bg-slate-700 rounded-sm overflow-hidden flex">
+<div class="h-full bg-primary" style="width: 82%"></div>
+</div>
+<span class="text-xs font-bold w-10 text-right">82%</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-xs font-semibold w-24 text-slate-500">Sales &amp; Mkting</span>
+<div class="flex-1 h-6 bg-slate-100 dark:bg-slate-700 rounded-sm overflow-hidden flex">
+<div class="h-full bg-primary" style="width: 75%"></div>
+</div>
+<span class="text-xs font-bold w-10 text-right">75%</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-xs font-semibold w-24 text-slate-500">QA/QC</span>
+<div class="flex-1 h-6 bg-slate-100 dark:bg-slate-700 rounded-sm overflow-hidden flex">
+<div class="h-full bg-primary" style="width: 94%"></div>
+</div>
+<span class="text-xs font-bold w-10 text-right">94%</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-xs font-semibold w-24 text-slate-500">IT Systems</span>
+<div class="flex-1 h-6 bg-slate-100 dark:bg-slate-700 rounded-sm overflow-hidden flex">
+<div class="h-full bg-primary" style="width: 88%"></div>
+</div>
+<span class="text-xs font-bold w-10 text-right">88%</span>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-100 dark:border-slate-700 shadow-sm">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-bold text-lg text-navy-wia dark:text-white">완료율과 역량 점수 비교</h3>
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<!-- Clustered Bar Chart Visual -->
+<div class="h-48 flex items-end justify-between px-2 gap-4">
+<div class="flex flex-col items-center flex-1">
+<div class="w-full flex justify-center gap-1 h-full items-end">
+<div class="w-3 bg-navy-wia rounded-t-sm" style="height: 80%"></div>
+<div class="w-3 bg-primary rounded-t-sm" style="height: 65%"></div>
+</div>
+<span class="text-[10px] mt-2 text-slate-400 uppercase font-bold">Jan</span>
+</div>
+<div class="flex flex-col items-center flex-1">
+<div class="w-full flex justify-center gap-1 h-full items-end">
+<div class="w-3 bg-navy-wia rounded-t-sm" style="height: 85%"></div>
+<div class="w-3 bg-primary rounded-t-sm" style="height: 70%"></div>
+</div>
+<span class="text-[10px] mt-2 text-slate-400 uppercase font-bold">Feb</span>
+</div>
+<div class="flex flex-col items-center flex-1">
+<div class="w-full flex justify-center gap-1 h-full items-end">
+<div class="w-3 bg-navy-wia rounded-t-sm" style="height: 78%"></div>
+<div class="w-3 bg-primary rounded-t-sm" style="height: 82%"></div>
+</div>
+<span class="text-[10px] mt-2 text-slate-400 uppercase font-bold">Mar</span>
+</div>
+<div class="flex flex-col items-center flex-1">
+<div class="w-full flex justify-center gap-1 h-full items-end">
+<div class="w-3 bg-navy-wia rounded-t-sm" style="height: 92%"></div>
+<div class="w-3 bg-primary rounded-t-sm" style="height: 75%"></div>
+</div>
+<span class="text-[10px] mt-2 text-slate-400 uppercase font-bold">Apr</span>
+</div>
+<div class="flex flex-col items-center flex-1">
+<div class="w-full flex justify-center gap-1 h-full items-end">
+<div class="w-3 bg-navy-wia rounded-t-sm" style="height: 88%"></div>
+<div class="w-3 bg-primary rounded-t-sm" style="height: 80%"></div>
+</div>
+<span class="text-[10px] mt-2 text-slate-400 uppercase font-bold">May</span>
+</div>
+</div>
+<div class="flex justify-center gap-6 mt-6">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 bg-navy-wia rounded-full"></span>
+<span class="text-xs text-slate-500 font-semibold">완료율</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 bg-primary rounded-full"></span>
+<span class="text-xs text-slate-500 font-semibold">역량 지수</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Table Section -->
+<div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden">
+<div class="p-6 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center">
+<h3 class="font-bold text-lg text-navy-wia dark:text-white">부서별 상세 현황</h3>
+<div class="flex gap-2">
+<button class="px-3 py-1.5 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-semibold text-slate-600 dark:text-slate-300 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">filter_list</span> 필터
+                    </button>
+<button class="px-3 py-1.5 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-semibold text-slate-600 dark:text-slate-300 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">sort</span> 정렬
+                    </button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left text-sm">
+<thead class="bg-slate-50 dark:bg-slate-900/50 text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">
+<tr>
+<th class="px-6 py-4">부서명</th>
+<th class="px-6 py-4">인원 수</th>
+<th class="px-6 py-4">참여율</th>
+<th class="px-6 py-4">완료율</th>
+<th class="px-6 py-4">평균 점수</th>
+<th class="px-6 py-4">상태</th>
+<th class="px-6 py-4 text-right">관리</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+<td class="px-6 py-4 font-bold text-navy-wia dark:text-slate-200">파워트레인 엔지니어링</td>
+<td class="px-6 py-4">1,420</td>
+<td class="px-6 py-4">98.2%</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-16 bg-slate-100 dark:bg-slate-600 h-1.5 rounded-full">
+<div class="bg-green-500 h-full rounded-full" style="width: 92%"></div>
+</div>
+<span>92.1%</span>
+</div>
+</td>
+<td class="px-6 py-4 font-semibold">4.8</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">우수</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:underline font-bold">상세 보기</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+<td class="px-6 py-4 font-bold text-navy-wia dark:text-slate-200">글로벌 물류</td>
+<td class="px-6 py-4">840</td>
+<td class="px-6 py-4">76.5%</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-16 bg-slate-100 dark:bg-slate-600 h-1.5 rounded-full">
+<div class="bg-amber-500 h-full rounded-full" style="width: 68%"></div>
+</div>
+<span>68.4%</span>
+</div>
+</td>
+<td class="px-6 py-4 font-semibold">3.2</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">주의</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:underline font-bold">상세 보기</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+<td class="px-6 py-4 font-bold text-navy-wia dark:text-slate-200">경영 전략</td>
+<td class="px-6 py-4">156</td>
+<td class="px-6 py-4">94.0%</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-16 bg-slate-100 dark:bg-slate-600 h-1.5 rounded-full">
+<div class="bg-primary h-full rounded-full" style="width: 88%"></div>
+</div>
+<span>88.2%</span>
+</div>
+</td>
+<td class="px-6 py-4 font-semibold">4.5</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">정상</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:underline font-bold">상세 보기</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+<td class="px-6 py-4 font-bold text-navy-wia dark:text-slate-200">첨단 로보틱스 연구소</td>
+<td class="px-6 py-4">430</td>
+<td class="px-6 py-4">99.8%</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-16 bg-slate-100 dark:bg-slate-600 h-1.5 rounded-full">
+<div class="bg-green-500 h-full rounded-full" style="width: 96%"></div>
+</div>
+<span>96.5%</span>
+</div>
+</td>
+<td class="px-6 py-4 font-semibold">4.9</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">우수</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:underline font-bold">상세 보기</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+<td class="px-6 py-4 font-bold text-navy-wia dark:text-slate-200">주조 생산 운영</td>
+<td class="px-6 py-4">3,200</td>
+<td class="px-6 py-4">81.2%</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-16 bg-slate-100 dark:bg-slate-600 h-1.5 rounded-full">
+<div class="bg-primary h-full rounded-full" style="width: 79%"></div>
+</div>
+<span>79.1%</span>
+</div>
+</td>
+<td class="px-6 py-4 font-semibold">3.9</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">정상</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:underline font-bold">상세 보기</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 bg-slate-50 dark:bg-slate-900/50 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
+<span class="text-xs text-slate-500 dark:text-slate-400">전체 32개 부서 중 5개 표시</span>
+<div class="flex gap-1">
+<button class="px-3 py-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded text-xs font-bold disabled:opacity-50" disabled="">이전</button>
+<button class="px-3 py-1 bg-primary text-white border border-primary rounded text-xs font-bold">1</button>
+<button class="px-3 py-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded text-xs font-bold hover:bg-slate-50 dark:hover:bg-slate-700">2</button>
+<button class="px-3 py-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded text-xs font-bold hover:bg-slate-50 dark:hover:bg-slate-700">3</button>
+<button class="px-3 py-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded text-xs font-bold hover:bg-slate-50 dark:hover:bg-slate-700">다음</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Simple Footer -->
+<footer class="mt-auto border-t border-slate-200 dark:border-slate-800 px-10 py-6 text-center">
+<p class="text-slate-400 dark:text-slate-500 text-xs">© 2024 Hyundai Wia Corporation. All rights reserved. On-Learning Portal Admin v2.4.0</p>
+</footer>
+</div>
+</body></html>

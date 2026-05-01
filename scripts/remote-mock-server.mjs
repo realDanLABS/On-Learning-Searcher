@@ -2,7 +2,7 @@
 import http from 'node:http'
 
 const PORT = Number(process.env.REMOTE_MOCK_PORT || 8787)
-const ALLOWED_ORIGIN = process.env.REMOTE_MOCK_ORIGIN || 'http://127.0.0.1:4173'
+const ALLOWED_ORIGIN = process.env.REMOTE_MOCK_ORIGIN || 'http://127.0.0.1:3000'
 
 /** @type {{authenticated: boolean, profile?: {employeeId: string, name: string, organization: string}, role?: 'employee'|'manager'|'admin'}} */
 let session = { authenticated: false }
@@ -14,6 +14,8 @@ let selectedCourse = null
 let enrollments = []
 /** @type {any[]} */
 let journeyEvents = []
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY || ''
+const OPENAI_MODEL = process.env.OPENAI_CHAT_MODEL || 'gpt-4.1-mini'
 
 const coursePool = [
   {
@@ -78,6 +80,136 @@ function scoreCourse(course) {
   if (course.reasonTags.includes(topGaps[0])) score += 30
   if (course.reasonTags.includes(topGaps[1])) score += 20
   return Math.min(99, score)
+}
+
+function buildChatbotFallback(payload) {
+  const question = typeof payload?.question === 'string' ? payload.question : ''
+  const normalized = question.toLowerCase()
+  const diagnosisPayload = payload?.diagnosis || null
+  const enrollmentHistory = Array.isArray(payload?.enrollments) ? payload.enrollments : []
+  const recommended = Array.isArray(payload?.courses) ? payload.courses : []
+  const profile = payload?.profile || session.profile || null
+  const name = profile?.name || '구성원'
+  const topGapKey = diagnosisPayload?.topGaps?.[0]
+  const topGap =
+    topGapKey === 'aiAutomation'
+      ? 'AI/자동화 활용'
+      : topGapKey === 'dataDecision'
+        ? '데이터 기반 의사결정'
+        : topGapKey === 'dxInnovation'
+          ? 'DX 혁신 이해'
+          : topGapKey === 'operationsQualitySafety'
+            ? '생산/품질/안전 운영'
+            : topGapKey === 'problemCollaboration'
+              ? '문제해결/협업'
+              : 'AI/자동화 활용'
+  const topCourse = recommended[0]
+  const latest = enrollmentHistory[0]
+  const score = diagnosisPayload
+    ? Math.round((diagnosisPayload.totalScore / Math.max(1, diagnosisPayload.maxScore)) * 100)
+    : null
+
+  if (normalized.includes('부족') || normalized.includes('역량')) {
+    return `${name}님의 현재 보완 1순위는 ${topGap}입니다. 지금은 이 역량을 먼저 보완하는 과정 1개를 선택해서 짧게 시작하는 것이 가장 효과적입니다.`
+  }
+
+  if (normalized.includes('신청') || normalized.includes('상태')) {
+    if (!latest) {
+      return `아직 신청 이력이 없습니다. ${topGap} 보완을 위한 추천 과정부터 확인해 보세요.`
+    }
+    if (latest.enrollmentStatus === 'requested') {
+      return `${latest.courseTitle} 과정은 현재 신청 요청 상태입니다. 승인 반영 여부를 기다리면서 학습 목표를 미리 정리해 두는 것이 좋습니다.`
+    }
+    if (latest.enrollmentStatus === 'failed') {
+      return `${latest.courseTitle} 과정 신청이 실패로 기록되어 있습니다. 실패 사유를 먼저 확인하고 비슷한 난이도의 대체 과정을 검토해 보세요.`
+    }
+    if (latest.enrollmentStatus === 'return-missing') {
+      return `${latest.courseTitle} 과정은 복귀 확인이 필요한 상태입니다. 처리 여부를 먼저 확인한 뒤 필요하면 대체 과정을 이어서 선택하는 것이 좋습니다.`
+    }
+    return `${latest.courseTitle} 과정은 현재 수강 중입니다. 실무에 바로 써볼 포인트 1개를 정해서 적용해 보세요.`
+  }
+
+  if (normalized.includes('추천') || normalized.includes('이유') || normalized.includes('왜')) {
+    if (!topCourse) {
+      return `아직 추천 과정이 생성되지 않았습니다. 진단을 완료하면 ${topGap} 보완을 기준으로 추천 순서를 제안해드릴 수 있습니다.`
+    }
+    return `${topCourse.courseTitle}이 먼저 추천되는 이유는 현재 ${topGap} 보완이 가장 시급하고, 이 과정이 가장 빠르게 실무 적용 효과를 줄 수 있기 때문입니다.`
+  }
+
+  if (normalized.includes('코칭') || normalized.includes('과정')) {
+    if (!topCourse) {
+      return `먼저 추천 과정에서 한 과정을 선택해 주세요. 선택한 뒤에는 그 과정 기준으로 더 구체적인 학습 코칭을 이어드릴 수 있습니다.`
+    }
+    return `${topCourse.courseTitle}을 시작한다면 첫 목표는 핵심 개념 1개를 정리하고, 이번 주 안에 업무 적용 장면 1개를 연결하는 것입니다.`
+  }
+
+  return `${name}님의 현재 상태를 보면 ${score ? `역량 점수는 ${score}점이고, ` : ''}${topGap} 보완이 가장 중요합니다. 지금 가장 좋은 다음 행동은 추천 과정 1개를 고르고 바로 수강 신청까지 이어가는 것입니다.`
+}
+
+async function buildChatbotReply(payload) {
+  if (!OPENAI_API_KEY) {
+    return buildChatbotFallback(payload)
+  }
+
+  const diagnosisSummary = payload?.diagnosis
+    ? JSON.stringify({
+        topGaps: payload.diagnosis.topGaps,
+        totalScore: payload.diagnosis.totalScore,
+        maxScore: payload.diagnosis.maxScore,
+      })
+    : 'null'
+  const courseSummary = Array.isArray(payload?.courses)
+    ? payload.courses.slice(0, 3).map((course) => ({
+        title: course.courseTitle,
+        level: course.level,
+        durationHours: course.durationHours,
+        fitScore: course.fitScore,
+      }))
+    : []
+
+  const response = await fetch('https://api.openai.com/v1/responses', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${OPENAI_API_KEY}`,
+    },
+    body: JSON.stringify({
+      model: OPENAI_MODEL,
+      input: [
+        {
+          role: 'system',
+          content: [
+            {
+              type: 'input_text',
+              text:
+                '당신은 현대위아 온러닝서처의 AI 학습 코치다. 진단 결과와 추천 과정, 신청 상태를 바탕으로 한국어로 짧고 실무적인 답변을 제공하라. 절대 준비중이라고 말하지 말고, 바로 상담 답변을 제공하라.',
+            },
+          ],
+        },
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'input_text',
+              text: `질문: ${payload?.question || ''}\n프로필: ${JSON.stringify(payload?.profile || {})}\n진단요약: ${diagnosisSummary}\n추천과정: ${JSON.stringify(courseSummary)}\n신청이력: ${JSON.stringify(payload?.enrollments || [])}`,
+            },
+          ],
+        },
+      ],
+    }),
+  })
+
+  if (!response.ok) {
+    throw new Error(`OpenAI request failed: ${response.status}`)
+  }
+
+  const data = await response.json()
+  const output = Array.isArray(data.output) ? data.output : []
+  const texts = output
+    .flatMap((item) => (Array.isArray(item.content) ? item.content : []))
+    .filter((item) => item.type === 'output_text' && typeof item.text === 'string')
+    .map((item) => item.text)
+  return texts.join('\n').trim() || buildChatbotFallback(payload)
 }
 
 function setCors(req, res) {
@@ -255,6 +387,13 @@ const server = http.createServer(async (req, res) => {
         .sort((a, b) => b.fitScore - a.fitScore)
         .filter((course) => (level === 'all' ? true : course.level === level))
       sendJson(req, res, 200, list)
+      return
+    }
+
+    if (req.method === 'POST' && url.pathname === '/chatbot/reply') {
+      const payload = await readJson(req)
+      const answer = await buildChatbotReply(payload)
+      sendJson(req, res, 200, { answer })
       return
     }
 

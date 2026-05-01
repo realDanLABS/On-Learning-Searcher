@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+
+<html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002C5F",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                        "accent": "#007fa8"
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "Malgun Gothic", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="relative flex h-screen w-full overflow-hidden">
+<!-- Sidebar -->
+<aside class="w-64 bg-primary flex flex-col shrink-0 border-r border-primary/20">
+<div class="p-6 flex items-center gap-3">
+<div class="bg-white p-1 rounded">
+<svg fill="none" height="24" viewbox="0 0 48 48" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M4 42.4379C4 42.4379 14.0962 36.0744 24 41.1692C35.0664 46.8624 44 42.2078 44 42.2078L44 7.01134C44 7.01134 35.068 11.6577 24.0031 5.96913C14.0971 0.876274 4 7.27094 4 7.27094L4 42.4379Z" fill="#002C5F"></path>
+</svg>
+</div>
+<h1 class="text-white font-bold text-sm tracking-tight leading-tight">HYUNDAI WIA<br/><span class="text-[10px] font-normal opacity-80 uppercase">On-Learning Admin</span></h1>
+</div>
+<nav class="flex-1 px-4 space-y-1 mt-4">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-white/70 hover:bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">운영 분석 대시보드</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-white/10 text-white transition-colors" href="#">
+<span class="material-symbols-outlined">rule</span>
+<span class="text-sm font-medium">역량진단 문항 설정</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-white/70 hover:bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined">school</span>
+<span class="text-sm font-medium">교육 과정 관리</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-white/70 hover:bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-sm font-medium">사용자 관리</span>
+</a>
+</nav>
+<div class="p-4 border-t border-white/10">
+<div class="flex items-center gap-3 p-2">
+<div class="w-10 h-10 rounded-full bg-slate-300 overflow-hidden shrink-0 border-2 border-white/20">
+<img class="w-full h-full object-cover" data-alt="Admin user profile avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_mMy7ognwLtZVIjvmFEjOel8j75W8mm1DcDcvfVRU1D2uH1zgGbfPuExHSb9qTQATpB85L2DLg0iu1MlL8NPK1OpUCpZFrk1rII-KPbgOeQ54nN1FzsX5IcYRSJt4aWAZCLiX0ZObthcQN74F7_7QijatojyfAfswWsVFssIKBl58MtjylAJbb4Y1HqhXY2NAEJWRoejeH37A35t8seS_YgmGHazOZqqsK2l-10wPnbyrI5PuFyP0UlelMfe2r-_IZx8jERUSbg"/>
+</div>
+<div class="overflow-hidden">
+<p class="text-white text-sm font-semibold truncate">Admin Master</p>
+<p class="text-white/50 text-xs truncate">관리자 계정</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col overflow-y-auto">
+<!-- Content Area -->
+<div class="max-w-[1280px] mx-auto w-full px-4 md:px-10 py-8 space-y-8">
+<div class="flex flex-col gap-1 mb-8">
+<h1 class="text-slate-900 dark:text-white text-3xl font-black tracking-tight">문항 관리</h1>
+<p class="text-slate-500 dark:text-slate-400 text-base">역량 진단 문항을 등록하고 수정하며 업로드 이력과 운영 상태를 관리할 수 있습니다.</p>
+</div>
+<!-- Questions Table Section -->
+<section class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="p-6 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
+<div>
+<h3 class="text-lg font-bold text-slate-900 dark:text-white leading-none">기존 진단 문항 리스트</h3>
+<p class="text-sm text-slate-500 mt-1">현재 활성화된 모든 역량진단 질문들입니다.</p>
+</div>
+<button class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 transition-all">
+<span class="material-symbols-outlined text-sm">add</span>
+                        새 문항 추가
+                    </button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-800/50">
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider w-16">ID</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider w-32">역량 구분</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">문항 내용</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider w-32">등록일</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider w-24">상태</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider w-24">작업</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-200 dark:divide-slate-800">
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 text-sm text-slate-500">Q1024</td>
+<td class="px-6 py-4">
+<span class="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 px-2.5 py-1 rounded text-xs font-bold">공통역량</span>
+</td>
+<td class="px-6 py-4 text-sm text-slate-900 dark:text-slate-100 font-medium">회사의 핵심가치를 이해하고 실제 업무 프로세스에 적극적으로 반영하고 있는가?</td>
+<td class="px-6 py-4 text-sm text-slate-500">2023-11-20</td>
+<td class="px-6 py-4">
+<span class="flex items-center gap-1.5 text-xs font-bold text-green-600">
+<span class="w-1.5 h-1.5 bg-green-600 rounded-full"></span> 활성
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<button class="text-primary dark:text-accent font-bold text-sm hover:underline">Edit</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 text-sm text-slate-500">Q1025</td>
+<td class="px-6 py-4">
+<span class="bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300 px-2.5 py-1 rounded text-xs font-bold">리더십</span>
+</td>
+<td class="px-6 py-4 text-sm text-slate-900 dark:text-slate-100 font-medium">팀원들의 역량 개발을 위해 정기적인 피드백과 코칭을 수행하고 있는가?</td>
+<td class="px-6 py-4 text-sm text-slate-500">2023-11-18</td>
+<td class="px-6 py-4">
+<span class="flex items-center gap-1.5 text-xs font-bold text-green-600">
+<span class="w-1.5 h-1.5 bg-green-600 rounded-full"></span> 활성
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<button class="text-primary dark:text-accent font-bold text-sm hover:underline">Edit</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 text-sm text-slate-500">Q1026</td>
+<td class="px-6 py-4">
+<span class="bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300 px-2.5 py-1 rounded text-xs font-bold">직무역량</span>
+</td>
+<td class="px-6 py-4 text-sm text-slate-900 dark:text-slate-100 font-medium">최신 기술 트렌드를 분석하고 이를 현업 이슈 해결에 활용할 수 있는가?</td>
+<td class="px-6 py-4 text-sm text-slate-500">2023-10-05</td>
+<td class="px-6 py-4">
+<span class="flex items-center gap-1.5 text-xs font-bold text-slate-400">
+<span class="w-1.5 h-1.5 bg-slate-400 rounded-full"></span> 비활성
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<button class="text-primary dark:text-accent font-bold text-sm hover:underline">Edit</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+</main>
+</div>
+</body></html>

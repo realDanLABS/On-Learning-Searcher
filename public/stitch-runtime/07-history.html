@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002c5f",
+                        "hyundai-navy": "#002c5f",
+                        "hyundai-blue": "#00aad2",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "Noto Sans KR", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>현대위아 온러닝서처 - 나의 학습 이력</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 w-full border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex h-16 items-center justify-between gap-4">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-2">
+<div class="bg-hyundai-navy p-1.5 rounded-lg">
+<svg class="w-6 h-6 text-white" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M12.0799 24L4 19.2479L9.95537 8.75216L18.04 13.4961L18.0446 4H29.9554L29.96 13.4961L38.0446 8.75216L44 19.2479L35.92 24L44 28.7521L38.0446 39.2479L29.96 34.5039L29.9554 44H18.0446L18.04 34.5039L9.95537 39.2479L4 28.7521L12.0799 24Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h1 class="text-xl font-black tracking-tight text-hyundai-navy">HYUNDAI WIA <span class="text-slate-900 dark:text-slate-100 font-bold ml-1">On Learning Searcher</span></h1>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-sm font-semibold transition-colors hover:text-hyundai-blue" href="#">학습하기</a>
+<a class="text-sm font-semibold transition-colors hover:text-hyundai-blue" href="#">역량진단</a>
+<a class="text-sm font-semibold text-hyundai-blue" href="#">나의 학습</a>
+<a class="text-sm font-semibold transition-colors hover:text-hyundai-blue" href="#">고객지원</a>
+</nav>
+</div>
+<div class="flex items-center gap-3">
+<button class="p-2 text-slate-500 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="h-8 w-px bg-slate-200 dark:bg-slate-700 mx-2"></div>
+<div class="flex items-center gap-3">
+<div class="text-right hidden sm:block">
+<p class="text-xs font-medium text-slate-500">임직원님, 환영합니다</p>
+<p class="text-sm font-bold">현대위아 구성원</p>
+</div>
+<div class="h-10 w-10 rounded-full bg-primary/10 border-2 border-primary overflow-hidden">
+<img alt="사용자 프로필" class="w-full h-full object-cover" data-alt="User profile avatar icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJuQHs_QnNW3N2tFsTto3X8U8xpS2AYNHD2Hdnx5wYFE0rAU_lLmnSsv8fWbfUF7oS2DAbjcjH9r6NVe9J1ur7I1v6QiYj2y7UeylCgm7SZW24lbxgEAv9mzw94Ar8sSl43PqUMkTmRnAfv2eo1aYxPs_eOZBkBSaag8uBtHu5gOPoZDnrixjbJPW61iyRoI5pqNLnk3H3qDBBvmvHelu4APAeg97vkPVza8ydnX2Fytrg9s3Oh7UTNpPWG2XH0GVxBJ5t0BQwpg"/>
+</div>
+<button class="bg-hyundai-navy p-1.5 rounded-lg">
+                            로그아웃
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+<div>
+<h2 class="text-3xl font-black tracking-tight mb-2">나의 학습 이력</h2>
+<p class="text-slate-500 dark:text-slate-400">지속적인 성장을 위한 개인 맞춤형 학습 현황입니다.</p>
+</div>
+<button class="flex items-center gap-2 rounded-xl h-11 px-6 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-sm font-bold transition-all hover:opacity-90">
+<span class="material-symbols-outlined text-[20px]">description</span>
+                학습 가이드 보기
+            </button>
+</div>
+<!-- Growth Summary Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+<div class="bg-white dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center gap-4">
+<div class="w-14 h-14 rounded-xl bg-hyundai-navy/10 flex items-center justify-center text-hyundai-navy">
+<span class="material-symbols-outlined text-3xl">insights</span>
+</div>
+<div>
+<p class="text-sm font-medium text-slate-500 mb-1">최근 진단 결과</p>
+<p class="text-3xl font-black text-hyundai-navy">70<span class="text-lg font-bold ml-1 text-slate-400">점</span></p>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center gap-4">
+<div class="w-14 h-14 rounded-xl bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600">
+<span class="material-symbols-outlined text-3xl">task_alt</span>
+</div>
+<div>
+<p class="text-sm font-medium text-slate-500 mb-1">추천 과정 수</p>
+<p class="text-3xl font-black">1<span class="text-lg font-bold ml-1 text-slate-400">개</span></p>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center gap-4">
+<div class="w-14 h-14 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600">
+<span class="material-symbols-outlined text-3xl">schedule</span>
+</div>
+<div>
+<p class="text-sm font-medium text-slate-500 mb-1">추천 학습 시간</p>
+<p class="text-3xl font-black">6.5<span class="text-lg font-bold ml-1 text-slate-400">h</span></p>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+<!-- Competency Growth Chart -->
+<div class="lg:col-span-2 bg-white dark:bg-slate-800/50 p-8 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex items-center justify-between mb-8">
+<div>
+<h3 class="text-xl font-bold mb-1">역량 성장 변화</h3>
+<p class="text-sm text-slate-500">역량 영역별 현재 점수와 종합 점수입니다.</p>
+</div>
+<div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg text-xs font-bold uppercase">
+<span class="px-3 py-1.5 bg-white dark:bg-slate-700 rounded-md shadow-sm">영역별 점수</span>
+<span class="px-3 py-1.5 text-slate-400">실데이터 기준</span>
+</div>
+</div>
+<div class="relative h-[240px] w-full">
+<!-- Placeholder Chart Visualization -->
+<div class="absolute inset-0 flex items-end justify-between px-2">
+<div class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-4/5 bg-slate-100 dark:bg-slate-700 rounded-t-lg h-24 group-hover:bg-primary/20 transition-all"></div>
+<span class="text-xs font-bold text-slate-400">1월</span>
+</div>
+<div class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-4/5 bg-slate-100 dark:bg-slate-700 rounded-t-lg h-32 group-hover:bg-primary/20 transition-all"></div>
+<span class="text-xs font-bold text-slate-400">2월</span>
+</div>
+<div class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-4/5 bg-slate-100 dark:bg-slate-700 rounded-t-lg h-28 group-hover:bg-primary/20 transition-all"></div>
+<span class="text-xs font-bold text-slate-400">3월</span>
+</div>
+<div class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-4/5 bg-slate-100 dark:bg-slate-700 rounded-t-lg h-40 group-hover:bg-primary/20 transition-all"></div>
+<span class="text-xs font-bold text-slate-400">4월</span>
+</div>
+<div class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-4/5 bg-slate-100 dark:bg-slate-700 rounded-t-lg h-36 group-hover:bg-primary/20 transition-all"></div>
+<span class="text-xs font-bold text-slate-400">5월</span>
+</div>
+<div class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-4/5 bg-hyundai-blue/20 dark:bg-hyundai-blue/40 rounded-t-lg h-48 group-hover:bg-hyundai-blue transition-all relative">
+</div>
+<span class="text-xs font-bold text-hyundai-blue">점수 종합</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Next Recommended Course Card -->
+<div class="bg-hyundai-navy p-8 rounded-2xl shadow-lg shadow-hyundai-navy/20 flex flex-col justify-between text-white relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<span class="material-symbols-outlined text-[120px] rotate-12">auto_awesome</span>
+</div>
+<div class="relative z-10">
+<span class="inline-block px-3 py-1 bg-white/20 rounded-full text-[11px] font-bold mb-4 uppercase tracking-wider">NEXT RECOMMENDED</span>
+<h3 class="text-2xl font-black leading-tight mb-2">현재 이어갈 학습</h3>
+<p class="text-white/80 text-sm leading-relaxed mb-6">
+                        현대위아 구성원을 위해 선정된<br/>다음 루프 추천 과정입니다.
+                    </p>
+<div class="bg-white/10 border border-white/20 p-4 rounded-xl mb-6 backdrop-blur-sm">
+<p class="text-[11px] font-medium text-white/60 mb-1">추천 과정명</p>
+<p class="font-bold">현대차그룹 글로벌 리더십 Core</p>
+</div>
+</div>
+<button class="relative z-10 w-full bg-white text-hyundai-navy rounded-xl h-12 font-bold text-sm flex items-center justify-center gap-2 shadow-xl hover:bg-slate-50 transition-colors">
+                    다음 학습 과정 추천 받기
+                    <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Recent Learning History Table -->
+<div class="bg-white dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+<div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+<h3 class="text-lg font-bold">학습 추천 과정</h3>
+<button class="text-hyundai-blue text-sm font-bold flex items-center gap-1 hover:underline">
+                    전체 보기
+                    <span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-900/50">
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">과정명</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">학습기간/신청일</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">현재 상태</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">결과</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-colors">
+<td class="px-6 py-5">
+<div class="flex flex-col">
+<span class="text-sm font-bold mb-1">WIA 핵심가치 실천 과정 (LV.2)</span>
+<span class="text-[11px] text-slate-400">온라인 | 필수과정</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="text-sm text-slate-600 dark:text-slate-400">2023.10.12 ~ 2023.11.12</span>
+</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
+                                    수강중
+                                </span>
+</td>
+<td class="px-6 py-5">
+<span class="text-sm font-medium text-slate-400">-</span>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-colors">
+<td class="px-6 py-5">
+<div class="flex flex-col">
+<span class="text-sm font-bold mb-1">스마트 팩토리 시스템의 이해</span>
+<span class="text-[11px] text-slate-400">온라인 | 직무역량</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="text-sm text-slate-600 dark:text-slate-400">2023.09.01</span>
+</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300">
+                                    수강완료
+                                </span>
+</td>
+<td class="px-6 py-5">
+<span class="text-hyundai-blue text-sm font-bold flex items-center gap-1 hover:underline">이수 (88점)</span>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-colors">
+<td class="px-6 py-5">
+<div class="flex flex-col">
+<span class="text-sm font-bold mb-1">데이터 분석을 활용한 문제 해결 기법</span>
+<span class="text-[11px] text-slate-400">온라인 | 선택과정</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="text-sm text-slate-600 dark:text-slate-400">2023.10.25</span>
+</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
+                                    신청완료
+                                </span>
+</td>
+<td class="px-6 py-5">
+<span class="text-sm font-medium text-slate-400">-</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+<footer class="bg-white dark:bg-background-dark border-t border-slate-200 dark:border-slate-800 mt-12 py-8">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="flex items-center gap-2 grayscale opacity-50">
+<svg class="w-5 h-5 text-hyundai-navy" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M12.0799 24L4 19.2479L9.95537 8.75216L18.04 13.4961L18.0446 4H29.9554L29.96 13.4961L38.0446 8.75216L44 19.2479L35.92 24L44 28.7521L38.0446 39.2479L29.96 34.5039L29.9554 44H18.0446L18.04 34.5039L9.95537 39.2479L4 28.7521L12.0799 24Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+<span class="text-sm font-bold">HYUNDAI WIA</span>
+</div>
+<p class="text-[12px] text-slate-400 text-center">© 2024 HYUNDAI WIA Corp. All rights reserved. 본 페이지는 학습자의 성장 데이터 관리를 위해 제공됩니다.</p>
+<div class="flex gap-6">
+<a class="text-xs text-slate-400 hover:text-primary" href="#">개인정보처리방침</a>
+<a class="text-xs text-slate-400 hover:text-primary" href="#">이용약관</a>
+</div>
+</div>
+</div>
+</footer>
+
+<script src="/stitch-runtime/runtime.js"></script>
+</body></html>
