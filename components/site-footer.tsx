@@ -12,34 +12,98 @@ export function SiteFooter({
   portalHref?: string
 }) {
   return (
-    <footer className={`bg-white dark:bg-background-dark border-t border-slate-200 dark:border-slate-800 py-8 ${className}`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="flex items-center gap-2 grayscale opacity-50">
-            <span className="text-[12px] font-bold">HYUNDAI WIA</span>
-          </div>
-          <p className="text-[12px] text-slate-400 text-center">
+    <footer
+      className={className}
+      style={{
+        marginTop: 48,
+        borderTop: '1px solid #e2e8f0',
+        background: '#ffffff',
+        padding: '28px 24px',
+      }}
+    >
+      <div
+        style={{
+          width: 'min(1280px, 100%)',
+          margin: '0 auto',
+          display: 'flex',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 16,
+        }}
+      >
+        <div
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            filter: 'grayscale(1)',
+            opacity: 0.58,
+            color: '#0f172a',
+            fontSize: 12,
+            fontWeight: 700,
+          }}
+        >
+          <span>HYUNDAI WIA</span>
+        </div>
+        <p
+          style={{
+            margin: 0,
+            flex: '1 1 420px',
+            minWidth: 280,
+            color: '#94a3b8',
+            fontSize: 12,
+            lineHeight: 1.5,
+            textAlign: 'center',
+          }}
+        >
             © 2026 HYUNDAI WIA Corp. All rights reserved. On Learning Searcher는 현대위아 구성원의 맞춤화된 학습과 성장을 위해 제작되었습니다.
-          </p>
-          <div className="flex gap-6">
+        </p>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+            gap: 20,
+            flexWrap: 'wrap',
+          }}
+        >
             <button
-              className="text-[12px] text-slate-400 hover:text-primary"
               onClick={() => window.alert('개인정보처리방침 문서는 준비 중입니다.')}
+              style={{
+                border: 0,
+                background: 'transparent',
+                padding: 0,
+                color: '#94a3b8',
+                fontSize: 12,
+                cursor: 'pointer',
+              }}
               type="button"
             >
               개인정보처리방침
             </button>
             <button
-              className="text-[12px] text-slate-400 hover:text-primary"
               onClick={() => window.alert('이용약관 문서는 준비 중입니다.')}
+              style={{
+                border: 0,
+                background: 'transparent',
+                padding: 0,
+                color: '#94a3b8',
+                fontSize: 12,
+                cursor: 'pointer',
+              }}
               type="button"
             >
               이용약관
             </button>
-            <Link className="text-[12px] text-slate-400 hover:text-primary" href={portalHref}>
+            <Link
+              href={portalHref}
+              style={{
+                color: '#94a3b8',
+                fontSize: 12,
+              }}
+            >
               {portalLabel}
             </Link>
-          </div>
         </div>
       </div>
     </footer>

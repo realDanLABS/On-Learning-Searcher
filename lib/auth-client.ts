@@ -1,6 +1,7 @@
 'use client'
 
-import { runtime } from '@/lib/runtime'
+import { readSupabaseAuthSession, bridgeLegacyCallbackSessionToSupabase } from '@/lib/supabase/auth-bridge'
+import { getSupabaseBrowserClient } from '@/lib/supabase/browser-client'
 
 export type UserRole = 'employee' | 'manager' | 'admin'
 
@@ -40,42 +41,151 @@ export type SignupPayload = {
 }
 
 export async function syncAuthSession() {
-  const session = await requestJson<AuthSessionPayload>('/auth/session')
+  const session = await readSupabaseAuthSession()
   applyAuthSession(session)
   return session
 }
 
 export async function loginWithPassword(payload: LoginPayload) {
-  const session = await requestJson<AuthSessionPayload>('/auth/login', {
-    method: 'POST',
-    body: JSON.stringify(payload),
+  const supabase = getSupabaseBrowserClient()
+  const employeeId = String(payload.employeeId || '').trim()
+  const password = String(payload.password || '')
+  if (!employeeId || !password) {
+    throw new Error('missing-login-fields')
+  }
+
+  const email = await resolveLoginEmail(employeeId)
+  const signIn = await supabase.auth.signInWithPassword({
+    email,
+    password,
   })
+  if (signIn.error || !signIn.data.user) {
+    throw signIn.error || new Error('supabase-login-failed')
+  }
+
+  const rpc = supabase.rpc as unknown as (
+    fn: string,
+    args?: Record<string, unknown>,
+  ) => Promise<{ error: { message?: string } | null }>
+  const linkResult = await rpc('link_current_auth_user', {
+    p_employee_id: employeeId,
+    p_company_email: email,
+  })
+  if (linkResult.error) {
+    throw new Error(linkResult.error.message || 'supabase-link-user-failed')
+  }
+
+  const session = await readSupabaseAuthSession()
+  if (!session.authenticated) {
+    throw new Error('supabase-session-profile-missing')
+  }
   applyAuthSession(session)
   return session
 }
 
 export async function signupWithPassword(payload: SignupPayload) {
-  const session = await requestJson<AuthSessionPayload>('/auth/signup', {
-    method: 'POST',
-    body: JSON.stringify(payload),
+  const supabase = getSupabaseBrowserClient()
+  const signUp = await supabase.auth.signUp({
+    email: String(payload.companyEmail || '').trim().toLowerCase(),
+    password: String(payload.password || ''),
+    options: {
+      data: {
+        employee_id: String(payload.employeeId || '').trim(),
+        name: String(payload.name || '').trim(),
+      },
+    },
   })
+  if (signUp.error || !signUp.data.user) {
+    throw signUp.error || new Error('supabase-signup-failed')
+  }
+
+  if (!signUp.data.session) {
+    const signIn = await supabase.auth.signInWithPassword({
+      email: String(payload.companyEmail || '').trim().toLowerCase(),
+      password: String(payload.password || ''),
+    })
+    if (signIn.error || !signIn.data.user) {
+      throw signIn.error || new Error('supabase-signin-after-signup-failed')
+    }
+  }
+
+  const rpc = supabase.rpc as unknown as (
+    fn: string,
+    args?: Record<string, unknown>,
+  ) => Promise<{ error: { message?: string } | null }>
+  const registerResult = await rpc('register_current_auth_user', {
+    p_employee_id: String(payload.employeeId || '').trim(),
+    p_name: String(payload.name || '').trim(),
+    p_organization: String(payload.organization || '').trim(),
+    p_division: String(payload.division || '').trim() || null,
+    p_office: String(payload.office || '').trim() || null,
+    p_team: String(payload.team || '').trim() || null,
+    p_company_email: String(payload.companyEmail || '').trim().toLowerCase(),
+    p_interest_course: String(payload.interestCourse || '').trim() || null,
+  })
+  if (registerResult.error) {
+    throw new Error(registerResult.error.message || 'supabase-register-user-failed')
+  }
+
+  const session = await readSupabaseAuthSession()
+  if (!session.authenticated) {
+    throw new Error('supabase-session-profile-missing')
+  }
   applyAuthSession(session)
   return session
 }
 
 export async function completeAuthCallback(search: string) {
   const query = search.startsWith('?') ? search : `?${search}`
-  const session = await requestJson<AuthSessionPayload>(`/auth/callback${query}`)
+  const params = new URLSearchParams(query)
+  const status = String(params.get('status') || '').trim().toLowerCase()
+  if (status === 'error') {
+    const session = { authenticated: false } satisfies AuthSessionPayload
+    applyAuthSession(session)
+    return session
+  }
+  const employeeId = String(params.get('employeeId') || '').trim()
+  const name = String(params.get('name') || '').trim()
+  const organization = String(params.get('organization') || '').trim()
+  if (!employeeId || !name || !organization) {
+    throw new Error('missing-sso-callback-fields')
+  }
+  const session = await bridgeLegacyCallbackSessionToSupabase({
+    employeeId,
+    name,
+    organization,
+    companyEmail: `${employeeId}@hyundai-wia.local`,
+  })
   applyAuthSession(session)
   return session
 }
 
 export async function logoutSession() {
   try {
-    return await requestJson<{ ok: boolean }>('/auth/logout', { method: 'POST' })
+    const supabase = getSupabaseBrowserClient()
+    await supabase.auth.signOut()
+    return { ok: true }
   } finally {
     clearAuthState()
   }
+}
+
+async function resolveLoginEmail(employeeId: string) {
+  if (employeeId.includes('@')) {
+    return employeeId.trim().toLowerCase()
+  }
+  const supabase = getSupabaseBrowserClient()
+  const rpc = supabase.rpc as unknown as (
+    fn: string,
+    args?: Record<string, unknown>,
+  ) => Promise<{ data: string | null; error: { message?: string } | null }>
+  const { data, error } = await rpc('lookup_login_email', {
+    p_employee_id: employeeId,
+  })
+  if (error || !data) {
+    throw new Error(error?.message || 'login-email-not-found')
+  }
+  return String(data).trim().toLowerCase()
 }
 
 const KEY_AUTHENTICATED = 'on_learning_authenticated_v1'
@@ -122,28 +232,4 @@ function clearAuthState() {
   for (const key of JOURNEY_KEYS) {
     window.localStorage.removeItem(key)
   }
-}
-
-async function requestJson<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(`${runtime.apiBaseUrl}${path}`, {
-    ...init,
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-      ...(init?.headers ?? {}),
-    },
-  })
-
-  if (!response.ok) {
-    let message = `API request failed: ${response.status}`
-    try {
-      const payload = (await response.json()) as { error?: { message?: string } }
-      message = payload?.error?.message || message
-    } catch {
-      // ignore payload parse failure
-    }
-    throw new Error(message)
-  }
-
-  return response.json() as Promise<T>
 }

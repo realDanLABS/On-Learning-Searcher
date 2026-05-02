@@ -1,0 +1,17 @@
+node_modules
+.next
+.next-dev
+.next-build
+output
+test-results
+playwright-report
+.git
+.agents
+archive
+backup
+ORCHESTRATION
+*.log
+.DS_Store
+.env.local
+.env.production
+supabase/.temp

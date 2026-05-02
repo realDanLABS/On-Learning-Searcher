@@ -14,6 +14,7 @@ import {
   type EnrollmentRecord,
   type RecommendedCourse,
 } from '@/lib/learning-client'
+import { SiteFooter } from '@/components/site-footer'
 import { buildLearningPathCourses, clearIdentity, formatDurationText, getAreaLabel, getDisplayUser } from '@/lib/stitch-ui'
 import { UserTopNav } from '@/components/user-top-nav'
 
@@ -108,10 +109,6 @@ export function LearningPathScreen() {
   }), [diagnosis?.topGaps, enrollments, pathCourses, resolvedSteps, selected])
 
   const user = getDisplayUser(session?.profile)
-
-  const goTo = useCallback((route: string) => {
-    router.push(route)
-  }, [router])
 
   const handleLogout = useCallback(async () => {
     await clearIdentity()
@@ -238,13 +235,7 @@ export function LearningPathScreen() {
         </section>
       </main>
 
-      <footer className="home-react-footer">
-        <div>
-          <button onClick={() => goTo('/chatbot')} type="button">고객 지원</button>
-          <button onClick={() => window.alert('개인정보처리방침 문서는 준비 중입니다.')} type="button">개인정보 처리방침</button>
-          <button onClick={() => window.alert('이용약관 문서는 준비 중입니다.')} type="button">이용 약관</button>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }

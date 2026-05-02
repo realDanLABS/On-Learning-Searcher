@@ -499,6 +499,14 @@ export function getFaqItems() {
   return defaultFaqs
 }
 
+export function getDefaultNoticeItems() {
+  return defaultNotices
+}
+
+export function getDefaultFaqItems() {
+  return defaultFaqs
+}
+
 export async function clearIdentity() {
   await logoutSession()
   if (typeof window !== 'undefined') {

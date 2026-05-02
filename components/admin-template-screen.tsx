@@ -3,6 +3,30 @@
 import { useEffect, useRef, useState } from 'react'
 import * as XLSX from 'xlsx'
 
+import {
+  createAdminFaq,
+  createAdminNotice,
+  createAdminQuestion,
+  createAdminUser,
+  deleteAdminCourse,
+  deleteAdminFaq,
+  deleteAdminNotice,
+  deleteAdminQuestion,
+  deleteAdminUser,
+  fetchAdminBoardsPayload,
+  fetchAdminCoursesPayload,
+  fetchAdminDashboardPayload,
+  fetchAdminDepartmentsPayload,
+  fetchAdminQuestionsPayload,
+  fetchAdminUsersPayload,
+  importAdminUsers,
+  updateAdminCourse,
+  updateAdminFaq,
+  updateAdminNotice,
+  updateAdminQuestion,
+  updateAdminUser,
+} from '@/lib/admin-client'
+
 type AdminTemplateScreenProps = {
   file: string
 }
@@ -1025,14 +1049,14 @@ export function AdminTemplateScreen({ file }: AdminTemplateScreenProps) {
 
     void Promise.all([
       fetch(`/stitch-runtime/${file}`, { credentials: 'include' }),
-      file === '11-admin-dashboard.html' ? fetch('/api/admin/dashboard', { credentials: 'include' }).catch(() => null) : Promise.resolve(null),
+      file === '11-admin-dashboard.html' ? fetchAdminDashboardPayload().catch(() => null) : Promise.resolve(null),
       file === '12-admin-departments.html'
-        ? fetch(`/api/admin/departments${divisionQuery ? `?division=${encodeURIComponent(divisionQuery)}` : ''}`, { credentials: 'include' }).catch(() => null)
+        ? fetchAdminDepartmentsPayload(divisionQuery || undefined).catch(() => null)
         : Promise.resolve(null),
-      file === '13-admin-questions.html' ? fetch('/api/admin/questions', { credentials: 'include' }).catch(() => null) : Promise.resolve(null),
-      file === '14-admin-courses.html' ? fetch('/api/admin/courses', { credentials: 'include' }).catch(() => null) : Promise.resolve(null),
-      file === '15-admin-users.html' ? fetch('/api/admin/users', { credentials: 'include' }).catch(() => null) : Promise.resolve(null),
-      file === '16-admin-boards.html' ? fetch('/api/admin/boards', { credentials: 'include' }).catch(() => null) : Promise.resolve(null),
+      file === '13-admin-questions.html' ? fetchAdminQuestionsPayload().catch(() => null) : Promise.resolve(null),
+      file === '14-admin-courses.html' ? fetchAdminCoursesPayload().catch(() => null) : Promise.resolve(null),
+      file === '15-admin-users.html' ? fetchAdminUsersPayload().catch(() => null) : Promise.resolve(null),
+      file === '16-admin-boards.html' ? fetchAdminBoardsPayload().catch(() => null) : Promise.resolve(null),
     ])
       .then(async ([response, dashboardResponse, departmentsResponse, questionsResponse, coursesResponse, usersResponse, boardsResponse]) => {
         if (!response.ok) {
@@ -1052,50 +1076,74 @@ export function AdminTemplateScreen({ file }: AdminTemplateScreenProps) {
           '15-admin-users.html',
           '16-admin-boards.html',
         ].includes(file)
-        if (file === '11-admin-dashboard.html' && dashboardResponse && 'ok' in dashboardResponse && dashboardResponse.ok) {
-          const payload = (await dashboardResponse.json()) as AdminDashboardPayload
+        if (file === '11-admin-dashboard.html' && dashboardResponse) {
+          const payload = dashboardResponse as AdminDashboardPayload
           setDashboardPayload(payload)
-          applyAdminDashboardPayload(main as HTMLElement, payload)
+          try {
+            applyAdminDashboardPayload(main as HTMLElement, payload)
+          } catch (error) {
+            console.error('admin-dashboard-apply-failed', error)
+          }
         } else {
           setDashboardPayload(null)
           if (file === '11-admin-dashboard.html' && requiresApi) throw new Error('admin-dashboard-api-failed')
         }
-        if (file === '12-admin-departments.html' && departmentsResponse && 'ok' in departmentsResponse && departmentsResponse.ok) {
-          const payload = (await departmentsResponse.json()) as AdminDepartmentsPayload
+        if (file === '12-admin-departments.html' && departmentsResponse) {
+          const payload = departmentsResponse as AdminDepartmentsPayload
           setDepartmentsPayload(payload)
-          applyAdminDepartmentsPayload(main as HTMLElement, payload)
+          try {
+            applyAdminDepartmentsPayload(main as HTMLElement, payload)
+          } catch (error) {
+            console.error('admin-departments-apply-failed', error)
+          }
         } else {
           setDepartmentsPayload(null)
           if (file === '12-admin-departments.html' && requiresApi) throw new Error('admin-departments-api-failed')
         }
-        if (file === '13-admin-questions.html' && questionsResponse && 'ok' in questionsResponse && questionsResponse.ok) {
-          const payload = (await questionsResponse.json()) as AdminQuestionsPayload
+        if (file === '13-admin-questions.html' && questionsResponse) {
+          const payload = questionsResponse as AdminQuestionsPayload
           setQuestionsPayload(payload)
-          applyAdminQuestionsPayload(main as HTMLElement, payload)
+          try {
+            applyAdminQuestionsPayload(main as HTMLElement, payload)
+          } catch (error) {
+            console.error('admin-questions-apply-failed', error)
+          }
         } else {
           setQuestionsPayload(null)
           if (file === '13-admin-questions.html' && requiresApi) throw new Error('admin-questions-api-failed')
         }
-        if (file === '14-admin-courses.html' && coursesResponse && 'ok' in coursesResponse && coursesResponse.ok) {
-          const payload = (await coursesResponse.json()) as AdminCoursesPayload
+        if (file === '14-admin-courses.html' && coursesResponse) {
+          const payload = coursesResponse as AdminCoursesPayload
           setCoursesPayload(payload)
-          applyAdminCoursesPayload(main as HTMLElement, payload)
+          try {
+            applyAdminCoursesPayload(main as HTMLElement, payload)
+          } catch (error) {
+            console.error('admin-courses-apply-failed', error)
+          }
         } else {
           setCoursesPayload(null)
           if (file === '14-admin-courses.html' && requiresApi) throw new Error('admin-courses-api-failed')
         }
-        if (file === '15-admin-users.html' && usersResponse && 'ok' in usersResponse && usersResponse.ok) {
-          const payload = (await usersResponse.json()) as AdminUsersPayload
+        if (file === '15-admin-users.html' && usersResponse) {
+          const payload = usersResponse as AdminUsersPayload
           setUsersPayload(payload)
-          applyAdminUsersPayload(main as HTMLElement, payload)
+          try {
+            applyAdminUsersPayload(main as HTMLElement, payload)
+          } catch (error) {
+            console.error('admin-users-apply-failed', error)
+          }
         } else {
           setUsersPayload(null)
           if (file === '15-admin-users.html' && requiresApi) throw new Error('admin-users-api-failed')
         }
-        if (file === '16-admin-boards.html' && boardsResponse && 'ok' in boardsResponse && boardsResponse.ok) {
-          const payload = (await boardsResponse.json()) as AdminBoardsPayload
+        if (file === '16-admin-boards.html' && boardsResponse) {
+          const payload = boardsResponse as AdminBoardsPayload
           setBoardsPayload(payload)
-          applyAdminBoardsPayload(main as HTMLElement, payload)
+          try {
+            applyAdminBoardsPayload(main as HTMLElement, payload)
+          } catch (error) {
+            console.error('admin-boards-apply-failed', error)
+          }
         } else {
           setBoardsPayload(null)
           if (file === '16-admin-boards.html' && requiresApi) throw new Error('admin-boards-api-failed')
@@ -1107,9 +1155,9 @@ export function AdminTemplateScreen({ file }: AdminTemplateScreenProps) {
           window.tailwind?.refresh?.()
         }, 0)
       })
-      .catch(() => {
+      .catch((caught) => {
         if (cancelled) return
-        setError('관리자 실데이터를 불러오지 못했습니다.')
+        setError(caught instanceof Error ? caught.message : '관리자 실데이터를 불러오지 못했습니다.')
       })
 
     return () => {
@@ -1337,9 +1385,7 @@ export function AdminTemplateScreen({ file }: AdminTemplateScreenProps) {
     const addButton = Array.from(host.querySelectorAll('button')).find((button) => (button.textContent || '').includes('새 문항 추가')) as HTMLButtonElement | undefined
 
     const refreshQuestionsPayload = async () => {
-      const response = await fetch('/api/admin/questions', { credentials: 'include' })
-      if (!response.ok) return
-      const nextPayload = (await response.json()) as AdminQuestionsPayload
+      const nextPayload = (await fetchAdminQuestionsPayload()) as unknown as AdminQuestionsPayload
       setQuestionsPayload(nextPayload)
     }
 
@@ -1394,17 +1440,12 @@ export function AdminTemplateScreen({ file }: AdminTemplateScreenProps) {
           )
           if (!nextCategory) return
 
-          const response = await fetch(`/api/admin/questions/${encodeURIComponent(id)}`, {
-            method: 'PUT',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
+          try {
+            await updateAdminQuestion(id, {
               title: nextTitle.trim(),
               category: nextCategory.trim(),
-            }),
-          })
-
-          if (!response.ok) {
+            })
+          } catch {
             window.alert('문항 수정에 실패했습니다.')
             return
           }
@@ -1418,11 +1459,9 @@ export function AdminTemplateScreen({ file }: AdminTemplateScreenProps) {
           const current = questionsPayload.questions.find((item) => item.id === id)
           if (!id || !current) return
           if (!window.confirm(`${current.title} 문항을 삭제하시겠습니까?`)) return
-          const response = await fetch(`/api/admin/questions/${encodeURIComponent(id)}`, {
-            method: 'DELETE',
-            credentials: 'include',
-          })
-          if (!response.ok) {
+          try {
+            await deleteAdminQuestion(id)
+          } catch {
             window.alert('문항 삭제에 실패했습니다.')
             return
           }
@@ -1444,13 +1483,9 @@ export function AdminTemplateScreen({ file }: AdminTemplateScreenProps) {
         ]
         const category = window.prompt(`역량 구분 키를 입력하세요.\n${categoryGuide.join(' / ')}`, 'aiAutomation')
         if (!category) return
-        const response = await fetch('/api/admin/questions', {
-          method: 'POST',
-          credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ title: title.trim(), category: category.trim() }),
-        })
-        if (!response.ok) {
+        try {
+          await createAdminQuestion({ title: title.trim(), category: category.trim() })
+        } catch {
           window.alert('문항 추가에 실패했습니다.')
           return
         }
@@ -1478,9 +1513,7 @@ export function AdminTemplateScreen({ file }: AdminTemplateScreenProps) {
     let currentPage = 1
 
     const refreshCoursesPayload = async () => {
-      const response = await fetch('/api/admin/courses', { credentials: 'include' })
-      if (!response.ok) return
-      const nextPayload = (await response.json()) as AdminCoursesPayload
+      const nextPayload = (await fetchAdminCoursesPayload()) as unknown as AdminCoursesPayload
       setCoursesPayload(nextPayload)
     }
 
@@ -1549,19 +1582,15 @@ export function AdminTemplateScreen({ file }: AdminTemplateScreenProps) {
           if (durationHoursText == null) return
           const summary = window.prompt('요약을 입력하세요.', current.summary)
           if (summary == null) return
-          const response = await fetch(`/api/admin/courses/${encodeURIComponent(id)}`, {
-            method: 'PUT',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
+          try {
+            await updateAdminCourse(id, {
               courseTitle,
               competencyArea,
               level,
               durationHours: Number(durationHoursText) || current.durationHours,
               summary,
-            }),
-          })
-          if (!response.ok) {
+            })
+          } catch {
             window.alert('과정 수정에 실패했습니다.')
             return
           }
@@ -1574,11 +1603,9 @@ export function AdminTemplateScreen({ file }: AdminTemplateScreenProps) {
           const current = coursesPayload.courses.find((course) => course.id === id)
           if (!current) return
           if (!window.confirm(`${current.title} 과정을 삭제하시겠습니까?`)) return
-          const response = await fetch(`/api/admin/courses/${encodeURIComponent(id)}`, {
-            method: 'DELETE',
-            credentials: 'include',
-          })
-          if (!response.ok) {
+          try {
+            await deleteAdminCourse(id)
+          } catch {
             window.alert('과정 삭제에 실패했습니다.')
             return
           }
@@ -1615,9 +1642,7 @@ export function AdminTemplateScreen({ file }: AdminTemplateScreenProps) {
     let currentFilter: 'all' | 'notice' | 'faq' = 'all'
 
     const refreshBoardsPayload = async () => {
-      const response = await fetch('/api/admin/boards', { credentials: 'include' })
-      if (!response.ok) return
-      const nextPayload = (await response.json()) as AdminBoardsPayload
+      const nextPayload = (await fetchAdminBoardsPayload()) as unknown as AdminBoardsPayload
       setBoardsPayload(nextPayload)
     }
 
@@ -1676,15 +1701,13 @@ export function AdminTemplateScreen({ file }: AdminTemplateScreenProps) {
             ? window.prompt('공지 카테고리를 수정하세요.', current.category)
             : current.category
           if (category == null) return
-          const response = await fetch(`/api/admin/${type === 'notice' ? 'notices' : 'faqs'}/${encodeURIComponent(id)}`, {
-            method: 'PUT',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(type === 'notice'
-              ? { title, summary: body, category }
-              : { question: title, answer: body }),
-          })
-          if (!response.ok) {
+          try {
+            if (type === 'notice') {
+              await updateAdminNotice(id, { title, summary: body, category })
+            } else {
+              await updateAdminFaq(id, { question: title, answer: body })
+            }
+          } catch {
             window.alert('항목 수정에 실패했습니다.')
             return
           }
@@ -1697,11 +1720,13 @@ export function AdminTemplateScreen({ file }: AdminTemplateScreenProps) {
           const current = getRows().find((item) => item.type === type && item.id === id)
           if (!current) return
           if (!window.confirm(`${current.title} 항목을 삭제하시겠습니까?`)) return
-          const response = await fetch(`/api/admin/${type === 'notice' ? 'notices' : 'faqs'}/${encodeURIComponent(id)}`, {
-            method: 'DELETE',
-            credentials: 'include',
-          })
-          if (!response.ok) {
+          try {
+            if (type === 'notice') {
+              await deleteAdminNotice(id)
+            } else {
+              await deleteAdminFaq(id)
+            }
+          } catch {
             window.alert('항목 삭제에 실패했습니다.')
             return
           }
@@ -1742,15 +1767,13 @@ export function AdminTemplateScreen({ file }: AdminTemplateScreenProps) {
         const body = window.prompt(isFaq ? 'FAQ 답변을 입력하세요.' : '공지 요약을 입력하세요.')
         if (!body) return
         const category = isFaq ? '' : (window.prompt('공지 카테고리를 입력하세요.', '공지') || '공지')
-        const response = await fetch(`/api/admin/${isFaq ? 'faqs' : 'notices'}`, {
-          method: 'POST',
-          credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(isFaq
-            ? { question: title, answer: body }
-            : { title, summary: body, category }),
-        })
-        if (!response.ok) {
+        try {
+          if (isFaq) {
+            await createAdminFaq({ question: title, answer: body })
+          } else {
+            await createAdminNotice({ title, summary: body, category })
+          }
+        } catch {
           window.alert('항목 추가에 실패했습니다.')
           return
         }
@@ -1781,9 +1804,7 @@ export function AdminTemplateScreen({ file }: AdminTemplateScreenProps) {
     let currentPage = 1
 
     const refreshUsersPayload = async () => {
-      const response = await fetch('/api/admin/users', { credentials: 'include' })
-      if (!response.ok) return
-      const nextPayload = (await response.json()) as AdminUsersPayload
+      const nextPayload = (await fetchAdminUsersPayload()) as unknown as AdminUsersPayload
       setUsersPayload(nextPayload)
     }
 
@@ -1896,17 +1917,12 @@ export function AdminTemplateScreen({ file }: AdminTemplateScreenProps) {
             current.statusOverride || current.status,
           )
           if (statusOverride == null) return
-          await fetch(`/api/admin/users/${encodeURIComponent(id)}`, {
-            method: 'PUT',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
+          await updateAdminUser(id, {
               name,
               employeeId,
               division,
               team,
               statusOverride,
-            }),
           })
           await refreshUsersPayload()
         })
@@ -1920,13 +1936,8 @@ export function AdminTemplateScreen({ file }: AdminTemplateScreenProps) {
           const nextRoleLabel = window.prompt('권한을 입력하세요. (학습자 / 매니저 / 관리자)', currentRoleLabel)
           if (!nextRoleLabel) return
           const nextRole = nextRoleLabel === '관리자' ? 'admin' : nextRoleLabel === '매니저' ? 'manager' : 'employee'
-          await fetch(`/api/admin/users/${encodeURIComponent(id)}`, {
-            method: 'PUT',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              role: nextRole,
-            }),
+          await updateAdminUser(id, {
+            role: nextRole,
           })
           await refreshUsersPayload()
         })
@@ -1939,14 +1950,7 @@ export function AdminTemplateScreen({ file }: AdminTemplateScreenProps) {
           if (!window.confirm(`${current.name} 회원을 삭제하시겠습니까?`)) return
           const confirmationEmployeeId = window.prompt(`삭제를 계속하려면 사번 ${current.employeeId} 를 입력하세요.`, '')
           if (!confirmationEmployeeId) return
-          await fetch(`/api/admin/users/${encodeURIComponent(id)}`, {
-            method: 'DELETE',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              confirmationEmployeeId: confirmationEmployeeId.trim(),
-            }),
-          })
+          await deleteAdminUser(id, confirmationEmployeeId.trim())
           await refreshUsersPayload()
         })
       })
@@ -2046,11 +2050,8 @@ export function AdminTemplateScreen({ file }: AdminTemplateScreenProps) {
         if (!email) return
         const roleLabel = window.prompt('권한을 입력하세요. (학습자 / 매니저 / 관리자)', '학습자') || '학습자'
         const interestCourse = window.prompt('관심 과정을 입력하세요.', '') || ''
-        const response = await fetch('/api/admin/users', {
-          method: 'POST',
-          credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
+        try {
+          await createAdminUser({
             employeeId,
             name,
             division,
@@ -2058,9 +2059,8 @@ export function AdminTemplateScreen({ file }: AdminTemplateScreenProps) {
             email,
             interestCourse,
             role: roleLabel === '관리자' ? 'admin' : roleLabel === '매니저' ? 'manager' : 'employee',
-          }),
-        })
-        if (!response.ok) {
+          })
+        } catch {
           window.alert('회원 추가에 실패했습니다.')
           return
         }
@@ -2115,22 +2115,10 @@ export function AdminTemplateScreen({ file }: AdminTemplateScreenProps) {
               window.alert('업로드 가능한 회원 행이 없습니다.')
               return
             }
-            const response = await fetch('/api/admin/users/import', {
-              method: 'POST',
-              credentials: 'include',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ users: rows }),
-            })
-            if (!response.ok) {
-              throw new Error('user-import-failed')
-            }
-            const result = await response.json() as { importedCount?: number; updatedCount?: number }
+            const result = await importAdminUsers({ users: rows }) as { importedCount?: number; updatedCount?: number }
             window.alert(`회원 일괄 등록이 완료되었습니다. 신규 ${result.importedCount || 0}명, 업데이트 ${result.updatedCount || 0}명`)
-            const refreshResponse = await fetch('/api/admin/users', { credentials: 'include' })
-            if (refreshResponse.ok) {
-              const nextPayload = (await refreshResponse.json()) as AdminUsersPayload
-              setUsersPayload(nextPayload)
-            }
+            const nextPayload = (await fetchAdminUsersPayload()) as unknown as AdminUsersPayload
+            setUsersPayload(nextPayload)
           } catch {
             window.alert('회원 일괄 등록에 실패했습니다.')
           } finally {

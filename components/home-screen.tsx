@@ -21,11 +21,15 @@ import {
   RECOMMENDED_COURSE_PREVIEW_COUNT,
   buildRecommendationCourse,
   clearIdentity,
+  type FaqItem,
+  type NoticeItem,
   getDiagnosisScoreRate,
   getDisplayUser,
-  getFaqItems,
-  getNoticeItems,
+  getDefaultFaqItems,
+  getDefaultNoticeItems,
 } from '@/lib/stitch-ui'
+import { fetchPublicFaqs, fetchPublicNotices } from '@/lib/public-content-client'
+import { SiteFooter } from '@/components/site-footer'
 import { UserTopNav } from '@/components/user-top-nav'
 
 type HomeCourseCard = {
@@ -79,6 +83,8 @@ export function HomeScreen() {
   const [recommendedCourses, setRecommendedCourses] = useState<RecommendedCourse[]>([])
   const [selectedCourse, setSelectedCourse] = useState<RecommendedCourse | null>(null)
   const [stage, setStage] = useState<JourneyStage>('start')
+  const [notices, setNotices] = useState<NoticeItem[]>(() => getDefaultNoticeItems())
+  const [faqs, setFaqs] = useState<FaqItem[]>(() => getDefaultFaqItems())
 
   const load = useCallback(async () => {
     try {
@@ -109,6 +115,23 @@ export function HomeScreen() {
     }, 0)
     return () => window.clearTimeout(timer)
   }, [load])
+
+  useEffect(() => {
+    let active = true
+
+    void Promise.all([
+      fetchPublicNotices().catch(() => getDefaultNoticeItems()),
+      fetchPublicFaqs().catch(() => getDefaultFaqItems()),
+    ]).then(([nextNotices, nextFaqs]) => {
+      if (!active) return
+      setNotices(nextNotices.length ? nextNotices : getDefaultNoticeItems())
+      setFaqs(nextFaqs.length ? nextFaqs : getDefaultFaqItems())
+    })
+
+    return () => {
+      active = false
+    }
+  }, [])
 
   useEffect(() => {
     const nodes = Array.from(document.querySelectorAll<HTMLElement>('.home-react-reveal'))
@@ -174,9 +197,6 @@ export function HomeScreen() {
         { courseId: 'fallback-4', title: '제조 현장을 바꾸는 데이터 기반 공정 개선', durationText: '4시간', level: '중급', badge: '추천', imageUrl: fallbackCourseImages[0] },
         { courseId: 'fallback-5', title: '문제를 성과로 연결하는 실전 협업 문제해결', durationText: '2.5시간', level: '입문', badge: '추천', imageUrl: fallbackCourseImages[1] },
       ]
-  const notices = getNoticeItems()
-  const faqs = getFaqItems()
-
   const resolveIntentRoute = useCallback(
     async (requestedRoute: string) => {
       if (requestedRoute === '/') return '/'
@@ -367,13 +387,7 @@ export function HomeScreen() {
         </section>
       </main>
 
-      <footer className="home-react-footer">
-        <div>
-          <button onClick={() => void goTo('/chatbot')} type="button">고객 지원</button>
-          <button onClick={() => window.alert('개인정보처리방침 문서는 준비 중입니다.')} type="button">개인정보 처리방침</button>
-          <button onClick={() => window.alert('이용약관 문서는 준비 중입니다.')} type="button">이용 약관</button>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }

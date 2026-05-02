@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { fetchRecommendedCourses, selectRecommendedCourse, type RecommendedCourse } from '@/lib/learning-client'
 import { clearIdentity, buildRecommendationCourse, getDisplayUser } from '@/lib/stitch-ui'
 import { syncAuthSession } from '@/lib/auth-client'
+import { SiteFooter } from '@/components/site-footer'
 import { UserTopNav } from '@/components/user-top-nav'
 
 type RecommendationCourseView = ReturnType<typeof buildRecommendationCourse>
@@ -84,10 +85,6 @@ export function RecommendationScreen() {
     }
     return next.slice(0, 5)
   }, [recommendationCourses, selectedCategory, selectedLevel, sort])
-
-  const goTo = useCallback((route: string) => {
-    router.push(route)
-  }, [router])
 
   const handleLogout = useCallback(async () => {
     await clearIdentity()
@@ -168,13 +165,7 @@ export function RecommendationScreen() {
         </div>
       </main>
 
-      <footer className="home-react-footer">
-        <div>
-          <button onClick={() => goTo('/chatbot')} type="button">도움말</button>
-          <button onClick={() => goTo('/chatbot')} type="button">고객 지원</button>
-          <button onClick={() => window.alert('버전 정보입니다. 현재 v2.4.0 디자인 템플릿을 사용 중입니다.')} type="button">v2.4.0</button>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }

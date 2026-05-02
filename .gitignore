@@ -43,6 +43,7 @@ worktrees/
 # Playwright artifacts
 playwright-report/
 test-results/
+output/
 .vercel
 
 # local-only agent and snapshot artifacts
@@ -57,6 +58,7 @@ archive/
 data/*.sqlite
 data/*.sqlite-shm
 data/*.sqlite-wal
+supabase/.temp/
 
 # workflow file kept local until a token with workflow scope is available
 .github/workflows/ci.yml
