@@ -5,6 +5,9 @@ node_modules/
 dist/
 build/
 dist-ssr/
+.next/
+.next-build/
+.next-dev/
 
 # logs
 logs/
@@ -41,3 +44,19 @@ worktrees/
 playwright-report/
 test-results/
 .vercel
+
+# local-only agent and snapshot artifacts
+.agents/
+ORCHESTRATION/SNAPSHOTS/
+
+# local backup/archive folders
+backup/
+archive/
+
+# local runtime data
+data/*.sqlite
+data/*.sqlite-shm
+data/*.sqlite-wal
+
+# workflow file kept local until a token with workflow scope is available
+.github/workflows/ci.yml
