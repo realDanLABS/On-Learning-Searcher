@@ -32,6 +32,7 @@ export function DiagnosisScreen() {
   const [step, setStep] = useState(0)
   const [answers, setAnswers] = useState<AnswerMap>({})
   const [submitting, setSubmitting] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [authenticated, setAuthenticated] = useState(false)
   const [userId, setUserId] = useState('')
 
@@ -46,9 +47,13 @@ export function DiagnosisScreen() {
         setSession(currentSession)
         setAuthenticated(currentSession.authenticated)
         setUserId(currentSession.profile?.employeeId ?? '')
+        if (!currentSession.authenticated) {
+          router.replace('/login?next=%2Fdiagnosis')
+        }
       })
       .catch(() => setSession(null))
-  }, [])
+      .finally(() => setLoading(false))
+  }, [router])
 
   const currentQuestion = diagnosisQuestions[step]
   const answeredCount = useMemo(
@@ -153,6 +158,10 @@ export function DiagnosisScreen() {
 
   if (submitting) {
     return <div className="app-bootstrap-loading">진단 결과를 분석하는 중입니다...</div>
+  }
+
+  if (loading || !authenticated) {
+    return <div className="app-bootstrap-loading">로그인 상태를 확인하는 중입니다...</div>
   }
 
   return (

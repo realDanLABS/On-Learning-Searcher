@@ -12,6 +12,7 @@ backup
 ORCHESTRATION
 *.log
 .DS_Store
+._*
 .env.local
 .env.production
 supabase/.temp
