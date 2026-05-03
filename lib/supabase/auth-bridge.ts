@@ -12,14 +12,14 @@ type BridgeProfile = {
 
 async function linkSupabaseAuthUser(profile: BridgeProfile) {
   const supabase = getSupabaseBrowserClient()
-  const rpc = supabase.rpc as unknown as (
+  const rpc = supabase.rpc.bind(supabase) as unknown as (
     fn: string,
     args?: Record<string, unknown>,
   ) => Promise<{ error: { message?: string } | null }>
-  const { error } = await rpc('link_current_auth_user', {
+  const { error } = (await rpc('link_current_auth_user', {
     p_employee_id: profile.employeeId,
     p_company_email: profile.companyEmail?.trim().toLowerCase() || null,
-  })
+  })) as unknown as { error: { message?: string } | null }
   if (error) {
     throw error
   }

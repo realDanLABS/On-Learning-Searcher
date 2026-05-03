@@ -64,8 +64,6 @@ type SupabaseResult<T> = {
   error: SupabaseErrorLike
 }
 
-type SupabaseRpc = (fn: string, args?: Record<string, unknown>) => Promise<SupabaseResult<unknown>>
-
 type SupabaseDiagnosisRow = {
   user_id?: string
   diagnosed_at: string
@@ -175,19 +173,19 @@ export async function fetchDiagnosisHistory(userId?: string) {
 
 export async function submitDiagnosis(payload: DiagnosisPayload) {
   const supabase = getSupabaseBrowserClient()
+  const rpc = supabase.rpc.bind(supabase) as unknown as (fn: string, args?: Record<string, unknown>) => Promise<SupabaseResult<unknown>>
   const profile = await getSupabaseAppProfile()
   if (!profile?.id) {
     throw new Error('supabase-session-required')
   }
 
-  const rpc = supabase.rpc as unknown as SupabaseRpc
-  const { error } = await rpc('save_diagnosis', {
+  const { error } = (await rpc('save_diagnosis', {
     p_diagnosed_at: payload.diagnosedAt,
     p_total_score: payload.totalScore,
     p_max_score: payload.maxScore,
     p_category_scores: payload.categoryScores,
     p_top_gaps: payload.topGaps,
-  })
+  })) as unknown as SupabaseResult<unknown>
   if (error) {
     throw new Error(error.message || 'save-diagnosis-failed')
   }
@@ -243,15 +241,15 @@ export async function fetchRecommendedCourses(level: 'all' | '입문' | '중급'
 
 export async function selectRecommendedCourse(course: RecommendedCourse) {
   const supabase = getSupabaseBrowserClient()
+  const rpc = supabase.rpc.bind(supabase) as unknown as (fn: string, args?: Record<string, unknown>) => Promise<SupabaseResult<unknown>>
   const profile = await getSupabaseAppProfile()
   if (!profile?.id) {
     throw new Error('supabase-session-required')
   }
 
-  const rpc = supabase.rpc as unknown as SupabaseRpc
-  const { error } = await rpc('save_selected_course', {
+  const { error } = (await rpc('save_selected_course', {
     p_course: course,
-  })
+  })) as unknown as SupabaseResult<unknown>
   if (error) {
     throw new Error(error.message || 'save-selected-course-failed')
   }
@@ -288,19 +286,19 @@ export async function fetchSelectedCourse() {
 
 export async function submitEnrollment(record: EnrollmentRecord) {
   const supabase = getSupabaseBrowserClient()
+  const rpc = supabase.rpc.bind(supabase) as unknown as (fn: string, args?: Record<string, unknown>) => Promise<SupabaseResult<unknown>>
   const profile = await getSupabaseAppProfile()
   if (!profile?.id) {
     throw new Error('supabase-session-required')
   }
 
-  const rpc = supabase.rpc as unknown as SupabaseRpc
-  const { error } = await rpc('save_enrollment', {
+  const { error } = (await rpc('save_enrollment', {
     p_course_id: record.courseId,
     p_course_title: record.courseTitle,
     p_enrollment_requested_at: record.enrollmentRequestedAt,
     p_enrollment_status: record.enrollmentStatus,
     p_failure_reason: record.failureReason || null,
-  })
+  })) as unknown as SupabaseResult<unknown>
   if (error) {
     throw new Error(error.message || 'save-enrollment-failed')
   }
@@ -350,14 +348,14 @@ export async function fetchEnrollmentHistory() {
 
 export async function fetchJourneyStage() {
   const supabase = getSupabaseBrowserClient()
+  const rpc = supabase.rpc.bind(supabase) as unknown as (fn: string, args?: Record<string, unknown>) => Promise<SupabaseResult<unknown>>
   const profile = await getSupabaseAppProfile()
   if (!profile?.id) {
     window.localStorage.setItem(KEY_REMOTE_STAGE_SNAPSHOT, 'start')
     return 'start'
   }
 
-  const rpc = supabase.rpc as unknown as SupabaseRpc
-  const { data, error } = (await rpc('my_journey_stage')) as SupabaseResult<JourneyStage | null>
+  const { data, error } = (await rpc('my_journey_stage')) as unknown as SupabaseResult<JourneyStage | null>
   if (error || typeof data !== 'string') {
     throw new Error(error?.message || 'fetch-journey-stage-failed')
   }
@@ -369,8 +367,8 @@ export async function fetchJourneyStage() {
 
 async function fetchAdminPreviewPayload(userId: string) {
   const supabase = getSupabaseBrowserClient()
-  const rpc = supabase.rpc as unknown as SupabaseRpc
-  const { data, error } = (await rpc('admin_dashboard_payload')) as SupabaseResult<AdminPreviewPayload | null>
+  const rpc = supabase.rpc.bind(supabase) as unknown as (fn: string, args?: Record<string, unknown>) => Promise<SupabaseResult<unknown>>
+  const { data, error } = (await rpc('admin_dashboard_payload')) as unknown as SupabaseResult<AdminPreviewPayload | null>
   if (error || !data) {
     throw new Error(error?.message || 'admin-preview-payload-failed')
   }

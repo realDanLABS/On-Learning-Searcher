@@ -48,6 +48,10 @@ export async function syncAuthSession() {
 
 export async function loginWithPassword(payload: LoginPayload) {
   const supabase = getSupabaseBrowserClient()
+  const rpc = supabase.rpc.bind(supabase) as unknown as (
+    fn: string,
+    args?: Record<string, unknown>,
+  ) => Promise<{ data?: unknown; error: { message?: string } | null }>
   const employeeId = String(payload.employeeId || '').trim()
   const password = String(payload.password || '')
   if (!employeeId || !password) {
@@ -63,14 +67,10 @@ export async function loginWithPassword(payload: LoginPayload) {
     throw signIn.error || new Error('supabase-login-failed')
   }
 
-  const rpc = supabase.rpc as unknown as (
-    fn: string,
-    args?: Record<string, unknown>,
-  ) => Promise<{ error: { message?: string } | null }>
   const linkResult = await rpc('link_current_auth_user', {
     p_employee_id: employeeId,
     p_company_email: email,
-  })
+  }) as unknown as { error: { message?: string } | null }
   if (linkResult.error) {
     throw new Error(linkResult.error.message || 'supabase-link-user-failed')
   }
@@ -85,6 +85,10 @@ export async function loginWithPassword(payload: LoginPayload) {
 
 export async function signupWithPassword(payload: SignupPayload) {
   const supabase = getSupabaseBrowserClient()
+  const rpc = supabase.rpc.bind(supabase) as unknown as (
+    fn: string,
+    args?: Record<string, unknown>,
+  ) => Promise<{ data?: unknown; error: { message?: string } | null }>
   const signUp = await supabase.auth.signUp({
     email: String(payload.companyEmail || '').trim().toLowerCase(),
     password: String(payload.password || ''),
@@ -109,10 +113,6 @@ export async function signupWithPassword(payload: SignupPayload) {
     }
   }
 
-  const rpc = supabase.rpc as unknown as (
-    fn: string,
-    args?: Record<string, unknown>,
-  ) => Promise<{ error: { message?: string } | null }>
   const registerResult = await rpc('register_current_auth_user', {
     p_employee_id: String(payload.employeeId || '').trim(),
     p_name: String(payload.name || '').trim(),
@@ -122,7 +122,7 @@ export async function signupWithPassword(payload: SignupPayload) {
     p_team: String(payload.team || '').trim() || null,
     p_company_email: String(payload.companyEmail || '').trim().toLowerCase(),
     p_interest_course: String(payload.interestCourse || '').trim() || null,
-  })
+  }) as unknown as { error: { message?: string } | null }
   if (registerResult.error) {
     throw new Error(registerResult.error.message || 'supabase-register-user-failed')
   }
@@ -175,13 +175,13 @@ async function resolveLoginEmail(employeeId: string) {
     return employeeId.trim().toLowerCase()
   }
   const supabase = getSupabaseBrowserClient()
-  const rpc = supabase.rpc as unknown as (
+  const rpc = supabase.rpc.bind(supabase) as unknown as (
     fn: string,
     args?: Record<string, unknown>,
   ) => Promise<{ data: string | null; error: { message?: string } | null }>
-  const { data, error } = await rpc('lookup_login_email', {
+  const { data, error } = (await rpc('lookup_login_email', {
     p_employee_id: employeeId,
-  })
+  })) as unknown as { data: string | null; error: { message?: string } | null }
   if (error || !data) {
     throw new Error(error?.message || 'login-email-not-found')
   }

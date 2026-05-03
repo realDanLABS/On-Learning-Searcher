@@ -879,7 +879,7 @@ async function requireAdminSupabaseClient() {
 }
 
 function getSupabaseRpc(supabase: ReturnType<typeof getSupabaseBrowserClient>) {
-  return supabase.rpc as unknown as (
+  return supabase.rpc.bind(supabase) as unknown as (
     fn: string,
     args?: Record<string, unknown>,
   ) => Promise<SupabaseResult<unknown>>

@@ -3,7 +3,6 @@
 import { useRouter } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
 
-import { SiteFooter } from '@/components/site-footer'
 import { StitchFrame } from '@/components/stitch-frame'
 import { UserTopNav } from '@/components/user-top-nav'
 import { syncAuthSession, type AuthSessionPayload } from '@/lib/auth-client'
@@ -182,7 +181,6 @@ export function HistoryScreen() {
           history: recommendationHistory,
         }}
       />
-      <SiteFooter />
     </div>
   )
 }
