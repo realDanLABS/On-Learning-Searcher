@@ -31,7 +31,7 @@ Deno.serve(async (request) => {
     const employeeId = String(body.employeeId || '').trim()
     const name = String(body.name || '').trim()
     const organization = String(body.organization || '').trim()
-    const companyEmail = String(body.companyEmail || '').trim().toLowerCase() || `${employeeId}@hyundai-wia.local`
+    const companyEmail = String(body.companyEmail || '').trim().toLowerCase() || `${employeeId}@company.local`
 
     if (!employeeId || !name || !organization) {
       return Response.json({ error: 'missing-required-callback-fields' }, { status: 400, headers: corsHeaders })

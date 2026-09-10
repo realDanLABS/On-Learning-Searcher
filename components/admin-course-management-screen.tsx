@@ -193,7 +193,7 @@ export function AdminCourseManagementScreen() {
       }
 
       const footerText = Array.from(host.querySelectorAll('p, span, a')).find((node) =>
-        (node.textContent || '').includes('© 2023 HYUNDAI WIA Corp. All rights reserved.'),
+        (node.textContent || '').includes('© 2023 Company Corp. All rights reserved.'),
       )
       if (footerText) {
         const footerContainer = footerText.closest('footer, div, section')

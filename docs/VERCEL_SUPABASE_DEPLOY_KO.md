@@ -54,7 +54,7 @@ npm run build:remote
 ## 기본 관리자 계정
 
 - 사원번호: `90000`
-- 비밀번호: `admin1234!`
+- 비밀번호: `local-dev-only`
 
 ## 주의
 

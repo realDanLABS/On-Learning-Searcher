@@ -338,7 +338,7 @@ export function AdminScreen({ section }: { section: AdminSection }) {
     const payload = {
       ...courseForm,
       objectives: ['핵심 개념 정리', '현업 적용 포인트 확보'],
-      targetAudience: ['현대위아 구성원'],
+      targetAudience: ['회사 구성원'],
       expectedOutcomes: ['추천 과정 확대'],
       reasonTags: ['관리자추가'],
       recommendedBy: 'role-fit',

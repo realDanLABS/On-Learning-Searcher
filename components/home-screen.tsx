@@ -282,7 +282,7 @@ export function HomeScreen() {
           <div className="home-react-hero-copy">
             <span>On Learning Searcher</span>
             <h1>AI 역량진단 기반의<br />맞춤형 학습설계 플랫폼</h1>
-            <p>현대위아의 개인화된 학습 경로 설계를 통해<br />당신의 잠재력을 깨우고 스마트한 커리어 패스를 설계하세요. 🚀</p>
+            <p>회사의 개인화된 학습 경로 설계를 통해<br />당신의 잠재력을 깨우고 스마트한 커리어 패스를 설계하세요. 🚀</p>
             <div className="home-react-hero-actions">
               <button className="home-react-primary-btn" onClick={() => void goTo(primaryRoute)} type="button">
                 {primaryLabel} <span className="material-symbols-outlined">rocket_launch</span>

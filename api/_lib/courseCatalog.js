@@ -201,7 +201,7 @@ function normalizeRow(raw) {
     hasAssessment,
     summary,
     objectives: objectives.length ? objectives : [summary || '과정 핵심 내용을 확인합니다.'],
-    targetAudience: targetAudience.length ? targetAudience : ['현대위아 구성원'],
+    targetAudience: targetAudience.length ? targetAudience : ['회사 구성원'],
     expectedOutcomes: objectives.length ? objectives : ['업무 적용 포인트를 이해합니다.'],
     reasonTags: [category1, category2, hasAssessment ? '평가포함' : '평가없음'].filter(Boolean),
     recommendedBy: 'skill-gap',

@@ -117,4 +117,4 @@ Build an enterprise-grade UX for:
 4. admin/manager-ready summary view exists in history area
 
 ## Notes
-- This benchmark is inspired by 360Learning’s skills-based learning flow and adapted for Hyundai WIA On Learning Searcher.
+- This benchmark is inspired by 360Learning’s skills-based learning flow and adapted for Company On Learning Searcher.

@@ -176,7 +176,7 @@ export function AdminQuestionCourseUploadScreen() {
       const historySection = root.querySelector('[data-course-upload-history="1"]')
       if (historySection instanceof HTMLElement) historySection.style.display = 'none'
       const footerText = Array.from(root.querySelectorAll('p, a, span')).find((node) =>
-        (node.textContent || '').includes('© 2023 HYUNDAI WIA Corp. All rights reserved.'),
+        (node.textContent || '').includes('© 2023 Company Corp. All rights reserved.'),
       )
       if (footerText) {
         const footerContainer = footerText.closest('footer') || footerText.closest('div, section')
