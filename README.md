@@ -1,6 +1,6 @@
 # On Learning Searcher
 
-현대위아 온러닝서처(Online + Learning + Search) 프로젝트 저장소입니다.
+회사 온러닝서처(Online + Learning + Search) 프로젝트 저장소입니다.
 
 현재 기준 앱은 `Next.js App Router`이며, 백엔드는 Supabase/Postgres 기반 `/api` 경로를 사용합니다.
 

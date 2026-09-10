@@ -83,7 +83,7 @@ export function HistoryScreen() {
 
   const latestScore = getDiagnosisScoreRate(diagnosis) || 0
   const profileName = session?.profile?.name?.trim() || '임직원'
-  const profileOrg = session?.profile?.organization?.trim() || '현대위아 구성원'
+  const profileOrg = session?.profile?.organization?.trim() || '회사 구성원'
   const recommendationHistory = recommendedCourses.length
     ? recommendedCourses.slice(0, RECOMMENDED_COURSE_PREVIEW_COUNT).map((course) => {
         const matched = enrollments.find((record) => record.courseId === course.courseId)

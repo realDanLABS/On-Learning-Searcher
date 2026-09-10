@@ -409,13 +409,13 @@
     if (!aside) return
     const brandRow = qsa('div', aside).find((node) => {
       const text = (node.textContent || '').replace(/\s+/g, ' ')
-      return text.includes('HYUNDAI WIA') || text.includes('ON LEARNING SEARCHER')
+      return text.includes('Company') || text.includes('ON LEARNING SEARCHER')
     })
     if (!brandRow || brandRow.dataset.stitchBrandHydrated === '1') return
     brandRow.dataset.stitchBrandHydrated = '1'
     brandRow.innerHTML = `
       <div style="display:flex;align-items:center;gap:12px;">
-        <img src="/brand/logo.png" alt="HYUNDAI WIA" style="height:32px;width:auto;display:block;object-fit:contain;" />
+        <img src="/brand/logo.png" alt="Company" style="height:32px;width:auto;display:block;object-fit:contain;" />
         <span style="font-size:18px;font-weight:700;letter-spacing:-0.02em;color:#0f172a;">On Learning Searcher</span>
       </div>
     `
@@ -440,7 +440,7 @@
       <div data-stitch-shell class="flex w-full items-center justify-between gap-6">
         <div class="flex min-w-0 items-center gap-8">
           <button data-stitch-shell-home type="button" class="flex items-center gap-3">
-            <img src="/brand/logo.png" alt="HYUNDAI WIA" style="height:32px;width:auto;display:block;object-fit:contain;" />
+            <img src="/brand/logo.png" alt="Company" style="height:32px;width:auto;display:block;object-fit:contain;" />
             <span class="hidden sm:inline text-lg font-bold tracking-tight text-slate-900">On Learning Searcher</span>
           </button>
           <nav class="hidden md:flex items-center gap-7">
@@ -519,7 +519,7 @@
         <div class="flex w-full items-center justify-between gap-6">
           <div class="flex min-w-0 items-center gap-3">
             <button data-stitch-shell-home type="button" class="flex items-center gap-3">
-              <img src="/brand/logo.png" alt="HYUNDAI WIA" style="height:32px;width:auto;display:block;object-fit:contain;" />
+              <img src="/brand/logo.png" alt="Company" style="height:32px;width:auto;display:block;object-fit:contain;" />
               <span class="text-lg font-bold tracking-tight text-slate-900">관리자 페이지</span>
             </button>
           </div>
@@ -701,10 +701,10 @@
     footer.innerHTML = `
       <div class="mx-auto flex w-full max-w-7xl flex-col gap-6 md:flex-row md:items-center md:justify-between">
         <div class="flex items-center gap-2 grayscale opacity-50">
-          <span class="text-[12px] font-bold">HYUNDAI WIA</span>
+          <span class="text-[12px] font-bold">Company</span>
         </div>
         <p class="text-center text-[12px] text-slate-400">
-          © 2026 HYUNDAI WIA Corp. All rights reserved. On Learning Searcher는 현대위아 구성원의 맞춤화된 학습과 성장을 위해 제작되었습니다.
+          © 2026 Company Corp. All rights reserved. On Learning Searcher는 회사 구성원의 맞춤화된 학습과 성장을 위해 제작되었습니다.
         </p>
         <div class="flex items-center justify-center gap-6">
           <a class="text-[12px] text-slate-400 transition-colors hover:text-[#002C5F]" href="#">개인정보처리방침</a>
@@ -866,9 +866,9 @@
     ensureHomeMotionStyles()
     const sections = qsa(':scope > section', main)
     const heroSection = sections[0]
-    const heroCopy = heroSection ? qsa('p', heroSection).find((node) => (node.textContent || '').includes('현대위아의 개인화된 학습 경로 설계')) : null
+    const heroCopy = heroSection ? qsa('p', heroSection).find((node) => (node.textContent || '').includes('회사의 개인화된 학습 경로 설계')) : null
     if (heroCopy) {
-      heroCopy.innerHTML = '현대위아의 개인화된 학습 경로 설계를 통해<br/>당신의 잠재력을 깨우고 스마트한 커리어 패스를 설계하세요. 🚀'
+      heroCopy.innerHTML = '회사의 개인화된 학습 경로 설계를 통해<br/>당신의 잠재력을 깨우고 스마트한 커리어 패스를 설계하세요. 🚀'
     }
     const statusCards = qsa('div.bg-white', sections[1] || main).slice(0, 4)
     setText(qs('p.text-2xl', statusCards[0]), formatDate(payload.recentDiagnosisDate))
@@ -1524,7 +1524,7 @@
   function renderAnalytics(payload) {
     const userInfoBlock = qsa('div').find((node) => String(node.className).includes('text-right') && ((node.textContent || '').includes('관리자') || (node.textContent || '').includes('연구원') || (node.textContent || '').includes('님')))
     const userInfo = userInfoBlock ? qsa('p', userInfoBlock) : []
-    if (userInfo[0]) userInfo[0].textContent = `${payload.userName || '현대위아 관리자'}님`
+    if (userInfo[0]) userInfo[0].textContent = `${payload.userName || '회사 관리자'}님`
     if (userInfo[1]) userInfo[1].textContent = payload.organization || '운영 관리자'
     const kpiGrid = qsa('div').find((node) => {
       const className = String(node.className || '')
@@ -1801,8 +1801,8 @@
     })
     profileBlocks.forEach((block) => {
       const lines = qsa('p', block)
-      if (lines.length >= 2 && ((lines[0].textContent || '').includes('Alex') || (lines[0].textContent || '').includes('관리자') || (lines[0].textContent || '').includes('Kim'))) {
-        lines[0].textContent = payload.userName || '현대위아 관리자'
+      if (lines.length >= 2 && ((lines[0].textContent || '').includes('관리자') || (lines[0].textContent || '').includes('직원'))) {
+        lines[0].textContent = payload.userName || '회사 관리자'
         lines[1].textContent = payload.organization || '운영 관리자'
       }
     })
@@ -1810,7 +1810,7 @@
 
   function renderAdminDashboard(payload) {
     hydrateAdminProfile(payload)
-    document.title = '현대위아 On Learning Searcher - 관리자 대시보드'
+    document.title = '회사 On Learning Searcher - 관리자 대시보드'
     const searchInput = qsa('input').find((node) => node.placeholder?.includes('Search departments'))
     if (searchInput) searchInput.placeholder = '부서명을 검색하세요'
     const topNavLinks = qsa('a').filter((node) => ['Dashboard', 'Departments', 'Reports', 'Settings'].includes((node.textContent || '').trim()))
@@ -1989,12 +1989,12 @@
       if (buttonsInActions[3]) bindAction(buttonsInActions[3], 'run-admin-action', { key: 'departments' })
     }
     const footerText = qsa('p').find((node) => node.textContent?.includes('Confidential') || node.textContent?.includes('All rights reserved'))
-    if (footerText) footerText.textContent = '© 2026 HYUNDAI WIA Corp. All rights reserved. 관리자 페이지는 운영 데이터 관리를 위해 제공됩니다.'
+    if (footerText) footerText.textContent = '© 2026 Company Corp. All rights reserved. 관리자 페이지는 운영 데이터 관리를 위해 제공됩니다.'
   }
 
   function renderAdminDepartments(payload) {
     hydrateAdminProfile(payload)
-    document.title = '현대위아 On Learning Searcher - 부서 분석'
+    document.title = '회사 On Learning Searcher - 부서 분석'
     const title = qsa('h1').find((node) => node.textContent?.includes('부서별 상세 분석'))
     if (title) title.textContent = '부서별 상세 분석'
     const cards = qsa('section.grid > div')
@@ -2068,16 +2068,16 @@
       updateTableFilterState(searchInput, qsa('tbody tr'), 'departments', '검색 조건에 맞는 부서가 없습니다.')
     }
     const footerText = qsa('p').find((node) => node.textContent?.includes('Confidential') || node.textContent?.includes('All rights reserved'))
-    if (footerText) footerText.textContent = '© 2026 HYUNDAI WIA Corp. All rights reserved. 관리자 페이지는 운영 데이터 관리를 위해 제공됩니다.'
+    if (footerText) footerText.textContent = '© 2026 Company Corp. All rights reserved. 관리자 페이지는 운영 데이터 관리를 위해 제공됩니다.'
   }
 
   function renderAdminQuestions(payload) {
     hydrateAdminProfile(payload)
-    document.title = '현대위아 On Learning Searcher - 역량진단 문항 관리'
+    document.title = '회사 On Learning Searcher - 역량진단 문항 관리'
     const brand = qsa('h1, h2').find((node) => node.innerHTML?.includes('On-Learning Admin'))
-    if (brand) brand.innerHTML = 'HYUNDAI WIA<br/><span class="text-[10px] font-normal opacity-80 uppercase">On Learning Searcher</span>'
+    if (brand) brand.innerHTML = 'Company<br/><span class="text-[10px] font-normal opacity-80 uppercase">On Learning Searcher</span>'
     const profileName = qsa('p').find((node) => node.textContent?.includes('Admin Master'))
-    if (profileName) profileName.textContent = payload.userName || '현대위아 관리자'
+    if (profileName) profileName.textContent = payload.userName || '회사 관리자'
     const sideLinks = qsa('a').filter((node) => ['Overview', 'Competency Questions', 'Learning Path', 'Assessments', 'Analytics'].includes((node.textContent || '').trim()))
     if (sideLinks[0]) sideLinks[0].textContent = '대시보드'
     if (sideLinks[1]) sideLinks[1].textContent = '역량진단 문항'
@@ -2159,14 +2159,14 @@
       questionSearch.dispatchEvent(new Event('input'))
     }
     const footerText = qsa('p').find((node) => node.textContent?.includes('Confidential') || node.textContent?.includes('All rights reserved'))
-    if (footerText) footerText.textContent = '© 2026 HYUNDAI WIA Corp. All rights reserved. 관리자 페이지는 운영 데이터 관리를 위해 제공됩니다.'
+    if (footerText) footerText.textContent = '© 2026 Company Corp. All rights reserved. 관리자 페이지는 운영 데이터 관리를 위해 제공됩니다.'
   }
 
   function renderAdminCourses(payload) {
     hydrateAdminProfile(payload)
-    document.title = '현대위아 On Learning Searcher - 교육과정 관리'
-    const brand = qsa('h2').find((node) => node.textContent?.includes('Hyundai Wia On-Learning Admin'))
-    if (brand) brand.innerHTML = 'HYUNDAI WIA <span class="text-primary">On Learning Searcher</span>'
+    document.title = '회사 On Learning Searcher - 교육과정 관리'
+    const brand = qsa('h2').find((node) => node.textContent?.includes('Company On-Learning Admin'))
+    if (brand) brand.innerHTML = 'Company <span class="text-primary">On Learning Searcher</span>'
     const topNav = qsa('span').filter((node) => ['Dashboard', 'System Settings'].includes((node.textContent || '').trim()))
     if (topNav[0]) topNav[0].textContent = '대시보드'
     if (topNav[1]) topNav[1].textContent = '시스템 설정'
@@ -2235,14 +2235,14 @@
       searchInput.dispatchEvent(new Event('input'))
     }
     const footerText = qsa('p').find((node) => node.textContent?.includes('Confidential') || node.textContent?.includes('All rights reserved'))
-    if (footerText) footerText.textContent = '© 2026 HYUNDAI WIA Corp. All rights reserved. 관리자 페이지는 운영 데이터 관리를 위해 제공됩니다.'
+    if (footerText) footerText.textContent = '© 2026 Company Corp. All rights reserved. 관리자 페이지는 운영 데이터 관리를 위해 제공됩니다.'
   }
 
   function renderAdminUsers(payload) {
     hydrateAdminProfile(payload)
-    document.title = '현대위아 On Learning Searcher - 회원 관리'
+    document.title = '회사 On Learning Searcher - 회원 관리'
     const brand = qsa('h2').find((node) => node.textContent?.includes('On-Learning Admin'))
-    if (brand) brand.innerHTML = 'HYUNDAI WIA <span class="text-primary">On Learning Searcher</span>'
+    if (brand) brand.innerHTML = 'Company <span class="text-primary">On Learning Searcher</span>'
     const topNav = qsa('a').filter((node) => ['Dashboard', 'Reports'].includes((node.textContent || '').trim()))
     if (topNav[0]) topNav[0].textContent = '대시보드'
     if (topNav[1]) topNav[1].textContent = '운영 리포트'
@@ -2368,14 +2368,14 @@
     })
     applyUserFilter()
     const footerText = qsa('p').find((node) => node.textContent?.includes('Confidential') || node.textContent?.includes('All rights reserved'))
-    if (footerText) footerText.textContent = '© 2026 HYUNDAI WIA Corp. All rights reserved. 관리자 페이지는 운영 데이터 관리를 위해 제공됩니다.'
+    if (footerText) footerText.textContent = '© 2026 Company Corp. All rights reserved. 관리자 페이지는 운영 데이터 관리를 위해 제공됩니다.'
   }
 
   function renderAdminBoards(payload) {
     hydrateAdminProfile(payload)
-    document.title = '현대위아 On Learning Searcher - 공지 및 FAQ 관리'
+    document.title = '회사 On Learning Searcher - 공지 및 FAQ 관리'
     const brand = qsa('h2').find((node) => node.textContent?.includes('On-Learning Admin'))
-    if (brand) brand.innerHTML = 'HYUNDAI WIA <span class="text-primary">On Learning Searcher</span>'
+    if (brand) brand.innerHTML = 'Company <span class="text-primary">On Learning Searcher</span>'
     const topNav = qsa('a').filter((node) => ['Dashboard', 'Settings'].includes((node.textContent || '').trim()))
     if (topNav[0]) topNav[0].textContent = '대시보드'
     if (topNav[1]) topNav[1].textContent = '시스템 설정'
@@ -2491,7 +2491,7 @@
       qsa('[data-stitch-delete-faq]', faqSection).forEach((button) => bindAction(button, 'delete-faq', { id: button.getAttribute('data-stitch-delete-faq') }))
     }
     const footerText = qsa('p').find((node) => node.textContent?.includes('Confidential') || node.textContent?.includes('All rights reserved'))
-    if (footerText) footerText.textContent = '© 2026 HYUNDAI WIA Corp. All rights reserved. 관리자 페이지는 운영 데이터 관리를 위해 제공됩니다.'
+    if (footerText) footerText.textContent = '© 2026 Company Corp. All rights reserved. 관리자 페이지는 운영 데이터 관리를 위해 제공됩니다.'
   }
 
   function render(payload) {

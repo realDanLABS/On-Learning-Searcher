@@ -59,7 +59,7 @@ export function AdminTopNav({ profile }: { profile?: UserProfile | null }) {
     <header className="shell-topbar admin-fixed-nav">
       <div className="shell-brand-row admin-topbar-left">
         <Link className="shell-brand" href="/admin">
-          <Image alt="현대위아 로고" className="shell-brand-image" height={32} src="/brand/logo.png" width={132} />
+          <Image alt="회사 로고" className="shell-brand-image" height={32} src="/brand/logo.png" width={132} />
           <span className="shell-brand-subtitle">administrator</span>
         </Link>
         <nav aria-label="administrator menu" className="admin-page-nav">
@@ -87,7 +87,7 @@ export function AdminTopNav({ profile }: { profile?: UserProfile | null }) {
                 {roleLabel}
               </span>
             </p>
-            <p>{user.organization || '현대위아 / 관리자'}</p>
+            <p>{user.organization || '회사 / 관리자'}</p>
           </div>
           <div aria-hidden="true" className="admin-user-avatar">
             <span className="material-symbols-outlined">account_circle</span>

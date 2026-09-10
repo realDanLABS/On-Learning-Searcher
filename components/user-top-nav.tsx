@@ -57,7 +57,7 @@ export function UserTopNav({
     <header className="home-react-header">
       <div className="home-react-header-inner">
         <button className="home-react-brand" onClick={() => goTo('/')} type="button">
-          <img alt="HYUNDAI WIA" src="/brand/logo.png" />
+          <img alt="Company" src="/brand/logo.png" />
           <span>On Learning Searcher</span>
         </button>
         <nav aria-label="주요 이동" className="home-react-nav">
@@ -79,10 +79,10 @@ export function UserTopNav({
               <div className="home-react-user">
                 <div>
                   <p>
-                    <span>{userName || '현대위아 구성원'}</span>
+                    <span>{userName || '회사 구성원'}</span>
                     <em>{roleLabel}</em>
                   </p>
-                  <small>{organization || '현대위아'}</small>
+                  <small>{organization || '회사'}</small>
                 </div>
                 <span className="material-symbols-outlined">account_circle</span>
               </div>

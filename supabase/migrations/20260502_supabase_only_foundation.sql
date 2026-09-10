@@ -401,7 +401,7 @@ stable
 security definer
 set search_path = public, app
 as $$
-  select lower(coalesce(nullif(u.company_email, ''), u.employee_id || '@hyundai-wia.local'))
+  select lower(coalesce(nullif(u.company_email, ''), u.employee_id || '@company.local'))
   from app.users as u
   where u.employee_id = p_employee_id
   order by u.created_at desc
@@ -438,7 +438,7 @@ begin
     raise exception 'Missing required SSO fields';
   end if;
 
-  next_company_email := coalesce(nullif(lower(trim(p_company_email)), ''), lower(trim(p_employee_id)) || '@hyundai-wia.local');
+  next_company_email := coalesce(nullif(lower(trim(p_company_email)), ''), lower(trim(p_employee_id)) || '@company.local');
   next_division := trim(split_part(p_organization, '/', 1));
   next_office := trim(split_part(p_organization, '/', 2));
   next_team := trim(split_part(p_organization, '/', 3));
@@ -524,7 +524,7 @@ begin
     raise exception 'Missing required registration fields';
   end if;
 
-  next_company_email := coalesce(nullif(lower(trim(p_company_email)), ''), lower(trim(p_employee_id)) || '@hyundai-wia.local');
+  next_company_email := coalesce(nullif(lower(trim(p_company_email)), ''), lower(trim(p_employee_id)) || '@company.local');
   next_division := coalesce(nullif(trim(p_division), ''), trim(split_part(p_organization, '/', 1)), p_organization);
   next_office := nullif(trim(p_office), '');
   next_team := nullif(trim(p_team), '');

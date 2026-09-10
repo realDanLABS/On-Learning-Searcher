@@ -154,7 +154,7 @@ export async function completeAuthCallback(search: string) {
     employeeId,
     name,
     organization,
-    companyEmail: `${employeeId}@hyundai-wia.local`,
+    companyEmail: `${employeeId}@company.local`,
   })
   applyAuthSession(session)
   return session

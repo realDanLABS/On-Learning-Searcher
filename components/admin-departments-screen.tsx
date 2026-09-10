@@ -83,7 +83,7 @@ export function AdminDepartmentsScreen() {
             color: '#607087',
           }}
         >
-          현대위아 주요 본부와 사업부의 학습 참여 현황을 부서별로 분석하고 비교할 수 있습니다.
+          회사 주요 본부와 사업부의 학습 참여 현황을 부서별로 분석하고 비교할 수 있습니다.
         </p>
       </section>
 

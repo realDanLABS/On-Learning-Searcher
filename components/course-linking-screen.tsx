@@ -182,7 +182,7 @@ export function CourseLinkingScreen({ search }: { search?: string }) {
               </div>
             </div>
             <div className="course-linking-react-action-buttons">
-              <p>이 과정은 현대위아 E-Campus 시스템과 연동되어 있습니다. 신청 시 해당 시스템 기준으로 요청 상태가 저장됩니다.</p>
+              <p>이 과정은 회사 E-Campus 시스템과 연동되어 있습니다. 신청 시 해당 시스템 기준으로 요청 상태가 저장됩니다.</p>
               <button className="course-linking-react-primary" onClick={() => void handleExternalApply()} type="button">
                 <span>E-Campus에서 신청하기</span>
                 <span className="material-symbols-outlined">open_in_new</span>
@@ -258,7 +258,7 @@ export function CourseLinkingScreen({ search }: { search?: string }) {
               <p>
                 <b>외부 시스템 안내:</b>
                 <br />
-                본 페이지는 교육 정보를 제공하며 실제 수강 신청 및 이수 처리는 현대위아 E-Campus 기준으로 관리됩니다.
+                본 페이지는 교육 정보를 제공하며 실제 수강 신청 및 이수 처리는 회사 E-Campus 기준으로 관리됩니다.
               </p>
             </section>
           </aside>

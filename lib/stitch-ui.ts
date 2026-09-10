@@ -185,7 +185,7 @@ function buildCourseThumbnailDataUrl(
   const subCategory = escapeSvgText(clampText(meta.category || preset.overline, 22))
   const level = escapeSvgText(meta.level)
   const durationText = escapeSvgText(meta.durationText)
-  const instructor = escapeSvgText(clampText(meta.instructor || 'HYUNDAI WIA', 24))
+  const instructor = escapeSvgText(clampText(meta.instructor || 'Company', 24))
   const previewLabel = escapeSvgText(clampText(meta.previewLabel || '추천 과정', 18))
   const countChip = meta.contentCount ? `${meta.contentCount}개 콘텐츠` : '맞춤 추천'
   const gradientFrom = preset.gradientFrom || preset.accent

@@ -17,7 +17,7 @@ export function TopNav() {
   return (
     <header className="top-nav">
       <Link className="brand" href="/">
-        <span className="brand-badge">HYUNDAI WIA</span>
+        <span className="brand-badge">Company</span>
         <span>On Learning Searcher Next</span>
       </Link>
       <nav className="nav-links" aria-label="주요 이동">

@@ -6,9 +6,9 @@ export function AdminBottomFooter() {
   return (
     <footer className="admin-bottom-footer">
       <div className="admin-bottom-footer-inner">
-        <div className="admin-bottom-footer-brand">HYUNDAI WIA</div>
+        <div className="admin-bottom-footer-brand">Company</div>
         <p className="admin-bottom-footer-text">
-          © 2026 HYUNDAI WIA Corp. All rights reserved. On Learning Searcher는 현대위아 구성원의 맞춤화된 학습과 성장을 위해 제작되었습니다.
+          © 2026 Company Corp. All rights reserved. On Learning Searcher는 회사 구성원의 맞춤화된 학습과 성장을 위해 제작되었습니다.
         </p>
         <div className="admin-bottom-footer-links">
           <button

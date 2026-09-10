@@ -43,7 +43,7 @@ export function SiteFooter({
             fontWeight: 700,
           }}
         >
-          <span>HYUNDAI WIA</span>
+          <span>Company</span>
         </div>
         <p
           style={{
@@ -56,7 +56,7 @@ export function SiteFooter({
             textAlign: 'center',
           }}
         >
-            © 2026 HYUNDAI WIA Corp. All rights reserved. On Learning Searcher는 현대위아 구성원의 맞춤화된 학습과 성장을 위해 제작되었습니다.
+            © 2026 Company Corp. All rights reserved. On Learning Searcher는 회사 구성원의 맞춤화된 학습과 성장을 위해 제작되었습니다.
         </p>
         <div
           style={{

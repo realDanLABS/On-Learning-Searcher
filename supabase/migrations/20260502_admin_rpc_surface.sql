@@ -626,7 +626,7 @@ begin
     area,
     trim(coalesce(p_payload->>'summary', '')),
     coalesce(p_payload->'objectives', '["핵심 개념 정리","현업 적용 포인트 확보"]'::jsonb),
-    coalesce(p_payload->'targetAudience', '["현대위아 구성원"]'::jsonb),
+    coalesce(p_payload->'targetAudience', '["회사 구성원"]'::jsonb),
     coalesce(p_payload->'expectedOutcomes', '["추천 과정 확대"]'::jsonb),
     coalesce(p_payload->'reasonTags', '["관리자추가"]'::jsonb),
     coalesce(nullif(p_payload->>'recommendedBy', ''), 'role-fit'),

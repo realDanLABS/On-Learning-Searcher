@@ -36,7 +36,7 @@ export function SignupScreen({ next }: { next?: string }) {
   const [error, setError] = useState('')
 
   const organization = useMemo(
-    () => buildOrganizationLabel({ division, team, fallback: '현대위아' }),
+    () => buildOrganizationLabel({ division, team, fallback: '회사' }),
     [division, team],
   )
 
@@ -63,7 +63,7 @@ export function SignupScreen({ next }: { next?: string }) {
   }
 
   return (
-    <AuthShell description="현대위아 사원정보를 등록하고 맞춤 학습 여정을 시작하세요." hidePageHeader title="회원가입">
+    <AuthShell description="회사 사원정보를 등록하고 맞춤 학습 여정을 시작하세요." hidePageHeader title="회원가입">
       <section className="auth-panel">
         <div className="auth-panel-copy">
           <h2>회원가입</h2>
@@ -95,7 +95,7 @@ export function SignupScreen({ next }: { next?: string }) {
           </label>
           <label className="auth-field">
             <span>회사 이메일</span>
-            <input required type="email" value={companyEmail} onChange={(event) => setCompanyEmail(event.target.value)} placeholder="member@hyundai-wia.com" />
+            <input required type="email" value={companyEmail} onChange={(event) => setCompanyEmail(event.target.value)} placeholder="user@company.com" />
           </label>
           <label className="auth-field">
             <span>비밀번호</span>
